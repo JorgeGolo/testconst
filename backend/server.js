@@ -1,27 +1,35 @@
 const express = require('express');
 const admin = require('firebase-admin');
-const path = require('path'); // Para facilitar la ruta de la clave de servicio
+const cors = require('cors'); // Importa el paquete cors
+
+require('dotenv').config();
 
 const app = express();
 const port = 5000;
-const cors = require('cors'); // Importa el paquete cors
 
-
-// Ruta a la clave de servicio
-const serviceAccount = require(path.join(__dirname, 'firebaseServiceAccount.json'));
-
-app.use(cors({
-    origin: 'http://localhost:3000'
-  }));
-
-// Inicializar Firebase Admin con la clave de servicio
+// Configuración de Firebase con datos del .env
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://reacttest-32606.firebaseio.com"  // Cambia esto si tienes una URL diferente en tu Firebase
+  credential: admin.credential.cert({
+    type: process.env.FIREBASE_TYPE,
+    project_id: process.env.FIREBASE_PROJECT_ID,
+    private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
+    private_key: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'), // Para el formato correcto del salto de línea
+    client_email: process.env.FIREBASE_CLIENT_EMAIL,
+    client_id: process.env.FIREBASE_CLIENT_ID,
+    auth_uri: process.env.FIREBASE_AUTH_URI,
+    token_uri: process.env.FIREBASE_TOKEN_URI,
+    auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_CERT_URL,
+    client_x509_cert_url: process.env.FIREBASE_CLIENT_CERT_URL,
+  }),
+  databaseURL: "https://reacttest-32606.firebaseio.com" // Cambia esto si tienes una URL diferente en tu Firebase
 });
 
 const db = admin.firestore();  // Conexión con Firestore
 
+// Middleware
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 app.use(express.json());  // Middleware para procesar JSON
 
 // Ejemplo de endpoint que usa Firestore
