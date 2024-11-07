@@ -26,10 +26,24 @@ admin.initializeApp({
 
 const db = admin.firestore();  // Conexión con Firestore
 
-// Middleware
+// Middleware testconst.vercel.app
+
+const allowedOrigins = [
+  'http://localhost:3000',  // Para entorno de desarrollo
+  'https://mi-app.vercel.app'  // Reemplaza con tu dominio en Vercel
+];
+
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: function(origin, callback) {
+    // Permite todos los orígenes en desarrollo o si no se pasa origin (por ejemplo, para localhost)
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  }
 }));
+
+
 app.use(express.json());  // Middleware para procesar JSON
 
 // Ejemplo de endpoint que usa Firestore
