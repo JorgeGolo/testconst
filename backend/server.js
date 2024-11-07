@@ -59,7 +59,7 @@ app.get('/data', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Servidor escuchando en http://localhost:${port}`);
+  console.log(`Servidor escuchando en ${process.env.REACT_APP_API_URL}`);
 });
 
 app.get('/consulta-aleatoria', async (req, res) => {

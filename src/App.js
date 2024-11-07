@@ -11,7 +11,7 @@ function App() {
   useEffect(() => {
     const obtenerConsultaAleatoria = async () => {
       try {
-        const response = await fetch('http://localhost:5000/consulta-aleatoria');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/consulta-aleatoria`);
         const data = await response.json();
 
         setTitulo(data.titulo);
