@@ -5,7 +5,7 @@ const cors = require('cors'); // Importa el paquete cors
 require('dotenv').config();
 
 const app = express();
-//const port = 5000;
+const port = process.env.PORT_SERVER;
 
 // Configuración de Firebase con datos del .env
 admin.initializeApp({
@@ -30,7 +30,8 @@ const db = admin.firestore();  // Conexión con Firestore
 
 const allowedOrigins = [
   'http://localhost:3000',  // Para entorno de desarrollo
-  'https://testconst.vercel.app'  // Reemplaza con tu dominio en Vercel
+  'https://testconst.vercel.app',  // Reemplaza con tu dominio en Vercel
+  'https://testconst-production.up.railway.app'
 ];
 
 app.use(cors({
@@ -58,11 +59,10 @@ app.get('/data', async (req, res) => {
   }
 });
 
-/*
 app.listen(port, () => {
-  console.log(`Servidor escuchando en ${process.env.REACT_APP_API_URL}`);
+  console.log(`Servidor escuchando en ${process.env.REACT_APP_API_URL}:${process.env.PORT_SERVER}`);
 });
-*/
+
 app.get('/consulta-aleatoria', async (req, res) => {
     try {
       // Seleccionamos un título al azar
