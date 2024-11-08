@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 function App() {
   const [titulo, setTitulo] = useState(null);
-  const [coleccion, setColeccion] = useState(null);
   const [capitulo, setCapitulo] = useState(null);
   const [seccion, setSeccion] = useState(null);
   const [articulo, setArticulo] = useState(null);
