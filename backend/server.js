@@ -6,17 +6,7 @@ require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5000;
-const path = require('path');
-// Configurar Express para servir archivos estáticos en producción
-if (process.env.NODE_ENV === 'production') {
-  // Servir los archivos estáticos de la carpeta "build"
-  app.use(express.static(path.join(__dirname, 'build')));
 
-  // Redirecciona todas las solicitudes al archivo "index.html" de React
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-  });
-}
 
 // Configuración de Firebase con datos del .env
 admin.initializeApp({
