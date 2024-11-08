@@ -31,7 +31,8 @@ const db = admin.firestore();  // Conexión con Firestore
 const allowedOrigins = [
   'http://localhost:3000',  // Para entorno de desarrollo
   'https://testconst.vercel.app',  // Reemplaza con tu dominio en Vercel
-  'https://testconst-production.up.railway.app'
+  'https://testconst-production.up.railway.app',
+  'https://testconst.up.railway.app'
 ];
 
 app.use(cors({
