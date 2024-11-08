@@ -36,6 +36,8 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function(origin, callback) {
+    console.log('Origin:', origin);  // Verifica el valor del origin
+
     // Permite todos los orígenes en desarrollo o si no se pasa origin (por ejemplo, para localhost)
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       return callback(null, true);
