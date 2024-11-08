@@ -5,7 +5,7 @@ const cors = require('cors'); // Importa el paquete cors
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT_SERVER;
+const port = process.env.PORT;
 
 // Configuración de Firebase con datos del .env
 admin.initializeApp({
@@ -63,7 +63,7 @@ app.get('/data', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Servidor escuchando en ${process.env.REACT_APP_API_URL}:${process.env.PORT_SERVER}`);
+  console.log(`Servidor escuchando en ${process.env.REACT_APP_API_URL}:${process.env.PORT}`);
 });
 
 app.get('/consulta-aleatoria', async (req, res) => {
