@@ -5,7 +5,9 @@ const cors = require('cors'); // Importa el paquete cors
 require('dotenv').config();
 
 const app = express();
+const router = express.Router();
 
+// Mueve esta línea después de definir el router y añadir las rutas:
 const port = process.env.SERVER_PORT || 5000;
 
 // Configuración de Firebase con datos del .env
@@ -31,10 +33,14 @@ const db = admin.firestore();  // Conexión con Firestore
 
 const allowedOrigins = [
   'http://localhost:3000',  // Para entorno de desarrollo
+  'http://localhost:3000/api',  // Para entorno de desarrollo
+  'http://localhost:5000/api',  // Para entorno de desarrollo
+
   'https://testconst.vercel.app',  // Reemplaza con tu dominio en Vercel
   'https://testconst-production.up.railway.app',
   'https://testconst.up.railway.app'
 ];
+
 
 app.use(cors({
   origin: function(origin, callback) {
@@ -67,8 +73,8 @@ app.listen(port, () => {
   console.log(`Servidor escuchando en ${process.env.REACT_APP_API_URL}:${process.env.PORT}`);
 });
 
-app.get('/consulta-aleatoria', async (req, res) => {
-    try {
+router.get('/consulta-aleatoria', async (req, res) => {
+  try {
       // Seleccionamos un título al azar
       const titulosSnapshot = await db.collection('constitucion').get();
       const titulos = titulosSnapshot.docs.map(doc => doc.id);
@@ -153,3 +159,4 @@ app.get('/consulta-aleatoria', async (req, res) => {
     }
   });
   
+  app.use('/api', router); // Asegura que todas las rutas estén bajo el prefijo /api
