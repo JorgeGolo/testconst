@@ -14,7 +14,6 @@ function App() {
         const data = await response.json();
 
         setTitulo(data.titulo);
-        setColeccion(data.coleccion);
         setCapitulo(data.capitulo);
         setSeccion(data.seccion);
         setArticulo(data.articulo);
