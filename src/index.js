@@ -10,6 +10,8 @@ root.render(
     <Router>
     <Routes>
       <Route path="/" element={<App />} />
+      <Route path="/temas" element={<Temas />} />
+
     </Routes>
   </Router>
 );
