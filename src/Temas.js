@@ -19,13 +19,18 @@ const Temas = () => {
     fetchDocumentNames();
   }, []);
 
+  const obtenerArticulo = (nombreDocumento) => {
+    console.log("Nombre del documento:", nombreDocumento);
+  };
+
+
   return (
     <div>
       <Nav />
       <h2>Temas</h2>
       <ul>
         {documentNames.map((name, index) => (
-          <li key={index}>{name}</li>
+          <li key={index}>{name} - <button onClick={() => { obtenerArticulo(name); }}>Obtener Artículo</button></li>
         ))}
       </ul>
     </div>
