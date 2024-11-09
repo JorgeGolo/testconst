@@ -8,6 +8,7 @@ const Temas = () => {
   const [seccion, setSeccion] = useState('');
   const [articulo, setArticulo] = useState('');
   const [contenido, setContenido] = useState('');
+  const [respuestaIA, setRespuestaIA] = useState('');
 
   useEffect(() => {
     const fetchDocumentNames = async () => {
@@ -35,6 +36,7 @@ const Temas = () => {
         setSeccion(data2.seccion);
         setArticulo(data2.articulo);
         setContenido(data2.contenido);
+        setRespuestaIA(data2.respuestaIA);
       } else {
         console.error('Error al obtener los datos:', data2.error);
       }
@@ -59,7 +61,8 @@ const Temas = () => {
       {capitulo !== 'No aplica' && <p>{capitulo}</p>}
       {seccion !== 'No aplica' && <p>{seccion}</p>}
       <p>{articulo}</p>
-      <div dangerouslySetInnerHTML={{ __html: contenido }} />    
+      <div dangerouslySetInnerHTML={{ __html: contenido }} />   
+      <p>{respuestaIA || 'No se pudo generar una pregunta en este momento.'}</p>
     </div>
   );
 };

@@ -1,5 +1,11 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, doc, getDocs } from 'firebase/firestore';
+import { OpenAI } from 'openai';
+
+// Configuración de OpenAI
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 // Inicializa la app de Firebase (asegúrate de usar las variables de entorno en Vercel)
 const firebaseConfig = {
@@ -59,13 +65,48 @@ export default async function handler(req, res) {
         return res.status(404).json({ error: 'No se encontró contenido de artículo.' });
       }
 
+      // Consulta a la API de OpenAI para generar la pregunta
+      let respuestaIA;
+      try {
+        const chatCompletion = await openai.chat.completions.create({
+          model: "gpt-3.5-turbo", // Usa el modelo recibido o uno por defecto
+          messages: [
+            { role: "system", content: "Eres un asistente útil que genera preguntas de quiz con cuatro opciones de respuesta." },
+            {
+              role: "user",
+              content: `Genera una pregunta sobre el siguiente contenido: ${contenido}. Debes incluir cuatro opciones de respuesta y solo una debe ser correcta.
+              Sigue este formato:
+              
+              Pregunta
+              Respuesta 1
+              Respuesta 2
+              Respuesta 3
+              Respuesta 4
+              1
+              
+              Es importante que no pongas números, letras, ni símbolos delante de las respuestas.
+              La pregunta debe ir en una sola línea, y cada respuesta en una línea para cada una.`
+            }
+          ]
+        });
+
+        // Procesar la respuesta de OpenAI
+        respuestaIA = chatCompletion.choices[0].message.content;
+      } catch (error) {
+        console.error('Error al generar la pregunta con OpenAI:', error);
+        respuestaIA = 'Error al generar la pregunta.';
+      }
+
+      // Respuesta final al cliente
       res.status(200).json({
         titulo,
         capitulo,
         seccion,
         articulo,
         contenido,
+        respuestaIA,
       });
+
     } catch (error) {
       console.error('Error al obtener el artículo:', error);
       res.status(500).json({ error: 'Error al obtener el artículo.' });
