@@ -27,8 +27,8 @@ const Temas = () => {
   const obtenerArticulo = async (nombreDocumento) => {
     console.log("Nombre del documento:", nombreDocumento);
     try {
-      const response2 = await fetch('/api/getArticleByCap'); // Llamada a la API
-      const data2 = await response2.json();
+        const response2 = await fetch(`/api/getArticleByCap?documentName=${nombreDocumento}`); // Llamada a la API con el parámetro documentName
+        const data2 = await response2.json();
 
       if (response2.ok) {
         setTitulo(data2.titulo);
