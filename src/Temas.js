@@ -55,11 +55,11 @@ const Temas = () => {
         ))}
       </ul>
       {/* Aquí podrías mostrar los datos obtenidos */}
-      <h3>{titulo}</h3>
-      <p>{capitulo}</p>
-      <p>{seccion}</p>
+      <p>{titulo}</p>
+      {capitulo !== 'No aplica' && <p>{capitulo}</p>}
+      {seccion !== 'No aplica' && <p>{seccion}</p>}
       <p>{articulo}</p>
-      <p>{contenido}</p>
+      <div dangerouslySetInnerHTML={{ __html: contenido }} />    
     </div>
   );
 };
