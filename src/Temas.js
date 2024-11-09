@@ -27,7 +27,7 @@ const Temas = () => {
   const obtenerArticulo = async (nombreDocumento) => {
     console.log("Nombre del documento:", nombreDocumento);
     try {
-      const response2 = await fetch('/api/getData'); // Llamada a la API
+      const response2 = await fetch('/api/getArticleByCap'); // Llamada a la API
       const data2 = await response2.json();
 
       if (response2.ok) {
