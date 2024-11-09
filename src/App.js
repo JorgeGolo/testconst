@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Nav from './Nav';
 
 function App() {
   const [titulo, setTitulo] = useState(null);
@@ -33,8 +32,6 @@ function App() {
 
   return (
     <div>
-            <Nav/>
-
       <p>{titulo}</p>
       {capitulo !== 'No aplica' && <p>{capitulo}</p>}
       {seccion !== 'No aplica' && <p>{seccion}</p>}
