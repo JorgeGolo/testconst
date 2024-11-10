@@ -7,7 +7,7 @@ function App() {
   const [seccion, setSeccion] = useState(null);
   const [articulo, setArticulo] = useState(null);
   const [contenido, setContenido] = useState(null);
-  const [openAIText, setOpenAIText] = useState(null);  // Agrega un estado para openAIText
+  const [respuestaIA, setRespuestaIA] = useState('');
 
   useEffect(() => {
     const obtenerConsultaAleatoria = async () => {
@@ -21,6 +21,8 @@ function App() {
           setSeccion(data.seccion);
           setArticulo(data.articulo);
           setContenido(data.contenido);
+          setRespuestaIA(data.respuestaIA);
+
         } else {
           console.error('Error al obtener los datos:', data.error);
         }
@@ -41,6 +43,7 @@ function App() {
       {seccion !== 'No aplica' && <p>{seccion}</p>}
       <p>{articulo}</p>
       <div dangerouslySetInnerHTML={{ __html: contenido }} />
+      <p>{respuestaIA}</p>
     </div>
   );
 }
