@@ -36,11 +36,10 @@ function App() {
 
   return (
     <div>
-            <Nav/>
-
-      <p>{titulo}</p>
-      {capitulo !== 'No aplica' && <p>{capitulo}</p>}
-      {seccion !== 'No aplica' && <p>{seccion}</p>}
+      <Nav/>
+      {titulo !== '' && <p>{titulo}</p>}
+      {capitulo !== '' && <p>{capitulo}</p>}
+      {seccion !== '' && <p>{seccion}</p>}
       <p>{articulo}</p>
       <div dangerouslySetInnerHTML={{ __html: contenido }} />
       <p>{respuestaIA}</p>
