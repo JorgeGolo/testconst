@@ -64,7 +64,7 @@ export default async function handler(req, res) {
               
               Es importante que no pongas números, letras, ni símbolos delante de las respuestas.
               La pregunta debe ir en una sola línea, y cada respuesta en una línea para cada una.
-              El último número es la respuesta correta, marcada como números del 1 al 4.
+              El último número es la respuesta correta, marcada como números del 1 al 4.`
             }
           ]
         });
