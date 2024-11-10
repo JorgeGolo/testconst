@@ -30,37 +30,66 @@ export default async function handler(req, res) {
 
     try {
       const tituloRef = doc(db, 'constitucion', documentName);
+  
       const articulosSnapshot = await getDocs(collection(tituloRef, 'articulos'));
       const capitulosSnapshot = await getDocs(collection(tituloRef, 'capitulos'));
-
-      let titulo = documentName;
-      let capitulo = null;
-      let seccion = null;
-      let articulo = null;
+  
+      const collectionsDisponibles = [];
+      if (articulosSnapshot.docs.length > 0) collectionsDisponibles.push('articulos');
+      if (capitulosSnapshot.docs.length > 0) collectionsDisponibles.push('capitulos');
+  
+      if (collectionsDisponibles.length === 0) {
+        return res.status(404).json({ error: 'No se encontraron artículos ni capítulos en este título.' });
+      }
+  
+      const randomCollection = collectionsDisponibles[Math.floor(Math.random() * collectionsDisponibles.length)];
+  
+      let randomArticulo = null;
       let contenido = null;
-
-      if (capitulosSnapshot.docs.length > 0) {
-        const capituloDoc = capitulosSnapshot.docs[0];
-        capitulo = capituloDoc.id;
-
-        const seccionesSnapshot = await getDocs(collection(capituloDoc.ref, 'secciones'));
-        if (seccionesSnapshot.docs.length > 0) {
-          const seccionDoc = seccionesSnapshot.docs[0];
-          seccion = seccionDoc.id;
-
-          const seccionArticulosSnapshot = await getDocs(collection(seccionDoc.ref, 'articulos'));
-          if (seccionArticulosSnapshot.docs.length > 0) {
-            const articuloDoc = seccionArticulosSnapshot.docs[0];
-            articulo = articuloDoc.id;
-            contenido = articuloDoc.data().contenido;
+      let randomCapitulo = null;  
+      let randomSeccion = null;
+  
+      if (randomCollection === 'articulos') {
+        const randomArticuloDoc = articulosSnapshot.docs[Math.floor(Math.random() * articulosSnapshot.docs.length)];
+        randomArticulo = randomArticuloDoc.id;
+        contenido = randomArticuloDoc.data().contenido;
+      } else if (randomCollection === 'capitulos') {
+        const randomCapituloDoc = capitulosSnapshot.docs[Math.floor(Math.random() * capitulosSnapshot.docs.length)];
+        randomCapitulo = randomCapituloDoc.id;
+  
+        const capituloRef = doc(tituloRef, 'capitulos', randomCapitulo);
+        const capituloArticulosSnapshot = await getDocs(collection(capituloRef, 'articulos'));
+        const capituloSeccionesSnapshot = await getDocs(collection(capituloRef, 'secciones'));
+  
+        const capituloCollectionsDisponibles = [];
+        if (capituloArticulosSnapshot.docs.length > 0) capituloCollectionsDisponibles.push('articulos');
+        if (capituloSeccionesSnapshot.docs.length > 0) capituloCollectionsDisponibles.push('secciones');
+  
+        if (capituloCollectionsDisponibles.length === 0) {
+          return res.status(404).json({ error: `No se encontraron artículos ni secciones en el capítulo: ${randomCapitulo}` });
+        }
+  
+        const randomCapituloCollection = capituloCollectionsDisponibles[Math.floor(Math.random() * capituloCollectionsDisponibles.length)];
+  
+        if (randomCapituloCollection === 'articulos') {
+          const randomArticuloDoc = capituloArticulosSnapshot.docs[Math.floor(Math.random() * capituloArticulosSnapshot.docs.length)];
+          randomArticulo = randomArticuloDoc.id;
+          contenido = randomArticuloDoc.data().contenido;
+        } else if (randomCapituloCollection === 'secciones') {
+          const randomSeccionDoc = capituloSeccionesSnapshot.docs[Math.floor(Math.random() * capituloSeccionesSnapshot.docs.length)];
+          randomSeccion = randomSeccionDoc.id;
+  
+          const seccionRef = doc(capituloRef, 'secciones', randomSeccion);
+          const articulosSeccionSnapshot = await getDocs(collection(seccionRef, 'articulos'));
+  
+          if (articulosSeccionSnapshot.docs.length > 0) {
+            const randomArticuloDoc = articulosSeccionSnapshot.docs[Math.floor(Math.random() * articulosSeccionSnapshot.docs.length)];
+            randomArticulo = randomArticuloDoc.id;
+            contenido = randomArticuloDoc.data().contenido;
           }
         }
-      } else if (articulosSnapshot.docs.length > 0) {
-        const articuloDoc = articulosSnapshot.docs[0];
-        articulo = articuloDoc.id;
-        contenido = articuloDoc.data().contenido;
       }
-
+  
       if (!contenido) {
         return res.status(404).json({ error: 'No se encontró contenido de artículo.' });
       }

@@ -62,7 +62,7 @@ const Temas = () => {
       {seccion !== 'No aplica' && <p>{seccion}</p>}
       <p>{articulo}</p>
       <div dangerouslySetInnerHTML={{ __html: contenido }} />   
-      <p>{respuestaIA || 'No se pudo generar una pregunta en este momento.'}</p>
+      <p>{respuestaIA}</p>
     </div>
   );
 };
