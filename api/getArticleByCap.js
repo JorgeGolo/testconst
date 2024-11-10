@@ -29,73 +29,41 @@ export default async function handler(req, res) {
     }
 
     try {
-      const capituloRef = doc(db, 'constitucion', documentName); // Recibe el capítulo ya seleccionado
-      const articulosSnapshot = await getDocs(collection(capituloRef, 'articulos'));
-      const capitulosSnapshot = await getDocs(collection(capituloRef, 'capitulos'));
-    
-      let capitulo = documentName;
+      const tituloRef = doc(db, 'constitucion', documentName);
+      const articulosSnapshot = await getDocs(collection(tituloRef, 'articulos'));
+      const capitulosSnapshot = await getDocs(collection(tituloRef, 'capitulos'));
+
+      let titulo = documentName;
+      let capitulo = null;
       let seccion = null;
       let articulo = null;
       let contenido = null;
-    
-      // Identifica colecciones disponibles en el capítulo actual
-      const collectionsDisponibles = [];
-      if (articulosSnapshot.docs.length > 0) collectionsDisponibles.push('articulos');
-      if (capitulosSnapshot.docs.length > 0) collectionsDisponibles.push('capitulos');
-    
-      if (collectionsDisponibles.length === 0) {
-        return res.status(404).json({ error: `No se encontraron artículos ni capítulos en el capítulo: ${capitulo}` });
-      }
-    
-      // Selecciona una colección aleatoria en el capítulo actual
-      const randomCollection = collectionsDisponibles[Math.floor(Math.random() * collectionsDisponibles.length)];
-    
-      if (randomCollection === 'articulos') {
-        // Selecciona un artículo al azar y obtiene su contenido
-        const randomArticuloDoc = articulosSnapshot.docs[Math.floor(Math.random() * articulosSnapshot.docs.length)];
-        articulo = randomArticuloDoc.id;
-        contenido = randomArticuloDoc.data().contenido;
-      } else if (randomCollection === 'capitulos') {
-        // Selecciona un capítulo al azar dentro del capítulo actual
-        const randomCapituloDoc = capitulosSnapshot.docs[Math.floor(Math.random() * capitulosSnapshot.docs.length)];
-        const randomCapituloRef = doc(capituloRef, 'capitulos', randomCapituloDoc.id);
-    
-        const capituloArticulosSnapshot = await getDocs(collection(randomCapituloRef, 'articulos'));
-        const capituloSeccionesSnapshot = await getDocs(collection(randomCapituloRef, 'secciones'));
-    
-        const capituloCollectionsDisponibles = [];
-        if (capituloArticulosSnapshot.docs.length > 0) capituloCollectionsDisponibles.push('articulos');
-        if (capituloSeccionesSnapshot.docs.length > 0) capituloCollectionsDisponibles.push('secciones');
-    
-        if (capituloCollectionsDisponibles.length === 0) {
-          return res.status(404).json({ error: `No se encontraron artículos ni secciones en el capítulo: ${randomCapituloDoc.id}` });
-        }
-    
-        const randomCapituloCollection = capituloCollectionsDisponibles[Math.floor(Math.random() * capituloCollectionsDisponibles.length)];
-    
-        if (randomCapituloCollection === 'articulos') {
-          // Selecciona un artículo dentro del subcapítulo
-          const randomArticuloDoc = capituloArticulosSnapshot.docs[Math.floor(Math.random() * capituloArticulosSnapshot.docs.length)];
-          articulo = randomArticuloDoc.id;
-          contenido = randomArticuloDoc.data().contenido;
-        } else if (randomCapituloCollection === 'secciones') {
-          // Selecciona una sección y un artículo dentro de ella
-          const randomSeccionDoc = capituloSeccionesSnapshot.docs[Math.floor(Math.random() * capituloSeccionesSnapshot.docs.length)];
-          seccion = randomSeccionDoc.id;
-    
-          const seccionArticulosSnapshot = await getDocs(collection(randomSeccionDoc.ref, 'articulos'));
+
+      if (capitulosSnapshot.docs.length > 0) {
+        const capituloDoc = capitulosSnapshot.docs[0];
+        capitulo = capituloDoc.id;
+
+        const seccionesSnapshot = await getDocs(collection(capituloDoc.ref, 'secciones'));
+        if (seccionesSnapshot.docs.length > 0) {
+          const seccionDoc = seccionesSnapshot.docs[0];
+          seccion = seccionDoc.id;
+
+          const seccionArticulosSnapshot = await getDocs(collection(seccionDoc.ref, 'articulos'));
           if (seccionArticulosSnapshot.docs.length > 0) {
-            const randomArticuloDoc = seccionArticulosSnapshot.docs[Math.floor(Math.random() * seccionArticulosSnapshot.docs.length)];
-            articulo = randomArticuloDoc.id;
-            contenido = randomArticuloDoc.data().contenido;
+            const articuloDoc = seccionArticulosSnapshot.docs[0];
+            articulo = articuloDoc.id;
+            contenido = articuloDoc.data().contenido;
           }
         }
+      } else if (articulosSnapshot.docs.length > 0) {
+        const articuloDoc = articulosSnapshot.docs[0];
+        articulo = articuloDoc.id;
+        contenido = articuloDoc.data().contenido;
       }
-    
+
       if (!contenido) {
         return res.status(404).json({ error: 'No se encontró contenido de artículo.' });
       }
-    
 
       // Consulta a la API de OpenAI para generar la pregunta
       let respuestaIA;
