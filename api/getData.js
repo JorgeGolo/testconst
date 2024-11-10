@@ -51,7 +51,8 @@ export default async function handler(req, res) {
             { role: "system", content: "Eres un asistente útil que genera preguntas de quiz con cuatro opciones de respuesta para la Constitució Española." },
             {
               role: "user",
-              content: `Genera una pregunta sobre el siguiente contenido: ${concatenado}. Debes incluir cuatro opciones de respuesta y solo una debe ser correcta.
+              content: `Genera una pregunta sobre el siguiente contenido: ${concatenado}. 
+              Debes incluir cuatro opciones de respuesta y solo una debe ser correcta.
               Sigue este formato:
               
               Pregunta
@@ -62,7 +63,8 @@ export default async function handler(req, res) {
               1
               
               Es importante que no pongas números, letras, ni símbolos delante de las respuestas.
-              La pregunta debe ir en una sola línea, y cada respuesta en una línea para cada una.`
+              La pregunta debe ir en una sola línea, y cada respuesta en una línea para cada una.
+              El último número es la respuesta correta, marcada como números del 1 al 4.
             }
           ]
         });
