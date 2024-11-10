@@ -20,12 +20,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-import { doc, collection, getDocs } from 'firebase/firestore'; // Asegúrate de importar Firestore adecuadamente
-import { openai } from 'openai'; // Asegúrate de que esta configuración de cliente esté correcta
-
 export default async function handler(req, res) {
   if (req.method === 'GET') {
-    const { documentName } = req.query;
+    const { documentName } = req.query; // Obtener el nombre del documento desde la solicitud
 
     if (!documentName) {
       return res.status(400).json({ error: 'Se requiere el nombre del documento' });
@@ -36,60 +33,32 @@ export default async function handler(req, res) {
       const articulosSnapshot = await getDocs(collection(tituloRef, 'articulos'));
       const capitulosSnapshot = await getDocs(collection(tituloRef, 'capitulos'));
 
-      const collectionsDisponibles = [];
-      if (articulosSnapshot.docs.length > 0) collectionsDisponibles.push('articulos');
-      if (capitulosSnapshot.docs.length > 0) collectionsDisponibles.push('capitulos');
-
-      if (collectionsDisponibles.length === 0) {
-        return res.status(404).json({ error: 'No se encontraron artículos ni capítulos en este título.' });
-      }
-
-      const randomCollection = collectionsDisponibles[Math.floor(Math.random() * collectionsDisponibles.length)];
-
-      let randomArticulo = null;
+      let titulo = documentName;
+      let capitulo = null;
+      let seccion = null;
+      let articulo = null;
       let contenido = null;
-      let randomCapitulo = null;
-      let randomSeccion = null;
 
-      if (randomCollection === 'articulos') {
-        const randomArticuloDoc = articulosSnapshot.docs[Math.floor(Math.random() * articulosSnapshot.docs.length)];
-        randomArticulo = randomArticuloDoc.id;
-        contenido = randomArticuloDoc.data().contenido;
-      } else if (randomCollection === 'capitulos') {
-        const randomCapituloDoc = capitulosSnapshot.docs[Math.floor(Math.random() * capitulosSnapshot.docs.length)];
-        randomCapitulo = randomCapituloDoc.id;
+      if (capitulosSnapshot.docs.length > 0) {
+        const capituloDoc = capitulosSnapshot.docs[0];
+        capitulo = capituloDoc.id;
 
-        const capituloRef = doc(tituloRef, 'capitulos', randomCapitulo);
-        const capituloArticulosSnapshot = await getDocs(collection(capituloRef, 'articulos'));
-        const capituloSeccionesSnapshot = await getDocs(collection(capituloRef, 'secciones'));
+        const seccionesSnapshot = await getDocs(collection(capituloDoc.ref, 'secciones'));
+        if (seccionesSnapshot.docs.length > 0) {
+          const seccionDoc = seccionesSnapshot.docs[0];
+          seccion = seccionDoc.id;
 
-        const capituloCollectionsDisponibles = [];
-        if (capituloArticulosSnapshot.docs.length > 0) capituloCollectionsDisponibles.push('articulos');
-        if (capituloSeccionesSnapshot.docs.length > 0) capituloCollectionsDisponibles.push('secciones');
-
-        if (capituloCollectionsDisponibles.length === 0) {
-          return res.status(404).json({ error: `No se encontraron artículos ni secciones en el capítulo: ${randomCapitulo}` });
-        }
-
-        const randomCapituloCollection = capituloCollectionsDisponibles[Math.floor(Math.random() * capituloCollectionsDisponibles.length)];
-
-        if (randomCapituloCollection === 'articulos') {
-          const randomArticuloDoc = capituloArticulosSnapshot.docs[Math.floor(Math.random() * capituloArticulosSnapshot.docs.length)];
-          randomArticulo = randomArticuloDoc.id;
-          contenido = randomArticuloDoc.data().contenido;
-        } else if (randomCapituloCollection === 'secciones') {
-          const randomSeccionDoc = capituloSeccionesSnapshot.docs[Math.floor(Math.random() * capituloSeccionesSnapshot.docs.length)];
-          randomSeccion = randomSeccionDoc.id;
-
-          const seccionRef = doc(capituloRef, 'secciones', randomSeccion);
-          const articulosSeccionSnapshot = await getDocs(collection(seccionRef, 'articulos'));
-
-          if (articulosSeccionSnapshot.docs.length > 0) {
-            const randomArticuloDoc = articulosSeccionSnapshot.docs[Math.floor(Math.random() * articulosSeccionSnapshot.docs.length)];
-            randomArticulo = randomArticuloDoc.id;
-            contenido = randomArticuloDoc.data().contenido;
+          const seccionArticulosSnapshot = await getDocs(collection(seccionDoc.ref, 'articulos'));
+          if (seccionArticulosSnapshot.docs.length > 0) {
+            const articuloDoc = seccionArticulosSnapshot.docs[0];
+            articulo = articuloDoc.id;
+            contenido = articuloDoc.data().contenido;
           }
         }
+      } else if (articulosSnapshot.docs.length > 0) {
+        const articuloDoc = articulosSnapshot.docs[0];
+        articulo = articuloDoc.id;
+        contenido = articuloDoc.data().contenido;
       }
 
       if (!contenido) {
@@ -100,7 +69,7 @@ export default async function handler(req, res) {
       let respuestaIA;
       try {
         const chatCompletion = await openai.chat.completions.create({
-          model: "gpt-3.5-turbo",
+          model: "gpt-3.5-turbo", // Usa el modelo recibido o uno por defecto
           messages: [
             { role: "system", content: "Eres un asistente útil que genera preguntas de quiz con cuatro opciones de respuesta." },
             {
@@ -121,6 +90,7 @@ export default async function handler(req, res) {
           ]
         });
 
+        // Procesar la respuesta de OpenAI
         respuestaIA = chatCompletion.choices[0].message.content;
       } catch (error) {
         console.error('Error al generar la pregunta con OpenAI:', error);
@@ -129,10 +99,10 @@ export default async function handler(req, res) {
 
       // Respuesta final al cliente
       res.status(200).json({
-        titulo: documentName,
-        capitulo: randomCapitulo,
-        seccion: randomSeccion,
-        articulo: randomArticulo,
+        titulo,
+        capitulo,
+        seccion,
+        articulo,
         contenido,
         respuestaIA,
       });
