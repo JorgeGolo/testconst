@@ -40,15 +40,18 @@ export default async function handler(req, res) {
       const capitulo = data.capitulo || '';
       const titulo = data.titulo || '';
 
+      const concatenado = `${data.titulo || ''} ${data.capitulo || ''} ${data.seccion || ''} ${data.contenido || ''}`;
+
+
       let respuestaIA;
       try {
         const chatCompletion = await openai.chat.completions.create({
           model: "gpt-3.5-turbo", // Usa el modelo recibido o uno por defecto
           messages: [
-            { role: "system", content: "Eres un asistente útil que genera preguntas de quiz con cuatro opciones de respuesta." },
+            { role: "system", content: "Eres un asistente útil que genera preguntas de quiz con cuatro opciones de respuesta para la Constitució Española." },
             {
               role: "user",
-              content: `Genera una pregunta sobre el siguiente contenido: ${contenido}. Debes incluir cuatro opciones de respuesta y solo una debe ser correcta.
+              content: `Genera una pregunta sobre el siguiente contenido: ${concatenado}. Debes incluir cuatro opciones de respuesta y solo una debe ser correcta.
               Sigue este formato:
               
               Pregunta
