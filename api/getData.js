@@ -37,10 +37,12 @@ export default async function handler(req, res) {
       // Extraemos los campos o establecemos valores vacíos si no están presentes
       const contenido = data.contenido || '';
       const seccion = data.seccion || '';
-      const capitulo = data.capitulo || '';
+      const capitulo = data.numerocapitulo || '';
+      const contenidocapitulo = data.contenidocapitulo || '';
       const titulo = data.titulo || '';
+      const contenidotitulo = data.contenidotitulo || '';
 
-      const concatenado = `${data.titulo || ''} ${data.capitulo || ''} ${data.seccion || ''} ${data.contenido || ''}`;
+      const concatenado = `${data.titulo || ''} ${data.contenidotitulo || ''} ${data.capitulo || ''} ${data.contenidocapitulo || ''} ${data.seccion || ''} ${data.contenido || ''}`;
 
 
       let respuestaIA;
