@@ -1,13 +1,12 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
-import { Configuration, OpenAIApi } from 'openai';
+import { OpenAI } from 'openai';
 
 // Configuración de OpenAI
-const openai = new OpenAIApi(new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
-}));
-
-// Inicializa la app de Firebase
+});
+// Inicializa la app de Firebase (asegúrate de usar las variables de entorno en Vercel)
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -23,19 +22,19 @@ const db = getFirestore(app);
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      // Obtener todos los documentos de la colección "articulos"
+      // Obtenemos todos los documentos de la colección "articulos"
       const articulosSnapshot = await getDocs(collection(db, 'articulos'));
 
       if (articulosSnapshot.empty) {
         return res.status(404).json({ error: 'No se encontraron artículos.' });
       }
 
-      // Selección aleatoria de un documento de la colección "articulos"
+      // Seleccionamos un documento aleatorio de la colección "articulos"
       const randomIndex = Math.floor(Math.random() * articulosSnapshot.docs.length);
       const randomArticuloDoc = articulosSnapshot.docs[randomIndex];
       const data = randomArticuloDoc.data();
 
-      // Extraer los campos o establecer valores vacíos si no están presentes
+      // Extraemos los campos o establecemos valores vacíos si no están presentes
       const contenido = data.contenido || '';
       const seccion = data.seccion || '';
       const capitulo = data.capitulo || '';
@@ -43,8 +42,8 @@ export default async function handler(req, res) {
 
       let respuestaIA;
       try {
-        const chatCompletion = await openai.createChatCompletion({
-          model: "gpt-3.5-turbo",
+        const chatCompletion = await openai.chat.completions.create({
+          model: "gpt-3.5-turbo", // Usa el modelo recibido o uno por defecto
           messages: [
             { role: "system", content: "Eres un asistente útil que genera preguntas de quiz con cuatro opciones de respuesta." },
             {
@@ -65,13 +64,12 @@ export default async function handler(req, res) {
           ]
         });
 
-        // Verificar y procesar la respuesta de OpenAI
-        respuestaIA = chatCompletion.data.choices[0]?.message?.content || 'No se generó ninguna respuesta.';
+        // Procesar la respuesta de OpenAI
+        respuestaIA = chatCompletion.choices[0].message.content;
       } catch (error) {
         console.error('Error al generar la pregunta con OpenAI:', error);
         respuestaIA = 'Error al generar la pregunta.';
       }
-      
       res.status(200).json({
         articulo: randomArticuloDoc.id,
         contenido,
