@@ -44,14 +44,14 @@ export default async function handler(req, res) {
       const randomArticuloDoc = articulosSnapshot.docs[randomIndex];
       const data = randomArticuloDoc.data();
 
-      // Extraemos los campos o establecemos valores vacíos si no están presentes
-      const contenido = data.contenido || '';
-      const seccion = data.seccion || '';
-      const contenidoseccion = data.contenidoseccion || '';
-      const capitulo = data.numerocapitulo || '';
-      const contenidocapitulo = data.contenidocapitulo || '';
-      const tituloFinal = data.titulo || '';
-      const contenidotitulo = data.contenidotitulo || '';
+      // Extraemos y limpiamos los campos o establecemos valores vacíos si no están presentes
+      const contenido = cleanHTML(data.contenido || '');
+      const seccion = cleanHTML(data.seccion || '');
+      const contenidoseccion = cleanHTML(data.contenidoseccion || '');
+      const capitulo = cleanHTML(data.numerocapitulo || '');
+      const contenidocapitulo = cleanHTML(data.contenidocapitulo || '');
+      const tituloFinal = cleanHTML(data.titulo || '');
+      const contenidotitulo = cleanHTML(data.contenidotitulo || '')
 
       const concatenado = `${tituloFinal} ${contenidotitulo} ${capitulo} ${contenidocapitulo} ${seccion} ${contenido}`;
 
