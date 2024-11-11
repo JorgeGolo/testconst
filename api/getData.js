@@ -67,11 +67,11 @@ export default async function handler(req, res) {
               Debes incluir cuatro opciones de respuesta y solo una debe ser correcta.
               Sigue este formato:
               
-              Pregunta
-              Respuesta 1
-              Respuesta 2
-              Respuesta 3
-              Respuesta 4
+              Texto de la pregunta
+              Texto de posible respuesta 
+              Texto de otra posible respuesta
+              Texto de otra posible respuesta
+              Texto de otra posible respuesta
               1
               
               Es importante que no pongas números, letras, ni símbolos delante de las respuestas.
