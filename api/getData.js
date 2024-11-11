@@ -37,6 +37,7 @@ export default async function handler(req, res) {
       // Extraemos los campos o establecemos valores vacíos si no están presentes
       const contenido = data.contenido || '';
       const seccion = data.seccion || '';
+      const contenidoseccion = data.contenidoseccion || '';
       const capitulo = data.numerocapitulo || '';
       const contenidocapitulo = data.contenidocapitulo || '';
       const titulo = data.titulo || '';

@@ -37,12 +37,13 @@ function App() {
   return (
     <div>
       <Nav/>
+      <p>{respuestaIA}</p>
+      <hr/>
       {titulo !== '' && <p>{titulo}</p>}
-      {capitulo !== '' && <p>{capitulo}</p>}
-      {seccion !== '' && <p>{seccion}</p>}
+      {capitulo !== '' && <p>Capítulo {capitulo}</p>}
+      {seccion !== '' && <p>Sección {seccion}</p>}
       <p>{articulo}</p>
       <div dangerouslySetInnerHTML={{ __html: contenido }} />
-      <p>{respuestaIA}</p>
     </div>
   );
 }
