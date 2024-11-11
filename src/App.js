@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from './Nav';
 import Confetti from 'react-confetti';
-import './App.css'; // Importa un archivo CSS para el efecto shake
+import './App.css';
 
 function App() {
   const [titulo, setTitulo] = useState(null);
@@ -15,12 +15,14 @@ function App() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
   const [showHint, setShowHint] = useState(false);
-  const [moveUp, setMoveUp] = useState(false); // Estado para mover el div hacia arriba
-  const [reaparecer, setReaparecer] = useState(false); // Estado para reaparecer el div
+  const [moveUp, setMoveUp] = useState(false); // Nuevo estado para controlar el desplazamiento
 
   useEffect(() => {
-    obtenerConsultaAleatoria();
-  }, []);
+    // Cuando se actualizan los datos, activamos moveUp solo después de que la pregunta se haya cargado
+    if (pregunta) {
+      setMoveUp(false); // Resetear el movimiento después de cargar la pregunta
+    }
+  }, [pregunta]);  // Esto asegura que se reinicie cuando la nueva pregunta esté disponible
 
   const obtenerConsultaAleatoria = async () => {
     try {
@@ -38,9 +40,6 @@ function App() {
         setPregunta(lines[0]);
         setOpciones(lines.slice(1, 5));
         setRespuestaCorrecta(parseInt(lines[5]) - 1);
-        
-        // Después de haber recibido la nueva pregunta, mostramos el div
-        setReaparecer(true);
       } else {
         console.error('Error al obtener los datos:', data.error);
       }
@@ -54,15 +53,10 @@ function App() {
       setShowConfetti(true);
       setTimeout(() => {
         setShowConfetti(false);
-        
-        // Aquí activamos el movimiento del div hacia arriba antes de recargar la pregunta
-        setMoveUp(true);
-
-        // Después de que se haya ocultado el div, recargamos la pregunta
+        setMoveUp(true); // Activamos el movimiento hacia arriba
         setTimeout(() => {
-          obtenerConsultaAleatoria(); // Recargar la nueva pregunta
-          setMoveUp(false); // Al final, el div vuelve a aparecer
-        }, 1500); // 1500ms es la duración de la animación
+          renovarPregunta(); // Renovar la pregunta después de mostrar el confeti
+        }, 1500); // Ajusta el tiempo para que se muestre después del confeti
       }, 1500);
       setIsShaking(false);
     } else {
@@ -71,9 +65,15 @@ function App() {
       setTimeout(() => setIsShaking(false), 500);
     }
   };
+  
+  const renovarPregunta = () => {
+    obtenerConsultaAleatoria(); // Llamamos para cargar la siguiente pregunta
+  };
+  
+
 
   return (
-    <div className={`test ${moveUp ? 'move-up' : ''} ${reaparecer ? 'reaparecer' : ''}`}>
+    <div className={`test ${moveUp ? 'move-up' : ''}`}> {/* Añadimos la clase move-up cuando sea necesario */}
       <Nav />
       {showConfetti && (
         <Confetti
@@ -84,12 +84,13 @@ function App() {
           wind={0.02}
         />
       )}
+
       {pregunta && (
         <div className={`pregunta-container ${isShaking ? 'shake' : ''}`}>
           <p>
             <strong>{pregunta}</strong>
             <span
-              className='hinticon'
+              className="hinticon"
               onClick={() => setShowHint(!showHint)}
               style={{ cursor: 'pointer', marginLeft: '8px' }}
             >
@@ -111,8 +112,9 @@ function App() {
           </form>
         </div>
       )}
+
       {showHint && (
-        <div className='hint'>
+        <div className="hint">
           {titulo && <p>{titulo}</p>}
           {capitulo && <p>Capítulo {capitulo}</p>}
           {seccion && <p>Sección {seccion}</p>}
