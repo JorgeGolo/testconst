@@ -14,6 +14,7 @@ function App() {
   const [respuestaCorrecta, setRespuestaCorrecta] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
   const [isShaking, setIsShaking] = useState(false); // Estado para activar el efecto shake
+  const [showHint, setShowHint] = useState(false); // Estado para mostrar/ocultar el hint
 
   useEffect(() => {
     const obtenerConsultaAleatoria = async () => {
@@ -68,16 +69,27 @@ function App() {
           wind={0.02}
         />
       }
-      <hr/>
-      {titulo && <p>{titulo}</p>}
-      {capitulo && <p>Capítulo {capitulo}</p>}
-      {seccion && <p>Sección {seccion}</p>}
-      <p>{articulo}</p>
-      <div dangerouslySetInnerHTML={{ __html: contenido }} />
-
+      {showHint && ( // Solo muestra el hint si showHint es true
+        <div className='hint'>
+          {titulo && <p>{titulo}</p>}
+          {capitulo && <p>Capítulo {capitulo}</p>}
+          {seccion && <p>Sección {seccion}</p>}
+          <p>{articulo}</p>
+          <div dangerouslySetInnerHTML={{ __html: contenido }} />
+        </div>
+      )}
       {pregunta && (
         <div className={`pregunta-container ${isShaking ? 'shake' : ''}`}>
-          <p><strong>{pregunta}</strong></p>
+          <p>
+            <strong>{pregunta}</strong>
+            <span 
+              className='hinticon' 
+              onClick={() => setShowHint(!showHint)} // Alterna la visibilidad del hint
+              style={{ cursor: 'pointer', marginLeft: '8px' }}
+            >
+              🛈 Pista
+            </span>
+          </p>
           <form>
             {opciones.map((opcion, index) => (
               <div key={index}>
