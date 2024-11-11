@@ -210,6 +210,5 @@ label {
   display: flex;
   justify-content: center; /* Centrar horizontalmente */
   align-items: center; /* Centrar verticalmente */
-  background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco semi-transparente */
   z-index: 9999; /* Asegura que esté por encima de otros elementos */
 }
