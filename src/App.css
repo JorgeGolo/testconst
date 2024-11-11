@@ -54,3 +54,27 @@
 .test.desplazar {
   transform: translateY(-100vh); /* Mueve el div hacia arriba */
 }
+
+/* Margen fijo para todos los tamaños de pantalla */
+.test {
+  margin: 20px; /* Margen fijo */
+  padding: 10px; /* Espaciado interno */
+  box-sizing: border-box; /* Asegura que el padding y el margin no afecten el tamaño total */
+}
+
+/* Ancho máximo para pantallas no móviles */
+@media (min-width: 768px) { 
+  .test {
+    width: 80%; /* Ancho máximo en pantallas más grandes (como tablets y escritorios) */
+    max-width: 1200px; /* Evita que el contenido se extienda demasiado en pantallas muy grandes */
+    margin-left: auto; /* Centra el contenido */
+    margin-right: auto; /* Centra el contenido */
+  }
+}
+
+/* Para dispositivos móviles, puedes ajustar el tamaño si es necesario */
+@media (max-width: 767px) {
+  .test {
+    width: 100%; /* En pantallas móviles, el ancho es el 100% */
+  }
+}

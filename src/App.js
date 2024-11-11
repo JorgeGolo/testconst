@@ -15,48 +15,43 @@ function App() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [isShaking, setIsShaking] = useState(false); // Estado para activar el efecto shake
   const [showHint, setShowHint] = useState(false); // Estado para mostrar/ocultar el hint
-  const [desplazando, setDesplazando] = useState(false); // Estado para controlar la animación del desplazamiento
 
   useEffect(() => {
-    const obtenerConsultaAleatoria = async () => {
-      try {
-        const response = await fetch('/api/getData');
-        const data = await response.json();
-
-        if (response.ok) {
-          setTitulo(data.titulo);
-          setCapitulo(data.capitulo);
-          setSeccion(data.seccion);
-          setArticulo(data.articulo);
-          setContenido(data.contenido);
-
-          // Procesar respuesta de OpenAI
-          const lines = data.respuestaIA.split('\n').filter(line => line.trim() !== '');
-          setPregunta(lines[0]);
-          setOpciones(lines.slice(1, 5));
-          setRespuestaCorrecta(parseInt(lines[5]) - 1);
-        } else {
-          console.error('Error al obtener los datos:', data.error);
-        }
-      } catch (error) {
-        console.error('Error al obtener los datos:', error);
-      }
-    };
-
     obtenerConsultaAleatoria();
   }, []);
+
+  const obtenerConsultaAleatoria = async () => {
+    try {
+      const response = await fetch('/api/getData');
+      const data = await response.json();
+
+      if (response.ok) {
+        setTitulo(data.titulo);
+        setCapitulo(data.capitulo);
+        setSeccion(data.seccion);
+        setArticulo(data.articulo);
+        setContenido(data.contenido);
+
+        // Procesar respuesta de OpenAI
+        const lines = data.respuestaIA.split('\n').filter(line => line.trim() !== '');
+        setPregunta(lines[0]);
+        setOpciones(lines.slice(1, 5));
+        setRespuestaCorrecta(parseInt(lines[5]) - 1);
+      } else {
+        console.error('Error al obtener los datos:', data.error);
+      }
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+    }
+  };
 
   const handleOptionSelect = (index) => {
     if (index === respuestaCorrecta) {
       setShowConfetti(true);
       setTimeout(() => {
         setShowConfetti(false);
-        setDesplazando(true); // Iniciar el desplazamiento cuando la respuesta es correcta
-        setTimeout(() => {
-          setDesplazando(false); // Terminar el desplazamiento
-          obtenerConsultaAleatoria(); // Obtener una nueva pregunta después de la animación
-        }, 1000); // Duración del desplazamiento
-      }, 1500); // Duración del confeti
+        renovarPregunta(); // Renovar la pregunta después de mostrar el confeti
+      }, 1500);
       setIsShaking(false); // Detener el efecto shake si es correcto
     } else {
       setShowConfetti(false);
@@ -65,8 +60,12 @@ function App() {
     }
   };
 
+  const renovarPregunta = () => {
+    obtenerConsultaAleatoria(); // Llamamos a la función para obtener una nueva pregunta
+  };
+
   return (
-    <div className={`test ${desplazando ? 'desplazar' : ''}`}> {/* Aplica la clase para animar el desplazamiento */}
+    <div className='test'>
       <Nav />
       {showConfetti && 
         <Confetti
