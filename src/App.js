@@ -48,7 +48,7 @@ function App() {
     if (index === respuestaCorrecta) {
       setMensaje('Respuesta correcta');
       setShowConfetti(true); // Activa el confeti cuando la respuesta es correcta
-      setTimeout(() => setShowConfetti(false), 3000); // Desactiva el confeti después de 3 segundos
+      setTimeout(() => setShowConfetti(false), 1500); // Desactiva el confeti después de 3 segundos
     } else {
       setMensaje('Respuesta incorrecta');
       setShowConfetti(false);
@@ -58,7 +58,16 @@ function App() {
   return (
     <div>
       <Nav/>
-      {showConfetti && <Confetti />}
+      {showConfetti && 
+              <Confetti
+              gravity={1.5}  // Aumenta la velocidad de caída
+              numberOfPieces={500} // Incrementa el número de piezas
+              recycle={false}  // No recicle las piezas, para que desaparezcan
+              initialVelocityY={10} // Configura la velocidad inicial desde abajo hacia arriba
+              wind={0.02}  // Da un ligero movimiento hacia los lados
+              run={showConfetti}
+            />
+      }
       <p>
         {mensaje === 'Respuesta correcta' ? (
           <span style={{ color: 'green' }}>{mensaje}</span>
