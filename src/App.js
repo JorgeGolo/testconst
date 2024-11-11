@@ -7,15 +7,14 @@ function App() {
   const [seccion, setSeccion] = useState(null);
   const [articulo, setArticulo] = useState(null);
   const [contenido, setContenido] = useState(null);
-  const [respuestaIA, setRespuestaIA] = useState('');
-
+  const [pregunta, setPregunta] = useState('');
+  const [opciones, setOpciones] = useState([]);
   const [respuestaCorrecta, setRespuestaCorrecta] = useState(null);
-
 
   useEffect(() => {
     const obtenerConsultaAleatoria = async () => {
       try {
-        const response = await fetch('/api/getData'); // Llamada a la API
+        const response = await fetch('/api/getData');
         const data = await response.json();
 
         if (response.ok) {
@@ -44,9 +43,7 @@ function App() {
 
   return (
     <div>
-      <Nav/>
-
-      {/*Respuesta de la IA formateada*/}
+      <Nav />
       <p>{pregunta}</p>
       <ul>
         {opciones.map((opcion, index) => (
@@ -55,11 +52,10 @@ function App() {
           </li>
         ))}
       </ul>
-
-      <hr/>
-      {titulo !== '' && <p>{titulo}</p>}
-      {capitulo !== '' && <p>Capítulo {capitulo}</p>}
-      {seccion !== '' && <p>Sección {seccion}</p>}
+      <hr />
+      {titulo && <p>{titulo}</p>}
+      {capitulo && <p>Capítulo {capitulo}</p>}
+      {seccion && <p>Sección {seccion}</p>}
       <p>{articulo}</p>
       <div dangerouslySetInnerHTML={{ __html: contenido }} />
     </div>
