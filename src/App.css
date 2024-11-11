@@ -180,7 +180,7 @@ label {
   margin-top: 10px;
   max-height: 0; /* Inicialmente no se muestra */
   overflow: hidden; /* Evita que el contenido se desborde */
-  position: absolute; /* Se coloca sobre el contenido sin afectar el layout */
+  position: relative; /* Se coloca sobre el contenido sin afectar el layout */
   width: 100%; /* Para que ocupe el mismo ancho que el contenedor */
   transition: max-height 0.5s ease-in-out; /* Animación suave */
 }
