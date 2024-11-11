@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from './Nav';
 import Confetti from 'react-confetti';
-import './App.css'; // Importa un archivo CSS para el efecto shake
+import './App.css';
 
 function App() {
   const [titulo, setTitulo] = useState(null);
@@ -13,9 +13,9 @@ function App() {
   const [opciones, setOpciones] = useState([]);
   const [respuestaCorrecta, setRespuestaCorrecta] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
-  const [isShaking, setIsShaking] = useState(false); // Estado para activar el efecto shake
-  const [showHint, setShowHint] = useState(false); // Estado para mostrar/ocultar el hint
-  const [selectedOption, setSelectedOption] = useState(null); // Estado para las opciones seleccionadas
+  const [isShaking, setIsShaking] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+  const [moveUp, setMoveUp] = useState(false); // Nuevo estado para controlar el desplazamiento
 
   useEffect(() => {
     obtenerConsultaAleatoria();
@@ -33,12 +33,10 @@ function App() {
         setArticulo(data.articulo);
         setContenido(data.contenido);
 
-        // Procesar respuesta de OpenAI
         const lines = data.respuestaIA.split('\n').filter(line => line.trim() !== '');
         setPregunta(lines[0]);
         setOpciones(lines.slice(1, 5));
         setRespuestaCorrecta(parseInt(lines[5]) - 1);
-        setSelectedOption(null); // Resetea la opción seleccionada al recargar la pregunta
       } else {
         console.error('Error al obtener los datos:', data.error);
       }
@@ -48,29 +46,32 @@ function App() {
   };
 
   const handleOptionSelect = (index) => {
-    setSelectedOption(index); // Marca la opción seleccionada
     if (index === respuestaCorrecta) {
       setShowConfetti(true);
       setTimeout(() => {
         setShowConfetti(false);
-        renovarPregunta(); // Renovar la pregunta después de mostrar el confeti
+        setMoveUp(true); // Activamos el movimiento hacia arriba
+        setTimeout(() => {
+          renovarPregunta(); // Renovar la pregunta después de mostrar el confeti
+          setMoveUp(false); // Resetear el movimiento después de que se haya completado
+        }, 1500); // Ajusta el tiempo para que se muestre después del confeti
       }, 1500);
-      setIsShaking(false); // Detener el efecto shake si es correcto
+      setIsShaking(false);
     } else {
       setShowConfetti(false);
-      setIsShaking(true); // Activar el efecto shake si es incorrecto
-      setTimeout(() => setIsShaking(false), 500); // Detener el efecto shake después de un tiempo
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 500);
     }
   };
 
   const renovarPregunta = () => {
-    obtenerConsultaAleatoria(); // Llamamos a la función para obtener una nueva pregunta
+    obtenerConsultaAleatoria();
   };
 
   return (
-    <div className='test'>
+    <div className={`test ${moveUp ? 'move-up' : ''}`}> {/* Añadimos la clase move-up cuando sea necesario */}
       <Nav />
-      {showConfetti && 
+      {showConfetti && (
         <Confetti
           gravity={1.5}
           numberOfPieces={500}
@@ -78,15 +79,15 @@ function App() {
           initialVelocityY={10}
           wind={0.02}
         />
-      }
+      )}
 
       {pregunta && (
         <div className={`pregunta-container ${isShaking ? 'shake' : ''}`}>
           <p>
             <strong>{pregunta}</strong>
-            <span 
-              className='hinticon' 
-              onClick={() => setShowHint(!showHint)} // Alterna la visibilidad del hint
+            <span
+              className="hinticon"
+              onClick={() => setShowHint(!showHint)}
               style={{ cursor: 'pointer', marginLeft: '8px' }}
             >
               🛈 Pista
@@ -99,8 +100,7 @@ function App() {
                   type="radio"
                   id={`opcion${index}`}
                   name="respuesta"
-                  checked={selectedOption === index} // Marca la opción seleccionada
-                  onChange={() => handleOptionSelect(index)} // Usa onChange en lugar de onClick
+                  onClick={() => handleOptionSelect(index)}
                 />
                 <label htmlFor={`opcion${index}`}>{opcion}</label>
               </div>
@@ -108,8 +108,9 @@ function App() {
           </form>
         </div>
       )}
-      {showHint && ( // Solo muestra el hint si showHint es true
-        <div className='hint'>
+
+      {showHint && (
+        <div className="hint">
           {titulo && <p>{titulo}</p>}
           {capitulo && <p>Capítulo {capitulo}</p>}
           {seccion && <p>Sección {seccion}</p>}
