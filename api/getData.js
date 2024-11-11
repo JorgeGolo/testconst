@@ -67,24 +67,16 @@ export default async function handler(req, res) {
               Debes incluir cuatro opciones de respuesta y solo una debe ser correcta.
               Sigue este formato:
               
-              Texto de la pregunta
-              Texto de posible respuesta 
-              Texto de otra posible respuesta
-              Texto de otra posible respuesta
-              Texto de otra posible respuesta
+              Pregunta
+              Respuesta 1
+              Respuesta 2
+              Respuesta 3
+              Respuesta 4
               1
               
               Es importante que no pongas números, letras, ni símbolos delante de las respuestas.
               La pregunta debe ir en una sola línea, y cada respuesta en una línea para cada una.
-              El último número es la respuesta correta, marcada como números del 1 al 4.
-              Ejemplo de formato:
-
-              ¿En qué año se proclamó la Constitución?
-              1940
-              2000
-              1978
-              1950
-              2`
+              El último número es la respuesta correta, marcada como números del 1 al 4.`
             }
           ]
         });
