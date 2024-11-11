@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from './Nav';
 import Confetti from 'react-confetti';
+import { CircleLoader } from 'react-spinners'; // Importa el spinner
 import './App.css';
 
 function App() {
@@ -15,8 +16,8 @@ function App() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
   const [showHint, setShowHint] = useState(false);
-  const [moveUp, setMoveUp] = useState(false); // Controlar el desplazamiento
-  const [loading, setLoading] = useState(false); // Estado de carga de nueva pregunta
+  const [moveUp, setMoveUp] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     obtenerConsultaAleatoria();
@@ -24,7 +25,7 @@ function App() {
 
   const obtenerConsultaAleatoria = async () => {
     try {
-      setLoading(true); // Activamos el estado de carga
+      setLoading(true);
       const response = await fetch('/api/getData');
       const data = await response.json();
 
@@ -45,20 +46,24 @@ function App() {
     } catch (error) {
       console.error('Error al obtener los datos:', error);
     } finally {
-      setLoading(false); // Desactivamos el estado de carga
+      setLoading(false);
     }
   };
 
   const handleOptionSelect = (index) => {
+    if (showHint) {
+      setShowHint(false);
+    }
+
     if (index === respuestaCorrecta) {
       setShowConfetti(true);
       setTimeout(() => {
         setShowConfetti(false);
-        setMoveUp(true); // Activamos el movimiento hacia arriba
+        setMoveUp(true);
         setTimeout(() => {
-          renovarPregunta(); // Renovamos la pregunta
-          setMoveUp(false); // Resetear el movimiento
-        }, 1500); // Espera para mostrar el confeti
+          renovarPregunta();
+          setMoveUp(false);
+        }, 1500);
       }, 1500);
       setIsShaking(false);
     } else {
@@ -84,32 +89,38 @@ function App() {
         />
       )}
 
-      {pregunta && !loading && ( // Solo mostrar la pregunta si no estamos cargando
-        <div className={`pregunta-container ${isShaking ? 'shake' : ''}`}>
-          <p>
-            <strong>{pregunta}</strong>
-            <span
-              className="hinticon"
-              onClick={() => setShowHint(!showHint)}
-              style={{ cursor: 'pointer', marginLeft: '8px' }}
-            >
-              🛈 Pista
-            </span>
-          </p>
-          <form>
-            {opciones.map((opcion, index) => (
-              <div key={index}>
-                <input
-                  type="radio"
-                  id={`opcion${index}`}
-                  name="respuesta"
-                  onClick={() => handleOptionSelect(index)}
-                />
-                <label htmlFor={`opcion${index}`}>{opcion}</label>
-              </div>
-            ))}
-          </form>
+      {loading ? (
+        <div className="loading-container">
+          <CircleLoader size={150} color={"#36D7B7"} loading={loading} />
         </div>
+      ) : (
+        pregunta && (
+          <div className={`pregunta-container ${isShaking ? 'shake' : ''}`}>
+            <p>
+              <strong>{pregunta}</strong>
+              <span
+                className="hinticon"
+                onClick={() => setShowHint(!showHint)}
+                style={{ cursor: 'pointer', marginLeft: '8px' }}
+              >
+                💡 Pista
+              </span>
+            </p>
+            <form>
+              {opciones.map((opcion, index) => (
+                <div key={index}>
+                  <input
+                    type="radio"
+                    id={`opcion${index}`}
+                    name="respuesta"
+                    onClick={() => handleOptionSelect(index)}
+                  />
+                  <label htmlFor={`opcion${index}`}>{opcion}</label>
+                </div>
+              ))}
+            </form>
+          </div>
+        )
       )}
 
       {showHint && (
@@ -121,10 +132,11 @@ function App() {
           <div dangerouslySetInnerHTML={{ __html: contenido }} />
         </div>
       )}
-    <div className='subnav'>      <Nav />    </div>
-
+      
+      <div className="subnav">
+        <Nav />
+      </div>
     </div>
-
   );
 }
 
