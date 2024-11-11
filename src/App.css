@@ -57,8 +57,8 @@
 
 /* Margen fijo para todos los tamaños de pantalla */
 .test {
-  margin: 20px; /* Margen fijo */
-  padding: 10px; /* Espaciado interno */
+  margin: 10px; /* Margen fijo */
+  padding: 5px; /* Espaciado interno */
   box-sizing: border-box; /* Asegura que el padding y el margin no afecten el tamaño total */
 }
 
@@ -75,6 +75,21 @@
 /* Para dispositivos móviles, puedes ajustar el tamaño si es necesario */
 @media (max-width: 767px) {
   .test {
-    width: 100%; /* En pantallas móviles, el ancho es el 100% */
+    width: auto; /* En pantallas móviles, el ancho es el 100% */
   }
+}
+
+@keyframes moveUp {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh); /* Desplaza hacia arriba fuera de la pantalla */
+    opacity: 0;
+  }
+}
+
+.test.move-up {
+  animation: moveUp 1.5s forwards; /* La animación dura 1.5 segundos y se mantiene al final */
 }

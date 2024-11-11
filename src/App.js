@@ -15,6 +15,7 @@ function App() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [isShaking, setIsShaking] = useState(false); // Estado para activar el efecto shake
   const [showHint, setShowHint] = useState(false); // Estado para mostrar/ocultar el hint
+  const [moveUp, setMoveUp] = useState(false); // Estado para controlar el movimiento hacia arriba
 
   useEffect(() => {
     obtenerConsultaAleatoria();
@@ -50,6 +51,7 @@ function App() {
       setShowConfetti(true);
       setTimeout(() => {
         setShowConfetti(false);
+        setMoveUp(true); // Activar movimiento hacia arriba después de mostrar el confeti
         renovarPregunta(); // Renovar la pregunta después de mostrar el confeti
       }, 1500);
       setIsShaking(false); // Detener el efecto shake si es correcto
@@ -62,10 +64,11 @@ function App() {
 
   const renovarPregunta = () => {
     obtenerConsultaAleatoria(); // Llamamos a la función para obtener una nueva pregunta
+    setMoveUp(false); // Restablecer el movimiento hacia arriba
   };
 
   return (
-    <div className='test'>
+    <div className={`test ${moveUp ? 'move-up' : ''}`}>
       <Nav />
       {showConfetti && 
         <Confetti
