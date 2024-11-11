@@ -53,12 +53,12 @@ export default async function handler(req, res) {
       const tituloFinal = data.titulo || '';
       const contenidotitulo = data.contenidotitulo || '';
 
-      const concatenado = `${tituloFinal} ${contenidotitulo} ${capitulo} ${contenidocapitulo} ${seccion} ${contenidoseccion} ${contenido}`;
+      const concatenado = `${tituloFinal} ${contenidotitulo} ${capitulo} ${contenidocapitulo} ${seccion} ${contenido}`;
 
       let respuestaIA;
       try {
         const chatCompletion = await openai.chat.completions.create({
-          model: "gpt-4o", // Usa el modelo recibido o uno por defecto
+          model: "gpt-4", // Usa el modelo recibido o uno por defecto
           messages: [
             { role: "system", content: "Eres un asistente útil que genera preguntas de quiz con cuatro opciones de respuesta para la Constitución Española." },
             {
