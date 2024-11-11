@@ -51,9 +51,10 @@ export default async function handler(req, res) {
       const capitulo = data.numerocapitulo || '';
       const contenidocapitulo = data.contenidocapitulo || '';
       const tituloFinal = data.titulo || '';
+      const nombreart = data.nombre || '';
       const contenidotitulo = data.contenidotitulo || '';
 
-      const concatenado = `${tituloFinal} ${contenidotitulo} ${capitulo} ${contenidocapitulo} ${seccion} ${contenido}`;
+      const concatenado = `${tituloFinal} ${contenidotitulo} ${capitulo} ${contenidocapitulo} ${seccion} ${contenidoseccion} ${nombreart} ${contenido}`;
 
       let respuestaIA;
       try {
