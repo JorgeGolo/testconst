@@ -246,3 +246,17 @@ label {
   align-items: center; /* Centrar verticalmente */
   z-index: 9999; /* Asegura que esté por encima de otros elementos */
 }
+
+.nav a {
+  padding: 1em;
+  text-decoration: none;
+}
+
+.nav a, .nav a:visited {
+  color: #b0b0b0
+}
+
+.nav a:hover {
+  color: white
+
+}
