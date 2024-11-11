@@ -15,6 +15,7 @@ function App() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [isShaking, setIsShaking] = useState(false); // Estado para activar el efecto shake
   const [showHint, setShowHint] = useState(false); // Estado para mostrar/ocultar el hint
+  const [desplazando, setDesplazando] = useState(false); // Estado para controlar la animación del desplazamiento
 
   useEffect(() => {
     const obtenerConsultaAleatoria = async () => {
@@ -48,7 +49,14 @@ function App() {
   const handleOptionSelect = (index) => {
     if (index === respuestaCorrecta) {
       setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 1500);
+      setTimeout(() => {
+        setShowConfetti(false);
+        setDesplazando(true); // Iniciar el desplazamiento cuando la respuesta es correcta
+        setTimeout(() => {
+          setDesplazando(false); // Terminar el desplazamiento
+          obtenerConsultaAleatoria(); // Obtener una nueva pregunta después de la animación
+        }, 1000); // Duración del desplazamiento
+      }, 1500); // Duración del confeti
       setIsShaking(false); // Detener el efecto shake si es correcto
     } else {
       setShowConfetti(false);
@@ -58,7 +66,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className={`test ${desplazando ? 'desplazar' : ''}`}> {/* Aplica la clase para animar el desplazamiento */}
       <Nav />
       {showConfetti && 
         <Confetti
