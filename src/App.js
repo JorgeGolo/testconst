@@ -69,15 +69,7 @@ function App() {
           wind={0.02}
         />
       }
-      {showHint && ( // Solo muestra el hint si showHint es true
-        <div className='hint'>
-          {titulo && <p>{titulo}</p>}
-          {capitulo && <p>Capítulo {capitulo}</p>}
-          {seccion && <p>Sección {seccion}</p>}
-          <p>{articulo}</p>
-          <div dangerouslySetInnerHTML={{ __html: contenido }} />
-        </div>
-      )}
+
       {pregunta && (
         <div className={`pregunta-container ${isShaking ? 'shake' : ''}`}>
           <p>
@@ -103,6 +95,15 @@ function App() {
               </div>
             ))}
           </form>
+        </div>
+      )}
+      {showHint && ( // Solo muestra el hint si showHint es true
+        <div className='hint'>
+          {titulo && <p>{titulo}</p>}
+          {capitulo && <p>Capítulo {capitulo}</p>}
+          {seccion && <p>Sección {seccion}</p>}
+          <p>{articulo}</p>
+          <div dangerouslySetInnerHTML={{ __html: contenido }} />
         </div>
       )}
     </div>
