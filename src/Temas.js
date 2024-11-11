@@ -5,7 +5,12 @@ const Temas = () => {
 
 
   const startTitleTest = (title) => {
-    console.log(title);
+    try {
+      console.log(title);
+
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+    }
   };
 
   return (

@@ -1,12 +1,13 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, query, where } from 'firebase/firestore';
 import { OpenAI } from 'openai';
 
 // Configuración de OpenAI
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-// Inicializa la app de Firebase (asegúrate de usar las variables de entorno en Vercel)
+
+// Inicializa la app de Firebase
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -22,14 +23,23 @@ const db = getFirestore(app);
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
-      // Obtenemos todos los documentos de la colección "articulos"
-      const articulosSnapshot = await getDocs(collection(db, 'articulos'));
+      const { titulo } = req.query;
+      let articulosSnapshot;
 
-      if (articulosSnapshot.empty) {
-        return res.status(404).json({ error: 'No se encontraron artículos.' });
+      if (titulo) {
+        // Si se proporciona un título, buscamos artículos que coincidan con ese título
+        const articulosQuery = query(collection(db, 'articulos'), where('titulo', '==', titulo));
+        articulosSnapshot = await getDocs(articulosQuery);
+      } else {
+        // Si no se proporciona un título, obtenemos todos los artículos
+        articulosSnapshot = await getDocs(collection(db, 'articulos'));
       }
 
-      // Seleccionamos un documento aleatorio de la colección "articulos"
+      if (articulosSnapshot.empty) {
+        return res.status(404).json({ error: 'No se encontraron artículos con el título especificado.' });
+      }
+
+      // Seleccionamos un artículo aleatorio de la lista de resultados
       const randomIndex = Math.floor(Math.random() * articulosSnapshot.docs.length);
       const randomArticuloDoc = articulosSnapshot.docs[randomIndex];
       const data = randomArticuloDoc.data();
@@ -40,18 +50,17 @@ export default async function handler(req, res) {
       const contenidoseccion = data.contenidoseccion || '';
       const capitulo = data.numerocapitulo || '';
       const contenidocapitulo = data.contenidocapitulo || '';
-      const titulo = data.titulo || '';
+      const tituloFinal = data.titulo || '';
       const contenidotitulo = data.contenidotitulo || '';
 
-      const concatenado = `${data.titulo || ''} ${data.contenidotitulo || ''} ${data.capitulo || ''} ${data.contenidocapitulo || ''} ${data.seccion || ''} ${data.contenido || ''}`;
-
+      const concatenado = `${tituloFinal} ${contenidotitulo} ${capitulo} ${contenidocapitulo} ${seccion} ${contenido}`;
 
       let respuestaIA;
       try {
         const chatCompletion = await openai.chat.completions.create({
-          model: "gpt-4o", // Usa el modelo recibido o uno por defecto
+          model: "gpt-4", // Usa el modelo recibido o uno por defecto
           messages: [
-            { role: "system", content: "Eres un asistente útil que genera preguntas de quiz con cuatro opciones de respuesta para la Constitució Española." },
+            { role: "system", content: "Eres un asistente útil que genera preguntas de quiz con cuatro opciones de respuesta para la Constitución Española." },
             {
               role: "user",
               content: `Genera una pregunta sobre el siguiente contenido: ${concatenado}. 
@@ -78,12 +87,13 @@ export default async function handler(req, res) {
         console.error('Error al generar la pregunta con OpenAI:', error);
         respuestaIA = 'Error al generar la pregunta.';
       }
+
       res.status(200).json({
         articulo: randomArticuloDoc.id,
         contenido,
         seccion,
         capitulo,
-        titulo,
+        titulo: tituloFinal,
         respuestaIA,
       });
     } catch (error) {

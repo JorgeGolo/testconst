@@ -158,8 +158,9 @@ label {
 
 /* Sombra sutil para efectos */
 .hinticon {
-  color: #b0b0b0; /* Gris claro para icono de pistas */
-  transition: color 0.3s;
+  color: #b0b0b0;
+  transition: color .3s;
+  display: block;
 }
 
 .hinticon:hover {
