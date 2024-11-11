@@ -77,6 +77,9 @@ function App() {
     obtenerConsultaAleatoria();
   };
 
+  const handleHintClick = () => {
+    setShowHint(!showHint);  // Alternar la visibilidad de la pista
+  };
   return (
     <div className={`test ${moveUp ? 'move-up' : ''}`}>
       {showConfetti && (
@@ -88,10 +91,10 @@ function App() {
           wind={0.02}
         />
       )}
-
+  
       {loading ? (
         <div className="loading-container">
-          <CircleLoader size={150} color={"#36D7B7"} loading={loading} />
+          <CircleLoader size={100} color={"#e2e2e2"} loading={loading} />
         </div>
       ) : (
         pregunta && (
@@ -100,7 +103,7 @@ function App() {
               <strong>{pregunta}</strong>
               <span
                 className="hinticon"
-                onClick={() => setShowHint(!showHint)}
+                onClick={handleHintClick} // Usar la función para mostrar/ocultar la pista
                 style={{ cursor: 'pointer', marginLeft: '8px' }}
               >
                 💡 Pista
@@ -122,9 +125,9 @@ function App() {
           </div>
         )
       )}
-
+  
       {showHint && (
-        <div className="hint">
+        <div className="hint show"> {/* Agregar la clase show para mostrar la pista */}
           {titulo && <p>{titulo}</p>}
           {capitulo && <p>Capítulo {capitulo}</p>}
           {seccion && <p>Sección {seccion}</p>}
@@ -132,7 +135,7 @@ function App() {
           <div dangerouslySetInnerHTML={{ __html: contenido }} />
         </div>
       )}
-      
+  
       <div className="subnav">
         <Nav />
       </div>
