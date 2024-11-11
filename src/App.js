@@ -7,7 +7,7 @@ function App() {
   const [seccion, setSeccion] = useState(null);
   const [articulo, setArticulo] = useState(null);
   const [contenido, setContenido] = useState(null);
- // const [respuestaIA, setRespuestaIA] = useState('');
+  const [respuestaIA, setRespuestaIA] = useState('');
 
   const [respuestaCorrecta, setRespuestaCorrecta] = useState(null);
 
@@ -24,7 +24,6 @@ function App() {
           setSeccion(data.seccion);
           setArticulo(data.articulo);
           setContenido(data.contenido);
-          //setRespuestaIA(data.respuestaIA);
 
           // Procesar `respuestaIA` para extraer la pregunta, opciones y respuesta correcta
           const lines = data.respuestaIA.split('\n').filter(line => line.trim() !== '');
@@ -46,9 +45,9 @@ function App() {
   return (
     <div>
       <Nav/>
-      {/*<p>{respuestaIA}</p>*/}
 
       {/*Respuesta de la IA formateada*/}
+      <p>{pregunta}</p>
       <ul>
         {opciones.map((opcion, index) => (
           <li key={index} style={{ fontWeight: index + 1 === respuestaCorrecta ? 'bold' : 'normal' }}>
