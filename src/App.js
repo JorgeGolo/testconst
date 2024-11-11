@@ -81,8 +81,8 @@ function App() {
     setShowHint(!showHint);  // Alternar la visibilidad de la pista
   };
   return (
-    <div className={`test ${moveUp ? 'move-up' : ''}`}>
-      {showConfetti && (
+    <div>
+        {showConfetti && (
         <Confetti
           gravity={1.5}
           numberOfPieces={500}
@@ -91,6 +91,8 @@ function App() {
           wind={0.02}
         />
       )}
+    <div className={`test ${moveUp ? 'move-up' : ''}`}>
+    
   
       {loading ? (
         <div className="loading-container">
@@ -139,6 +141,7 @@ function App() {
       <div className="subnav">
         <Nav />
       </div>
+    </div>
     </div>
   );
 }
