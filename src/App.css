@@ -144,7 +144,7 @@ label {
 
 .pregunta-container strong {
   font-size: 1.2em;
-  color: #ffffff;  /* Título en blanco */
+  color: #e2e2e2;  /* Título en blanco */
 }
 
 .shake {
@@ -170,4 +170,23 @@ label {
 
 .hint p {
   color: #b0b0b0;  /* Gris claro para el texto de la pista */
+}
+
+.pregunta-container form div {
+  border: 1px solid #e2e2e2;
+  padding: 0.3em;
+  border-radius: 5px;
+  margin-bottom: 0.3em;
+}
+
+.subnav {
+  position: fixed;
+  bottom: 0; /* Lo coloca en la parte inferior */
+  left: 0; /* Alineado al lado izquierdo */
+  width: 100%; /* Ocupa el 100% del ancho de la pantalla */
+  background-color: #333; /* El color de fondo del nav (puedes cambiarlo) */
+  color: white; /* El color del texto (puedes cambiarlo) */
+  padding: 10px; /* Espaciado dentro del nav */
+  text-align: center; /* Centra el contenido, como los enlaces */
+  z-index: 1000; /* Asegura que esté por encima del resto del contenido */
 }

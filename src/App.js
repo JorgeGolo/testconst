@@ -74,7 +74,6 @@ function App() {
 
   return (
     <div className={`test ${moveUp ? 'move-up' : ''}`}>
-      <Nav />
       {showConfetti && (
         <Confetti
           gravity={1.5}
@@ -122,7 +121,10 @@ function App() {
           <div dangerouslySetInnerHTML={{ __html: contenido }} />
         </div>
       )}
+    <div className='subnav'>      <Nav />    </div>
+
     </div>
+
   );
 }
 
