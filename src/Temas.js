@@ -20,24 +20,36 @@ function Temas() {
   const [testVisible, setTestVisible] = useState(false); // Mostrar u ocultar el test
 
   const startTitleTest = async (title) => {
-    console.log(title);
+    console.log("Título:", title);
     try {
       setLoading(true);
       setTestVisible(true); // Muestra el test al seleccionar un tema
       const response = await fetch(`/api/getData?titulo=${encodeURIComponent(title)}`);
       const data = await response.json();
-
+  
       if (response.ok) {
         setTitulo(data.titulo);
         setCapitulo(data.capitulo);
         setSeccion(data.seccion);
         setArticulo(data.articulo);
         setContenido(data.contenido);
-
+  
+        // Dividir la respuesta de IA en líneas y filtrar las vacías
         const lines = data.respuestaIA.split('\n').filter(line => line.trim() !== '');
+        console.log("Líneas obtenidas de la respuesta IA:", lines);
+  
+        // Configurar la pregunta y opciones
         setPregunta(lines[0]);
-        setOpciones(lines.slice(1, 5));
-        setRespuestaCorrecta(parseInt(lines[5]) - 1);
+        console.log("Pregunta:", lines[0]);
+        
+        const opciones = lines.slice(1, 5);
+        setOpciones(opciones);
+        console.log("Opciones de respuesta:", opciones);
+  
+        // Convertir la respuesta correcta en un índice (restando 1 para índice cero)
+        const respuestaCorrecta = parseInt(lines[5]) - 1;
+        setRespuestaCorrecta(respuestaCorrecta);
+        console.log("Índice de la respuesta correcta:", respuestaCorrecta);
       } else {
         console.error('Error al obtener los datos:', data.error);
       }
@@ -47,6 +59,7 @@ function Temas() {
       setLoading(false);
     }
   };
+  
 
   const handleOptionSelect = (index) => {
     if (showHint) {
