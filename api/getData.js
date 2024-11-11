@@ -53,7 +53,7 @@ export default async function handler(req, res) {
       const tituloFinal = data.titulo || '';
       const contenidotitulo = data.contenidotitulo || '';
 
-      const concatenado = `${tituloFinal} ${contenidotitulo} ${capitulo} ${contenidocapitulo} ${seccion} ${contenidoseccion} ${contenidoseccion} ${contenido}`;
+      const concatenado = `${tituloFinal} ${contenidotitulo} ${capitulo} ${contenidocapitulo} ${seccion} ${contenidoseccion} ${contenido}`;
 
       let respuestaIA;
       try {
