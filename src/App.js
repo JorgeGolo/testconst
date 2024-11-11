@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from './Nav';
 import Confetti from 'react-confetti';
-import './App.css';
+import './App.css'; // Importa un archivo CSS para el efecto shake
 
 function App() {
   const [titulo, setTitulo] = useState(null);
@@ -15,7 +15,8 @@ function App() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
   const [showHint, setShowHint] = useState(false);
-  const [moveUp, setMoveUp] = useState(false); // Nuevo estado para controlar el desplazamiento
+  const [moveUp, setMoveUp] = useState(false); // Estado para mover el div hacia arriba
+  const [reaparecer, setReaparecer] = useState(false); // Estado para reaparecer el div
 
   useEffect(() => {
     obtenerConsultaAleatoria();
@@ -37,6 +38,9 @@ function App() {
         setPregunta(lines[0]);
         setOpciones(lines.slice(1, 5));
         setRespuestaCorrecta(parseInt(lines[5]) - 1);
+        
+        // Después de haber recibido la nueva pregunta, mostramos el div
+        setReaparecer(true);
       } else {
         console.error('Error al obtener los datos:', data.error);
       }
@@ -50,11 +54,15 @@ function App() {
       setShowConfetti(true);
       setTimeout(() => {
         setShowConfetti(false);
-        setMoveUp(true); // Activamos el movimiento hacia arriba
+        
+        // Aquí activamos el movimiento del div hacia arriba antes de recargar la pregunta
+        setMoveUp(true);
+
+        // Después de que se haya ocultado el div, recargamos la pregunta
         setTimeout(() => {
-          renovarPregunta(); // Renovar la pregunta después de mostrar el confeti
-          setMoveUp(false); // Resetear el movimiento después de que se haya completado
-        }, 1500); // Ajusta el tiempo para que se muestre después del confeti
+          obtenerConsultaAleatoria(); // Recargar la nueva pregunta
+          setMoveUp(false); // Al final, el div vuelve a aparecer
+        }, 1500); // 1500ms es la duración de la animación
       }, 1500);
       setIsShaking(false);
     } else {
@@ -64,12 +72,8 @@ function App() {
     }
   };
 
-  const renovarPregunta = () => {
-    obtenerConsultaAleatoria();
-  };
-
   return (
-    <div className={`test ${moveUp ? 'move-up' : ''}`}> {/* Añadimos la clase move-up cuando sea necesario */}
+    <div className={`test ${moveUp ? 'move-up' : ''} ${reaparecer ? 'reaparecer' : ''}`}>
       <Nav />
       {showConfetti && (
         <Confetti
@@ -80,13 +84,12 @@ function App() {
           wind={0.02}
         />
       )}
-
       {pregunta && (
         <div className={`pregunta-container ${isShaking ? 'shake' : ''}`}>
           <p>
             <strong>{pregunta}</strong>
             <span
-              className="hinticon"
+              className='hinticon'
               onClick={() => setShowHint(!showHint)}
               style={{ cursor: 'pointer', marginLeft: '8px' }}
             >
@@ -108,9 +111,8 @@ function App() {
           </form>
         </div>
       )}
-
       {showHint && (
-        <div className="hint">
+        <div className='hint'>
           {titulo && <p>{titulo}</p>}
           {capitulo && <p>Capítulo {capitulo}</p>}
           {seccion && <p>Sección {seccion}</p>}

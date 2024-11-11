@@ -79,6 +79,7 @@
   }
 }
 
+/* Animación para mover el div hacia arriba y ocultarlo */
 @keyframes moveUp {
   0% {
     transform: translateY(0);
@@ -90,6 +91,14 @@
   }
 }
 
+/* Clase que aplica la animación para mover el div hacia arriba */
 .test.move-up {
   animation: moveUp 1.5s forwards; /* La animación dura 1.5 segundos y se mantiene al final */
+}
+
+/* Animación para mover el div de vuelta a su posición original */
+.test.reaparecer {
+  animation: moveUp 1.5s reverse forwards;
+  transform: translateY(0);
+  opacity: 1;
 }
