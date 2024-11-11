@@ -10,11 +10,12 @@ function App() {
   const [pregunta, setPregunta] = useState('');
   const [opciones, setOpciones] = useState([]);
   const [respuestaCorrecta, setRespuestaCorrecta] = useState(null);
+  const [mensaje, setMensaje] = useState('');
 
   useEffect(() => {
     const obtenerConsultaAleatoria = async () => {
       try {
-        const response = await fetch('/api/getData');
+        const response = await fetch('/api/getData'); // Llamada a la API
         const data = await response.json();
 
         if (response.ok) {
@@ -24,11 +25,11 @@ function App() {
           setArticulo(data.articulo);
           setContenido(data.contenido);
 
-          // Procesar `respuestaIA` para extraer la pregunta, opciones y respuesta correcta
+          // Procesar respuesta de OpenAI
           const lines = data.respuestaIA.split('\n').filter(line => line.trim() !== '');
           setPregunta(lines[0]);
           setOpciones(lines.slice(1, 5));
-          setRespuestaCorrecta(parseInt(lines[5], 10)); // Convertir el número a entero
+          setRespuestaCorrecta(parseInt(lines[5]) - 1); // La respuesta correcta es el índice (0-3)
 
         } else {
           console.error('Error al obtener los datos:', data.error);
@@ -41,18 +42,45 @@ function App() {
     obtenerConsultaAleatoria();
   }, []);
 
+  const handleOptionSelect = (index) => {
+    if (index === respuestaCorrecta) {
+      setMensaje('Respuesta correcta');
+    } else {
+      setMensaje('Respuesta incorrecta');
+    }
+  };
+
   return (
     <div>
-      <Nav />
-      <p>{pregunta}</p>
-      <ul>
-        {opciones.map((opcion, index) => (
-          <li key={index} style={{ fontWeight: index + 1 === respuestaCorrecta ? 'bold' : 'normal' }}>
-            {opcion}
-          </li>
-        ))}
-      </ul>
-      <hr />
+      <Nav/>
+      <p>{mensaje === 'Respuesta correcta' ? (
+          <span style={{ color: 'green' }}>{mensaje}</span>
+        ) : mensaje === 'Respuesta incorrecta' ? (
+          <span style={{ color: 'red' }}>{mensaje}</span>
+        ) : null
+      }</p>
+
+
+      {pregunta && (
+        <div>
+          <p><strong>{pregunta}</strong></p>
+          <form>
+            {opciones.map((opcion, index) => (
+              <div key={index}>
+                <input
+                  type="radio"
+                  id={`opcion${index}`}
+                  name="respuesta"
+                  onClick={() => handleOptionSelect(index)}
+                />
+                <label htmlFor={`opcion${index}`}>{opcion}</label>
+              </div>
+            ))}
+          </form>
+        </div>
+      )}
+
+<hr/>
       {titulo && <p>{titulo}</p>}
       {capitulo && <p>Capítulo {capitulo}</p>}
       {seccion && <p>Sección {seccion}</p>}
