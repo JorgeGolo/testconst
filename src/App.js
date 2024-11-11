@@ -18,11 +18,8 @@ function App() {
   const [moveUp, setMoveUp] = useState(false); // Nuevo estado para controlar el desplazamiento
 
   useEffect(() => {
-    // Cuando se actualizan los datos, activamos moveUp solo después de que la pregunta se haya cargado
-    if (pregunta) {
-      setMoveUp(false); // Resetear el movimiento después de cargar la pregunta
-    }
-  }, [pregunta]);  // Esto asegura que se reinicie cuando la nueva pregunta esté disponible
+    obtenerConsultaAleatoria();
+  }, []);
 
   const obtenerConsultaAleatoria = async () => {
     try {
@@ -53,9 +50,11 @@ function App() {
       setShowConfetti(true);
       setTimeout(() => {
         setShowConfetti(false);
+        // La animación de desplazamiento se activará solo después de obtener una nueva pregunta
         setMoveUp(true); // Activamos el movimiento hacia arriba
         setTimeout(() => {
           renovarPregunta(); // Renovar la pregunta después de mostrar el confeti
+          setMoveUp(false); // Resetear el movimiento después de que se haya completado
         }, 1500); // Ajusta el tiempo para que se muestre después del confeti
       }, 1500);
       setIsShaking(false);
@@ -65,12 +64,10 @@ function App() {
       setTimeout(() => setIsShaking(false), 500);
     }
   };
-  
-  const renovarPregunta = () => {
-    obtenerConsultaAleatoria(); // Llamamos para cargar la siguiente pregunta
-  };
-  
 
+  const renovarPregunta = () => {
+    obtenerConsultaAleatoria();
+  };
 
   return (
     <div className={`test ${moveUp ? 'move-up' : ''}`}> {/* Añadimos la clase move-up cuando sea necesario */}
