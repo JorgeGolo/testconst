@@ -59,6 +59,7 @@ function Temas() {
         setShowConfetti(false);
         setMoveUp(true);
         setTimeout(() => {
+          renovarPregunta(); // Solicita una nueva pregunta para el mismo título
           setMoveUp(false);
         }, 1500);
       }, 1500);
@@ -70,13 +71,19 @@ function Temas() {
     }
   };
 
+  const renovarPregunta = () => {
+    if (titulo) {
+      startTitleTest(titulo); // Usa el título actual para renovar la pregunta
+    }
+  };
+
   const handleHintClick = () => {
     setShowHint(!showHint); // Alternar la visibilidad de la pista
   };
 
   return (
     <div>
-      <h2>Temas</h2>
+      {!testVisible && (
       <div>
         <ul>
           <li>Preámbulo</li>
@@ -86,7 +93,8 @@ function Temas() {
           <li>Título I</li>
           <li>Título II</li>
         </ul>
-      </div>
+      </div>)
+      }
 
       {showConfetti && (
         <Confetti gravity={1.5} numberOfPieces={500} recycle={false} initialVelocityY={10} wind={0.02} />
