@@ -47,10 +47,6 @@
   30%, 60%, 90% { transform: translateX(5px); }
 }
 
-.test {
-  transition: transform 1s ease-in-out;
-}
-
 .test.desplazar {
   transform: translateY(-100vh); /* Mueve el div hacia arriba */
 }
@@ -173,15 +169,18 @@ label {
 
 
 
+/* Asegúrate de que la pista no afecte el flujo de contenido */
 .hint {
   background-color: #2a2a2a;  /* Fondo gris oscuro para el área de pistas */
   padding: 10px;
   border-radius: 5px;
   margin-top: 10px;
+  position: absolute; /* Posiciona la pista de forma absoluta */
+  top: 100%; /* La coloca justo debajo de la pregunta */
+  left: 0;
+  width: 100%; /* Ocupa todo el ancho disponible */
   max-height: 0; /* Inicialmente no se muestra */
   overflow: hidden; /* Evita que el contenido se desborde */
-  position: relative; /* Se coloca sobre el contenido sin afectar el layout */
-  width: 100%; /* Para que ocupe el mismo ancho que el contenedor */
   transition: max-height 0.5s ease-in-out; /* Animación suave */
 }
 
@@ -191,9 +190,16 @@ label {
   overflow: auto; /* Permite desplazarse si hay mucho contenido */
 }
 
-/* Asegura que la pista no se superponga al texto */
+/* Asegúrate de que la pregunta no se mueva */
 .pregunta-container {
-  position: relative; /* Asegura que la pista se coloque sobre este contenedor */
+  position: relative; /* Para que la pista se ubique sobre este contenedor */
+  z-index: 1; /* Coloca la pregunta por encima de la pista */
+}
+
+.test {
+  position: relative; /* Asegúrate de que el contenedor tenga un contexto para los elementos posicionados */
+  transition: transform 1s ease-in-out;
+  z-index: 0; /* Mantén el contenedor en el fondo */
 }
 
 .hinticon {
@@ -205,14 +211,6 @@ label {
   color: #ffffff;  /* Color blanco al pasar el mouse */
 }
 
-
-
-.hint {
-  background-color: #2a2a2a;  /* Fondo gris oscuro para el área de pistas */
-  padding: 10px;
-  border-radius: 5px;
-  margin-top: 10px;
-}
 
 .hint p {
   color: #b0b0b0;  /* Gris claro para el texto de la pista */
