@@ -87,7 +87,7 @@
 }
 
 .test.move-up {
-  animation: moveUp 1.5s forwards; /* La animación dura 1.5 segundos y se mantiene al final */
+  animation: moveUp 0.5s forwards; /* La animación dura 1.5 segundos y se mantiene al final */
 }
 
 /**/
@@ -138,7 +138,7 @@ label {
 
 /* Animación de confetti */
 .test.move-up {
-  transition: transform 0.5s ease;
+  transition: transform 0.3s ease;
   transform: translateY(-20px);  /* Desplazamiento hacia arriba */
 }
 
@@ -148,7 +148,7 @@ label {
 }
 
 .pregunta-container strong {
-  font-size: 1.2em;
+  font-size: 1.05em;
   color: #e2e2e2;  /* Título en blanco */
 }
 
@@ -218,9 +218,9 @@ label {
 
 .pregunta-container form div {
   border: 1px solid #e2e2e2;
-  padding: 0.3em;
   border-radius: 5px;
-  margin-bottom: 0.3em;
+  margin-bottom: 0.4em;
+  padding: 0.5em;
 }
 
 .subnav {

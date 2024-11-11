@@ -5,8 +5,10 @@ const Temas = () => {
 
   return (
     <div>
-      <Nav />
       <h2>Temas</h2>
+      <div className="subnav">
+        <Nav />
+      </div>
     </div>
   );
 };
