@@ -87,10 +87,8 @@ function Temas() {
       <div>
         <ul>
           <li>Preámbulo</li>
-          <li>
-            Título Preliminar - <button onClick={() => startTitleTest("Título Preliminar")}>Test</button></li>
+          <li>Título Preliminar - <button onClick={() => startTitleTest("Título Preliminar")}>Test</button></li>
           <li>Título I - <button onClick={() => startTitleTest("Título I")}>Test</button></li>
-          <li>Título II - <button onClick={() => startTitleTest("Título II")}>Test</button></li>
         </ul>
       </div>)
       }
