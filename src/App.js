@@ -7,7 +7,10 @@ function App() {
   const [seccion, setSeccion] = useState(null);
   const [articulo, setArticulo] = useState(null);
   const [contenido, setContenido] = useState(null);
-  const [respuestaIA, setRespuestaIA] = useState('');
+ // const [respuestaIA, setRespuestaIA] = useState('');
+
+  const [respuestaCorrecta, setRespuestaCorrecta] = useState(null);
+
 
   useEffect(() => {
     const obtenerConsultaAleatoria = async () => {
@@ -21,7 +24,13 @@ function App() {
           setSeccion(data.seccion);
           setArticulo(data.articulo);
           setContenido(data.contenido);
-          setRespuestaIA(data.respuestaIA);
+          //setRespuestaIA(data.respuestaIA);
+
+          // Procesar `respuestaIA` para extraer la pregunta, opciones y respuesta correcta
+          const lines = data.respuestaIA.split('\n').filter(line => line.trim() !== '');
+          setPregunta(lines[0]);
+          setOpciones(lines.slice(1, 5));
+          setRespuestaCorrecta(parseInt(lines[5], 10)); // Convertir el número a entero
 
         } else {
           console.error('Error al obtener los datos:', data.error);
@@ -37,7 +46,17 @@ function App() {
   return (
     <div>
       <Nav/>
-      <p>{respuestaIA}</p>
+      {/*<p>{respuestaIA}</p>*/}
+
+      {/*Respuesta de la IA formateada*/}
+      <ul>
+        {opciones.map((opcion, index) => (
+          <li key={index} style={{ fontWeight: index + 1 === respuestaCorrecta ? 'bold' : 'normal' }}>
+            {opcion}
+          </li>
+        ))}
+      </ul>
+
       <hr/>
       {titulo !== '' && <p>{titulo}</p>}
       {capitulo !== '' && <p>Capítulo {capitulo}</p>}

@@ -49,7 +49,7 @@ export default async function handler(req, res) {
       let respuestaIA;
       try {
         const chatCompletion = await openai.chat.completions.create({
-          model: "gpt-3.5-turbo", // Usa el modelo recibido o uno por defecto
+          model: "gpt-4o", // Usa el modelo recibido o uno por defecto
           messages: [
             { role: "system", content: "Eres un asistente útil que genera preguntas de quiz con cuatro opciones de respuesta para la Constitució Española." },
             {
