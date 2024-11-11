@@ -58,7 +58,7 @@ export default async function handler(req, res) {
       let respuestaIA;
       try {
         const chatCompletion = await openai.chat.completions.create({
-          model: "gpt-4", // Usa el modelo recibido o uno por defecto
+          model: "gpt-4o", // Usa el modelo recibido o uno por defecto
           messages: [
             { role: "system", content: "Eres un asistente útil que genera preguntas de quiz con cuatro opciones de respuesta para la Constitución Española." },
             {
@@ -76,7 +76,15 @@ export default async function handler(req, res) {
               
               Es importante que no pongas números, letras, ni símbolos delante de las respuestas.
               La pregunta debe ir en una sola línea, y cada respuesta en una línea para cada una.
-              El último número es la respuesta correta, marcada como números del 1 al 4.`
+              El último número es la respuesta correta, marcada como números del 1 al 4.
+              Ejemplo de formato:
+
+              ¿En qué año se proclamó la Constitución?
+              1940
+              2000
+              1978
+              1950
+              2`
             }
           ]
         });
