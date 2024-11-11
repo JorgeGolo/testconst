@@ -93,3 +93,81 @@
 .test.move-up {
   animation: moveUp 1.5s forwards; /* La animación dura 1.5 segundos y se mantiene al final */
 }
+
+/**/
+
+/* Fondo y color base para el modo oscuro */
+body {
+  background-color: #121212;  /* Fondo oscuro */
+  color: #ffffff;  /* Texto blanco */
+  font-family: Arial, sans-serif;
+}
+
+/* Contenedores y elementos de la interfaz */
+.test {
+  background-color: #1f1f1f;  /* Gris oscuro para el contenedor */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Texto secundario y menos importante */
+p, .hint, .hinticon {
+  color: #b0b0b0;  /* Gris claro para texto secundario */
+}
+
+/* Opciones de respuestas y botones */
+input[type="radio"] {
+  background-color: #2e2e2e;  /* Gris más oscuro para los radios */
+  border: 1px solid #444444;  /* Bordes sutiles */
+}
+
+input[type="radio"]:checked {
+  background-color: #4caf50;  /* Verde cuando está seleccionado */
+  border-color: #2c6e2c;  /* Verde más oscuro en el borde */
+}
+
+label {
+  color: #e0e0e0;  /* Color de texto blanco suave */
+}
+
+/* Animación de confetti */
+.test.move-up {
+  transition: transform 0.5s ease;
+  transform: translateY(-20px);  /* Desplazamiento hacia arriba */
+}
+
+/* Estilos de la pregunta y respuestas */
+.pregunta-container {
+  margin-bottom: 20px;
+}
+
+.pregunta-container strong {
+  font-size: 1.2em;
+  color: #ffffff;  /* Título en blanco */
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Sombra sutil para efectos */
+.hinticon {
+  color: #b0b0b0; /* Gris claro para icono de pistas */
+  transition: color 0.3s;
+}
+
+.hinticon:hover {
+  color: #ffffff;  /* Color blanco al pasar el mouse */
+}
+
+.hint {
+  background-color: #2a2a2a;  /* Fondo gris oscuro para el área de pistas */
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.hint p {
+  color: #b0b0b0;  /* Gris claro para el texto de la pista */
+}

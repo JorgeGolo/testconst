@@ -15,7 +15,8 @@ function App() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
   const [showHint, setShowHint] = useState(false);
-  const [moveUp, setMoveUp] = useState(false); // Nuevo estado para controlar el desplazamiento
+  const [moveUp, setMoveUp] = useState(false); // Controlar el desplazamiento
+  const [loading, setLoading] = useState(false); // Estado de carga de nueva pregunta
 
   useEffect(() => {
     obtenerConsultaAleatoria();
@@ -23,6 +24,7 @@ function App() {
 
   const obtenerConsultaAleatoria = async () => {
     try {
+      setLoading(true); // Activamos el estado de carga
       const response = await fetch('/api/getData');
       const data = await response.json();
 
@@ -42,6 +44,8 @@ function App() {
       }
     } catch (error) {
       console.error('Error al obtener los datos:', error);
+    } finally {
+      setLoading(false); // Desactivamos el estado de carga
     }
   };
 
@@ -50,12 +54,11 @@ function App() {
       setShowConfetti(true);
       setTimeout(() => {
         setShowConfetti(false);
-        // La animación de desplazamiento se activará solo después de obtener una nueva pregunta
         setMoveUp(true); // Activamos el movimiento hacia arriba
         setTimeout(() => {
-          renovarPregunta(); // Renovar la pregunta después de mostrar el confeti
-          setMoveUp(false); // Resetear el movimiento después de que se haya completado
-        }, 1500); // Ajusta el tiempo para que se muestre después del confeti
+          renovarPregunta(); // Renovamos la pregunta
+          setMoveUp(false); // Resetear el movimiento
+        }, 1500); // Espera para mostrar el confeti
       }, 1500);
       setIsShaking(false);
     } else {
@@ -70,7 +73,7 @@ function App() {
   };
 
   return (
-    <div className={`test ${moveUp ? 'move-up' : ''}`}> {/* Añadimos la clase move-up cuando sea necesario */}
+    <div className={`test ${moveUp ? 'move-up' : ''}`}>
       <Nav />
       {showConfetti && (
         <Confetti
@@ -82,7 +85,7 @@ function App() {
         />
       )}
 
-      {pregunta && (
+      {pregunta && !loading && ( // Solo mostrar la pregunta si no estamos cargando
         <div className={`pregunta-container ${isShaking ? 'shake' : ''}`}>
           <p>
             <strong>{pregunta}</strong>
