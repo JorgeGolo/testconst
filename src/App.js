@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Nav from './Nav';
 import Confetti from 'react-confetti';
+import './App.css'; // Importa un archivo CSS para el efecto shake
 
 function App() {
   const [titulo, setTitulo] = useState(null);
@@ -11,8 +12,8 @@ function App() {
   const [pregunta, setPregunta] = useState('');
   const [opciones, setOpciones] = useState([]);
   const [respuestaCorrecta, setRespuestaCorrecta] = useState(null);
-  const [mensaje, setMensaje] = useState('');
   const [showConfetti, setShowConfetti] = useState(false);
+  const [isShaking, setIsShaking] = useState(false); // Estado para activar el efecto shake
 
   useEffect(() => {
     const obtenerConsultaAleatoria = async () => {
@@ -32,7 +33,6 @@ function App() {
           setPregunta(lines[0]);
           setOpciones(lines.slice(1, 5));
           setRespuestaCorrecta(parseInt(lines[5]) - 1);
-
         } else {
           console.error('Error al obtener los datos:', data.error);
         }
@@ -46,35 +46,28 @@ function App() {
 
   const handleOptionSelect = (index) => {
     if (index === respuestaCorrecta) {
-      setMensaje('Respuesta correcta');
-      setShowConfetti(true); // Activa el confeti cuando la respuesta es correcta
-      setTimeout(() => setShowConfetti(false), 1500); // Desactiva el confeti después de 3 segundos
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 1500);
+      setIsShaking(false); // Detener el efecto shake si es correcto
     } else {
-      setMensaje('Respuesta incorrecta');
       setShowConfetti(false);
+      setIsShaking(true); // Activar el efecto shake si es incorrecto
+      setTimeout(() => setIsShaking(false), 500); // Detener el efecto shake después de un tiempo
     }
   };
 
   return (
     <div>
-      <Nav/>
+      <Nav />
       {showConfetti && 
-              <Confetti
-              gravity={1.5}  // Aumenta la velocidad de caída
-              numberOfPieces={500} // Incrementa el número de piezas
-              recycle={false}  // No recicle las piezas, para que desaparezcan
-              initialVelocityY={10} // Configura la velocidad inicial desde abajo hacia arriba
-              wind={0.02}  // Da un ligero movimiento hacia los lados
-              run={showConfetti}
-            />
+        <Confetti
+          gravity={1.5}
+          numberOfPieces={500}
+          recycle={false}
+          initialVelocityY={10}
+          wind={0.02}
+        />
       }
-      <p>
-        {mensaje === 'Respuesta correcta' ? (
-          <span style={{ color: 'green' }}>{mensaje}</span>
-        ) : mensaje === 'Respuesta incorrecta' ? (
-          <span style={{ color: 'red' }}>{mensaje}</span>
-        ) : null}
-      </p>
       <hr/>
       {titulo && <p>{titulo}</p>}
       {capitulo && <p>Capítulo {capitulo}</p>}
@@ -83,7 +76,7 @@ function App() {
       <div dangerouslySetInnerHTML={{ __html: contenido }} />
 
       {pregunta && (
-        <div>
+        <div className={`pregunta-container ${isShaking ? 'shake' : ''}`}>
           <p><strong>{pregunta}</strong></p>
           <form>
             {opciones.map((opcion, index) => (
