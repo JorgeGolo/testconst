@@ -15,7 +15,7 @@ function App() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [isShaking, setIsShaking] = useState(false); // Estado para activar el efecto shake
   const [showHint, setShowHint] = useState(false); // Estado para mostrar/ocultar el hint
-  const [moveUp, setMoveUp] = useState(false); // Estado para controlar el movimiento hacia arriba
+  const [selectedOption, setSelectedOption] = useState(null); // Estado para las opciones seleccionadas
 
   useEffect(() => {
     obtenerConsultaAleatoria();
@@ -38,6 +38,7 @@ function App() {
         setPregunta(lines[0]);
         setOpciones(lines.slice(1, 5));
         setRespuestaCorrecta(parseInt(lines[5]) - 1);
+        setSelectedOption(null); // Resetea la opción seleccionada al recargar la pregunta
       } else {
         console.error('Error al obtener los datos:', data.error);
       }
@@ -47,11 +48,11 @@ function App() {
   };
 
   const handleOptionSelect = (index) => {
+    setSelectedOption(index); // Marca la opción seleccionada
     if (index === respuestaCorrecta) {
       setShowConfetti(true);
       setTimeout(() => {
         setShowConfetti(false);
-        setMoveUp(true); // Activar movimiento hacia arriba después de mostrar el confeti
         renovarPregunta(); // Renovar la pregunta después de mostrar el confeti
       }, 1500);
       setIsShaking(false); // Detener el efecto shake si es correcto
@@ -64,11 +65,10 @@ function App() {
 
   const renovarPregunta = () => {
     obtenerConsultaAleatoria(); // Llamamos a la función para obtener una nueva pregunta
-    setMoveUp(false); // Restablecer el movimiento hacia arriba
   };
 
   return (
-    <div className={`test ${moveUp ? 'move-up' : ''}`}>
+    <div className='test'>
       <Nav />
       {showConfetti && 
         <Confetti
@@ -99,7 +99,8 @@ function App() {
                   type="radio"
                   id={`opcion${index}`}
                   name="respuesta"
-                  onClick={() => handleOptionSelect(index)}
+                  checked={selectedOption === index} // Marca la opción seleccionada
+                  onChange={() => handleOptionSelect(index)} // Usa onChange en lugar de onClick
                 />
                 <label htmlFor={`opcion${index}`}>{opcion}</label>
               </div>
