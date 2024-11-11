@@ -38,11 +38,11 @@
 }
 
 .pregunta-container.shake {
-  animation: shake 0.5s;
+  animation: shake 0.3s; /* Duración de la animación ajustada a 0.3s para que sea más rápida */
 }
 
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-10px); }
-  40%, 80% { transform: translateX(10px); }
+  15%, 45%, 75% { transform: translateX(-5px); }
+  30%, 60%, 90% { transform: translateX(5px); }
 }
