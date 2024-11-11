@@ -117,7 +117,6 @@ body, html {
 .test {
   background-color: #1f1f1f;  /* Gris oscuro para el contenedor */
   border-radius: 10px;
-  padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -149,7 +148,7 @@ label {
 
 /* Estilos de la pregunta y respuestas */
 .pregunta-container {
-  margin-bottom: 20px;
+  margin: 1em;
 }
 
 .pregunta-container strong {
