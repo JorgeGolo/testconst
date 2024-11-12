@@ -1,3 +1,8 @@
+# Este proyecto se creó usando la API de GEMINI 
+# This proyect was created to consume the GEMINI API
+
+The Development will continue at this branch.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
