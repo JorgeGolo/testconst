@@ -3,11 +3,19 @@ import { useParams } from 'react-router-dom';
 import { CircleLoader } from 'react-spinners';
 
 function Test() {
-  const { titulo } = useParams(); // Obtener el parámetro 'titulo' de la URL
-  const [loading, setLoading] = useState(false);
-  const [pregunta, setPregunta] = useState('');
-  const [opciones, setOpciones] = useState([]);
-  const [respuestaCorrecta, setRespuestaCorrecta] = useState(null);
+    const [titulo, setTitulo] = useState(null);
+    const [capitulo, setCapitulo] = useState(null);
+    const [seccion, setSeccion] = useState(null);
+    const [articulo, setArticulo] = useState(null);
+    const [contenido, setContenido] = useState(null);
+    const [pregunta, setPregunta] = useState('');
+    const [opciones, setOpciones] = useState([]);
+    const [respuestaCorrecta, setRespuestaCorrecta] = useState(null);
+    const [showConfetti, setShowConfetti] = useState(false);
+    const [isShaking, setIsShaking] = useState(false);
+    const [showHint, setShowHint] = useState(false);
+    const [moveUp, setMoveUp] = useState(false);
+    const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchTestData = async () => {
@@ -34,38 +42,86 @@ function Test() {
   }, [titulo]);
 
   const handleOptionSelect = (index) => {
-    if (index === respuestaCorrecta) {
-      alert('Respuesta correcta!');
-    } else {
-      alert('Respuesta incorrecta!');
+    if (showHint) {
+      setShowHint(false);
     }
+
+    if (index === respuestaCorrecta) {
+      setShowConfetti(true);
+      setTimeout(() => {
+        setShowConfetti(false);
+        setMoveUp(true);
+        setTimeout(() => {
+          renovarPregunta();
+          setMoveUp(false);
+        }, 1500);
+      }, 1500);
+      setIsShaking(false);
+    } else {
+      setShowConfetti(false);
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 500);
+    }
+  };
+  
+  const renovarPregunta = () => {
+    obtenerConsultaAleatoria();
+  };
+  const handleHintClick = () => {
+    setShowHint(!showHint);  // Alternar la visibilidad de la pista
   };
 
   return (
     <div>
+         {showConfetti && (
+        <Confetti
+          gravity={1.5}
+          numberOfPieces={500}
+          recycle={false}
+          initialVelocityY={10}
+          wind={0.02}
+        />
+      )}
+          <div className={`test ${moveUp ? 'move-up' : ''}`}>
+
       {loading ? (
         <div className="loading-container">
           <CircleLoader size={100} color={"#e2e2e2"} loading={loading} />
         </div>
       ) : (
-        <div>
-          <h2>{titulo}</h2>
-          <p>{pregunta}</p>
-          <form>
-            {opciones.map((opcion, index) => (
-              <div key={index}>
-                <input
-                  type="radio"
-                  id={`opcion${index}`}
-                  name="respuesta"
-                  onClick={() => handleOptionSelect(index)}
-                />
-                <label htmlFor={`opcion${index}`}>{opcion}</label>
-              </div>
-            ))}
-          </form>
+        pregunta && (
+            <div className={`pregunta-container ${isShaking ? 'shake' : ''}`}>
+            <form>
+              {opciones.map((opcion, index) => (
+                <div key={index}>
+                  <input
+                    type="radio"
+                    id={`opcion${index}`}
+                    name="respuesta"
+                    onClick={() => handleOptionSelect(index)}
+                  />
+                  <label htmlFor={`opcion${index}`}>{opcion}</label>
+                </div>
+              ))}
+            </form>
+        </div>
+      )
+      )}
+
+{showHint && (
+        <div className="hint show"> {/* Agregar la clase show para mostrar la pista */}
+          {titulo && <p>{titulo}</p>}
+          {capitulo && <p>Capítulo {capitulo}</p>}
+          {seccion && <p>Sección {seccion}</p>}
+          <p>{articulo}</p>
+          <div dangerouslySetInnerHTML={{ __html: contenido }} />
         </div>
       )}
+
+     <div className="subnav">
+        <Nav />
+      </div>
+    </div>
     </div>
   );
 }
