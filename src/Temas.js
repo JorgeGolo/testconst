@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 
 function Temas() {
-  const [testVisible, setTestVisible] = useState(false);
   const navigate = useNavigate();
 
   const startTitleTest = (title) => {
@@ -13,6 +12,7 @@ function Temas() {
 
   return (
     <div>
+      <h3>Constitución Española<button onClick={() => startTitleTest("constitucion")}>Test</button></h3>
       <ul>
         <li>Preámbulo</li>
         <li>
