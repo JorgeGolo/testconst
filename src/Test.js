@@ -24,7 +24,7 @@ function Test() {
 
 useEffect(() => {
     obtenerConsultaAleatoria();
-  }, []);
+  }, [titulo]); // Dependiendo de 'titulo', vuelve a cargar los datos
 
   const obtenerConsultaAleatoria = async () => {
     try {
