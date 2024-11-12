@@ -5,7 +5,7 @@ const Nav = () => {
     return (
       <nav className="nav">
       <Link to="/">Inicio</Link>
-      <Link to="/temas" onClick={onNavClick}>Temas</Link>
+      <Link to="/temas">Temas</Link>
       </nav>
     );
   };
