@@ -1,11 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, query, where } from 'firebase/firestore';
-import { OpenAI } from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-// Configuración de OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Configuración de Gemini API
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Inicializa la app de Firebase
 const firebaseConfig = {
@@ -58,43 +56,39 @@ export default async function handler(req, res) {
 
       let respuestaIA;
       try {
-        const chatCompletion = await openai.chat.completions.create({
-          model: "gpt-4o", // Usa el modelo recibido o uno por defecto
-          messages: [
-            { role: "system", content: "Eres un asistente útil que genera preguntas de quiz con cuatro opciones de respuesta para la Constitución Española." },
-            {
-              role: "user",
-              content: `Genera una pregunta sobre el siguiente contenido: ${concatenado}. 
-              Debes incluir cuatro opciones de respuesta y solo una debe ser correcta.
-              Sigue este formato:
-              
-              Texto de la pregunta
-              Texto de posible respuesta 
-              Texto de otra posible respuesta
-              Texto de otra posible respuesta
-              Texto de otra posible respuesta
-              1
-              
-              Es importante que no pongas números, letras, ni símbolos delante de las respuestas.
-              La pregunta debe ir en una sola línea, y cada respuesta en una línea para cada una.
-              El último número es la respuesta correta, marcada como números del 1 al 4.
-              Ejemplo de formato:
+        // Configuramos el modelo y el prompt para la API de Gemini
+        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
-              ¿En qué año se proclamó la Constitución?
-              1940
-              2000
-              1978
-              1950
-              2`
-            }
-          ]
-        });
+        const prompt = `
+          Genera una pregunta sobre el siguiente contenido: ${concatenado}.
+          Debes incluir cuatro opciones de respuesta y solo una debe ser correcta.
+          Sigue este formato:
+          
+          Texto de la pregunta
+          Texto de posible respuesta 
+          Texto de otra posible respuesta
+          Texto de otra posible respuesta
+          Texto de otra posible respuesta
+          1
+          
+          Es importante que no pongas números, letras, ni símbolos delante de las respuestas.
+          La pregunta debe ir en una sola línea, y cada respuesta en una línea para cada una.
+          El último número es la respuesta correcta, marcada como números del 1 al 4.
+          Ejemplo de formato:
 
-        // Procesar la respuesta de OpenAI
-        respuestaIA = chatCompletion.choices[0].message.content;
-        
+          ¿En qué año se proclamó la Constitución?
+          1940
+          2000
+          1978
+          1950
+          3
+        `;
+
+        const result = await model.generateContent(prompt);
+        respuestaIA = result.response.text();
+
       } catch (error) {
-        console.error('Error al generar la pregunta con OpenAI:', error);
+        console.error('Error al generar la pregunta con Gemini API:', error);
         respuestaIA = 'Error al generar la pregunta.';
       }
 
