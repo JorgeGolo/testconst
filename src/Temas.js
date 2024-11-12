@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Nav from './Nav';
 import Confetti from 'react-confetti';
 import { CircleLoader } from 'react-spinners';
 
-function Temas() {
+function Temas({ testVisible, setShowTest }) {
   const [titulo, setTitulo] = useState(null);
   const [capitulo, setCapitulo] = useState(null);
   const [seccion, setSeccion] = useState(null);
@@ -18,21 +18,13 @@ function Temas() {
   const [showHint, setShowHint] = useState(false);
   const [moveUp, setMoveUp] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [testVisible, setTestVisible] = useState(false); // Mostrar u ocultar el test
-  const location = useLocation(); // Detectar la ruta actual
-
-  // Restaura la vista inicial cuando el componente se monta o la ruta cambia
-  useEffect(() => {
-    if (location.pathname === '/temas') {
-      setTestVisible(false); // Si estamos en /temas, el test se oculta
-    }
-  }, [location.pathname]); // Solo se ejecuta cuando cambia la ruta
+  const location = useLocation();
 
   const startTitleTest = async (title) => {
     console.log("Título:", title);
     try {
       setLoading(true);
-      setTestVisible(true); // Muestra el test al seleccionar un tema
+      setShowTest(true); // Muestra el test al seleccionar un tema
       const response = await fetch(`/api/getData?titulo=${encodeURIComponent(title)}`);
       const data = await response.json();
 
@@ -43,22 +35,13 @@ function Temas() {
         setArticulo(data.articulo);
         setContenido(data.contenido);
 
-        // Dividir la respuesta de IA en líneas y filtrar las vacías
         const lines = data.respuestaIA.split('\n').filter(line => line.trim() !== '');
-        console.log("Líneas obtenidas de la respuesta IA:", lines);
-
-        // Configurar la pregunta y opciones
         setPregunta(lines[0]);
-        console.log("Pregunta:", lines[0]);
-        
         const opciones = lines.slice(1, 5);
         setOpciones(opciones);
-        console.log("Opciones de respuesta:", opciones);
 
-        // Convertir la respuesta correcta en un índice (restando 1 para índice cero)
         const respuestaCorrecta = parseInt(lines[5]) - 1;
         setRespuestaCorrecta(respuestaCorrecta);
-        console.log("Índice de la respuesta correcta:", respuestaCorrecta);
       } else {
         console.error('Error al obtener los datos:', data.error);
       }
@@ -70,10 +53,6 @@ function Temas() {
   };
 
   const handleOptionSelect = (index) => {
-    if (showHint) {
-      setShowHint(false);
-    }
-
     if (index === respuestaCorrecta) {
       setShowConfetti(true);
       setTimeout(() => {
@@ -168,7 +147,7 @@ function Temas() {
       )}
 
       <div className="subnav">
-        <Nav />
+        <Nav setShowTest={setShowTest} />
       </div>
     </div>
   );
