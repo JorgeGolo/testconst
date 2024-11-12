@@ -1,6 +1,7 @@
-# Este proyecto se creó usando la API de ChatGPT
-# This proyect was created to consume the ChatGPT API
-(...)
+# Este proyecto se creó usando la API de GEMINI 
+# This proyect was created to consume the GEMINI API
+
+The Development will continue at this branch.
 
 # Getting Started with Create React App
 
