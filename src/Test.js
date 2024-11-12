@@ -5,24 +5,21 @@ import Nav from './Nav';
 import Confetti from 'react-confetti';
 
 function Test() {
-    const [titulo, setTitulo] = useState(null);
-    const [capitulo, setCapitulo] = useState(null);
-    const [seccion, setSeccion] = useState(null);
-    const [articulo, setArticulo] = useState(null);
-    const [contenido, setContenido] = useState(null);
-    const [pregunta, setPregunta] = useState('');
-    const [opciones, setOpciones] = useState([]);
-    const [respuestaCorrecta, setRespuestaCorrecta] = useState(null);
-    const [showConfetti, setShowConfetti] = useState(false);
-    const [isShaking, setIsShaking] = useState(false);
-    const [showHint, setShowHint] = useState(false);
-    const [moveUp, setMoveUp] = useState(false);
-    const [loading, setLoading] = useState(false);
+  const { titulo } = useParams(); // Accede al parámetro 'titulo' de la URL
+  const [capitulo, setCapitulo] = useState(null);
+  const [seccion, setSeccion] = useState(null);
+  const [articulo, setArticulo] = useState(null);
+  const [contenido, setContenido] = useState(null);
+  const [pregunta, setPregunta] = useState('');
+  const [opciones, setOpciones] = useState([]);
+  const [respuestaCorrecta, setRespuestaCorrecta] = useState(null);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [isShaking, setIsShaking] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+  const [moveUp, setMoveUp] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-
-//    const response = await fetch(`/api/getData?titulo=${encodeURIComponent(titulo)}`);
-
-useEffect(() => {
+  useEffect(() => {
     obtenerConsultaAleatoria();
   }, [titulo]); // Dependiendo de 'titulo', vuelve a cargar los datos
 
@@ -33,7 +30,6 @@ useEffect(() => {
       const data = await response.json();
 
       if (response.ok) {
-        setTitulo(data.titulo);
         setCapitulo(data.capitulo);
         setSeccion(data.seccion);
         setArticulo(data.articulo);
@@ -74,15 +70,14 @@ useEffect(() => {
       setTimeout(() => setIsShaking(false), 500);
     }
   };
-  
 
   const handleHintClick = () => {
-    setShowHint(!showHint);  // Alternar la visibilidad de la pista
+    setShowHint(!showHint);
   };
 
   return (
     <div>
-         {showConfetti && (
+      {showConfetti && (
         <Confetti
           gravity={1.5}
           numberOfPieces={500}
@@ -91,56 +86,56 @@ useEffect(() => {
           wind={0.02}
         />
       )}
-          <div className={`test ${moveUp ? 'move-up' : ''}`}>
+      <div className={`test ${moveUp ? 'move-up' : ''}`}>
 
-      {loading ? (
-        <div className="loading-container">
-          <CircleLoader size={100} color={"#e2e2e2"} loading={loading} />
-        </div>
-      ) : (
-        pregunta && (
+        {loading ? (
+          <div className="loading-container">
+            <CircleLoader size={100} color={"#e2e2e2"} loading={loading} />
+          </div>
+        ) : (
+          pregunta && (
             <div className={`pregunta-container ${isShaking ? 'shake' : ''}`}>
-                <p>
-              <strong>{pregunta}</strong>
-              <span
-                className="hinticon"
-                onClick={handleHintClick} // Usar la función para mostrar/ocultar la pista
-                style={{ cursor: 'pointer', marginLeft: '8px' }}
-              >
-                💡 Pista
-              </span>
-            </p>
-            <form>
-              {opciones.map((opcion, index) => (
-                <div key={index}>
-                  <input
-                    type="radio"
-                    id={`opcion${index}`}
-                    name="respuesta"
-                    onClick={() => handleOptionSelect(index)}
-                  />
-                  <label htmlFor={`opcion${index}`}>{opcion}</label>
-                </div>
-              ))}
-            </form>
-        </div>
-      )
-      )}
+              <p>
+                <strong>{pregunta}</strong>
+                <span
+                  className="hinticon"
+                  onClick={handleHintClick}
+                  style={{ cursor: 'pointer', marginLeft: '8px' }}
+                >
+                  💡 Pista
+                </span>
+              </p>
+              <form>
+                {opciones.map((opcion, index) => (
+                  <div key={index}>
+                    <input
+                      type="radio"
+                      id={`opcion${index}`}
+                      name="respuesta"
+                      onClick={() => handleOptionSelect(index)}
+                    />
+                    <label htmlFor={`opcion${index}`}>{opcion}</label>
+                  </div>
+                ))}
+              </form>
+            </div>
+          )
+        )}
 
-{showHint && (
-        <div className="hint show"> {/* Agregar la clase show para mostrar la pista */}
-          {titulo && <p>{titulo}</p>}
-          {capitulo && <p>Capítulo {capitulo}</p>}
-          {seccion && <p>Sección {seccion}</p>}
-          <p>{articulo}</p>
-          <div dangerouslySetInnerHTML={{ __html: contenido }} />
-        </div>
-      )}
+        {showHint && (
+          <div className="hint show">
+            {titulo && <p>{titulo}</p>}
+            {capitulo && <p>Capítulo {capitulo}</p>}
+            {seccion && <p>Sección {seccion}</p>}
+            <p>{articulo}</p>
+            <div dangerouslySetInnerHTML={{ __html: contenido }} />
+          </div>
+        )}
 
-     <div className="subnav">
-        <Nav />
+        <div className="subnav">
+          <Nav />
+        </div>
       </div>
-    </div>
     </div>
   );
 }
