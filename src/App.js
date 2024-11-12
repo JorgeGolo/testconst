@@ -26,7 +26,7 @@ function App() {
   const obtenerConsultaAleatoria = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/getBetterData');
+      const response = await fetch('/api/getData');
       const data = await response.json();
 
       if (response.ok) {
