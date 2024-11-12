@@ -1,5 +1,6 @@
-# Este proyecto se creó usando la API de Gemini
-# This proyect was created to consume the Gemini API
+# Este proyecto se creó usando la API de CHATGPT
+# This proyect was created to consume the CHATGPT API
+This proyect will be saved to use the mail branch with another API
 (...)
 
 
