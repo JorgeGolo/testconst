@@ -21,6 +21,10 @@ function Temas() {
   const [testVisible, setTestVisible] = useState(false); // Mostrar u ocultar el test
   const location = useLocation(); // Detectar la ruta actual
 
+  const handleNavClick = () => {
+    setTestVisible(false); // Poner testVisible en false cuando se hace clic en el nav
+  };
+
   // Restaura la vista inicial cuando el componente se monta o la ruta cambia
   useEffect(() => {
     if (location.pathname === '/temas') {
@@ -168,7 +172,7 @@ function Temas() {
       )}
 
       <div className="subnav">
-        <Nav />
+        <Nav onNavClick={handleNavClick} />
       </div>
     </div>
   );
