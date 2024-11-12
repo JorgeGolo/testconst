@@ -18,7 +18,10 @@ function Temas() {
   const [moveUp, setMoveUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [testVisible, setTestVisible] = useState(false); // Mostrar u ocultar el test
-
+  // Restaura la vista inicial cuando el componente se monta
+  useEffect(() => {
+    setTestVisible(false);
+  }, []);
   const startTitleTest = async (title) => {
     console.log("Título:", title);
     try {
