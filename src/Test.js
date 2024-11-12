@@ -60,6 +60,7 @@ function Test() {
         setShowConfetti(false);
         setMoveUp(true);
         setTimeout(() => {
+          renovarPregunta();
           setMoveUp(false);
         }, 1500);
       }, 1500);
@@ -69,6 +70,10 @@ function Test() {
       setIsShaking(true);
       setTimeout(() => setIsShaking(false), 500);
     }
+  };
+
+  const renovarPregunta = () => {
+    obtenerConsultaAleatoria();
   };
 
   const handleHintClick = () => {
