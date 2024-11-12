@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { CircleLoader } from 'react-spinners';
+import Nav from './Nav';
+import Confetti from 'react-confetti';
 
 function Test() {
     const [titulo, setTitulo] = useState(null);
@@ -17,29 +19,39 @@ function Test() {
     const [moveUp, setMoveUp] = useState(false);
     const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchTestData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`/api/getData?titulo=${encodeURIComponent(titulo)}`);
-        const data = await response.json();
-        if (response.ok) {
-          const lines = data.respuestaIA.split('\n').filter(line => line.trim() !== '');
-          setPregunta(lines[0]);
-          setOpciones(lines.slice(1, 5));
-          setRespuestaCorrecta(parseInt(lines[5]) - 1);
-        } else {
-          console.error('Error al obtener los datos:', data.error);
-        }
-      } catch (error) {
-        console.error('Error al obtener los datos:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchTestData();
-  }, [titulo]);
+//    const response = await fetch(`/api/getData?titulo=${encodeURIComponent(titulo)}`);
+
+useEffect(() => {
+    obtenerConsultaAleatoria();
+  }, []);
+
+  const obtenerConsultaAleatoria = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/getData?titulo=${encodeURIComponent(titulo)}`);
+      const data = await response.json();
+
+      if (response.ok) {
+        setTitulo(data.titulo);
+        setCapitulo(data.capitulo);
+        setSeccion(data.seccion);
+        setArticulo(data.articulo);
+        setContenido(data.contenido);
+
+        const lines = data.respuestaIA.split('\n').filter(line => line.trim() !== '');
+        setPregunta(lines[0]);
+        setOpciones(lines.slice(1, 5));
+        setRespuestaCorrecta(parseInt(lines[5]) - 1);
+      } else {
+        console.error('Error al obtener los datos:', data.error);
+      }
+    } catch (error) {
+      console.error('Error al obtener los datos:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleOptionSelect = (index) => {
     if (showHint) {
@@ -52,7 +64,6 @@ function Test() {
         setShowConfetti(false);
         setMoveUp(true);
         setTimeout(() => {
-          renovarPregunta();
           setMoveUp(false);
         }, 1500);
       }, 1500);
@@ -64,9 +75,7 @@ function Test() {
     }
   };
   
-  const renovarPregunta = () => {
-    obtenerConsultaAleatoria();
-  };
+
   const handleHintClick = () => {
     setShowHint(!showHint);  // Alternar la visibilidad de la pista
   };
@@ -91,6 +100,16 @@ function Test() {
       ) : (
         pregunta && (
             <div className={`pregunta-container ${isShaking ? 'shake' : ''}`}>
+                <p>
+              <strong>{pregunta}</strong>
+              <span
+                className="hinticon"
+                onClick={handleHintClick} // Usar la función para mostrar/ocultar la pista
+                style={{ cursor: 'pointer', marginLeft: '8px' }}
+              >
+                💡 Pista
+              </span>
+            </p>
             <form>
               {opciones.map((opcion, index) => (
                 <div key={index}>
