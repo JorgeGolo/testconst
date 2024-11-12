@@ -24,7 +24,7 @@ export default async function handler(req, res) {
       const { titulo } = req.query;
       let articulosSnapshot;
 
-      if (titulo) {
+      if (titulo && titulo !== 'constitucion') {
         // Si se proporciona un título, buscamos artículos que coincidan con ese título
         const articulosQuery = query(collection(db, 'articulos'), where('titulo', '==', titulo));
         articulosSnapshot = await getDocs(articulosQuery);
