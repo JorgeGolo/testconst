@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import Nav from './Nav';
 import Confetti from 'react-confetti';
 import { CircleLoader } from 'react-spinners';
 
-function Temas({ testVisible, setShowTest }) {
+function Temas() {
   const [titulo, setTitulo] = useState(null);
   const [capitulo, setCapitulo] = useState(null);
   const [seccion, setSeccion] = useState(null);
@@ -18,30 +17,44 @@ function Temas({ testVisible, setShowTest }) {
   const [showHint, setShowHint] = useState(false);
   const [moveUp, setMoveUp] = useState(false);
   const [loading, setLoading] = useState(false);
-  const location = useLocation();
+  const [testVisible, setTestVisible] = useState(false); // Mostrar u ocultar el test
+  // Restaura la vista inicial cuando el componente se monta
+  
+  useEffect(() => {
+    setTestVisible(false);
+  }, []);
 
   const startTitleTest = async (title) => {
     console.log("Título:", title);
     try {
       setLoading(true);
-      setShowTest(true); // Muestra el test al seleccionar un tema
+      setTestVisible(true); // Muestra el test al seleccionar un tema
       const response = await fetch(`/api/getData?titulo=${encodeURIComponent(title)}`);
       const data = await response.json();
-
+  
       if (response.ok) {
         setTitulo(data.titulo);
         setCapitulo(data.capitulo);
         setSeccion(data.seccion);
         setArticulo(data.articulo);
         setContenido(data.contenido);
-
+  
+        // Dividir la respuesta de IA en líneas y filtrar las vacías
         const lines = data.respuestaIA.split('\n').filter(line => line.trim() !== '');
+        console.log("Líneas obtenidas de la respuesta IA:", lines);
+  
+        // Configurar la pregunta y opciones
         setPregunta(lines[0]);
+        console.log("Pregunta:", lines[0]);
+        
         const opciones = lines.slice(1, 5);
         setOpciones(opciones);
-
+        console.log("Opciones de respuesta:", opciones);
+  
+        // Convertir la respuesta correcta en un índice (restando 1 para índice cero)
         const respuestaCorrecta = parseInt(lines[5]) - 1;
         setRespuestaCorrecta(respuestaCorrecta);
+        console.log("Índice de la respuesta correcta:", respuestaCorrecta);
       } else {
         console.error('Error al obtener los datos:', data.error);
       }
@@ -51,8 +64,13 @@ function Temas({ testVisible, setShowTest }) {
       setLoading(false);
     }
   };
+  
 
   const handleOptionSelect = (index) => {
+    if (showHint) {
+      setShowHint(false);
+    }
+
     if (index === respuestaCorrecta) {
       setShowConfetti(true);
       setTimeout(() => {
@@ -84,15 +102,15 @@ function Temas({ testVisible, setShowTest }) {
   return (
     <div>
       {!testVisible && (
-        <div>
-          <ul>
-            <li>Preámbulo</li>
-            <li>Título Preliminar - <button onClick={() => startTitleTest("Título Preliminar")}>Test</button></li>
-            <li>Título I - <button onClick={() => startTitleTest("Título I")}>Test</button></li>
-            <li>Título II - <button onClick={() => startTitleTest("Título II")}>Test</button></li>
-          </ul>
-        </div>
-      )}
+      <div>
+        <ul>
+          <li>Preámbulo</li>
+          <li>Título Preliminar - <button onClick={() => startTitleTest("Título Preliminar")}>Test</button></li>
+          <li>Título I - <button onClick={() => startTitleTest("Título I")}>Test</button></li>
+          <li>Título II - <button onClick={() => startTitleTest("Título II")}>Test</button></li>
+        </ul>
+      </div>)
+      }
 
       {showConfetti && (
         <Confetti gravity={1.5} numberOfPieces={500} recycle={false} initialVelocityY={10} wind={0.02} />
@@ -147,7 +165,7 @@ function Temas({ testVisible, setShowTest }) {
       )}
 
       <div className="subnav">
-        <Nav setShowTest={setShowTest} />
+        <Nav />
       </div>
     </div>
   );
