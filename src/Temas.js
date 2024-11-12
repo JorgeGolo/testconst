@@ -21,12 +21,12 @@ function Temas() {
   const [testVisible, setTestVisible] = useState(false); // Mostrar u ocultar el test
   const location = useLocation(); // Detectar la ruta actual
 
+  // Restaura la vista inicial cuando el componente se monta o la ruta cambia
   useEffect(() => {
-    // Cada vez que la ruta cambie, verificamos si estamos en la página de Temas
     if (location.pathname === '/temas') {
-      setTestVisible((prevState) => !prevState); // Alterna el valor de testVisible
+      setTestVisible(false); // Si estamos en /temas, el test se oculta
     }
-  }, [location.pathname]); // Este useEffect se ejecuta cada vez que cambia la ruta
+  }, [location.pathname]); // Solo se ejecuta cuando cambia la ruta
 
   const startTitleTest = async (title) => {
     console.log("Título:", title);
