@@ -134,7 +134,18 @@ function Test() {
                     {opcion}
                   </div>
                 ))}
-            </div>
+              </div>
+
+              {!nextQuestion && !loading && (
+                <button
+                  className="botonsiguiente"
+                  onClick={() => moversePregunta()}
+                  disabled={selectedIndex === null || selectedIndex !== respuestaCorrecta} // Deshabilitar hasta que se marque la respuesta correcta
+                >
+                  Siguiente
+                </button>
+              )}
+
             </div>
           )
         )}
