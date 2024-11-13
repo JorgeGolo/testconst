@@ -280,8 +280,8 @@ label {
 }
 
 .opcion.correcto {
-  border-color: rgb(5, 74, 5);
-  background-color: #d4edda;
+  border-color: rgb(8, 110, 8);
+  background-color: #00380d;
 }
 
 .opcion.incorrecto {
