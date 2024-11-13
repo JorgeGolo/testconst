@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Nav from "./Nav";
 import Switch from "react-switch";
 import { ConfigContext } from "./ConfigContext.js";
@@ -17,7 +17,7 @@ function Config() {
             offColor="#888"
             onColor="#0f0"
           />
-          <p>{showConfetti ? "On" : "Off"}</p>
+          <p>{getConfetti ? "On" : "Off"}</p>
         </li>
         <li>Siguiente pregunta automática</li>
         <li>Contador de aciertos</li>
