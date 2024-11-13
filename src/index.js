@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Temas from './Temas';
 import Test from './Test';
+import Config from './Config';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,6 +16,8 @@ root.render(
       <Route path="/" element={<App />} />
       <Route path="/temas" element={<Temas />} />
       <Route path="/test/:titulo" element={<Test />} />
+      <Route path="/config" element={<Config />} />
+
     </Routes>
   </Router>
 );
