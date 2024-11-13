@@ -9,6 +9,8 @@ function Config() {
       setGetConfetti,
       nextQuestion,
       setNextQuestion,
+      showBulb,
+      setShowBulb,
     } = useContext(ConfigContext);
 
   return (
@@ -29,7 +31,14 @@ function Config() {
             offColor="#888"
             onColor="#007bff"
           />{" "} Siguiente pregunta automática</li>
-        <li>Pistas</li>
+        <li>
+        <Switch
+            onChange={setShowBulb}
+            checked={showBulb}
+            offColor="#888"
+            onColor="#007bff"
+          />{" "} Pistas
+        </li>
         <li>Contador de aciertos</li>
       </ul>
       <div className="subnav">
