@@ -8,6 +8,7 @@ function Test() {
   const { titulo } = useParams(); // Accede al parámetro 'titulo' de la URL
   const [capitulo, setCapitulo] = useState(null);
   const [seccion, setSeccion] = useState(null);
+  const [contenidoseccion, setContenidoSeccion] = useState(null);
   const [articulo, setArticulo] = useState(null);
   const [contenido, setContenido] = useState(null);
   const [pregunta, setPregunta] = useState('');
@@ -34,6 +35,7 @@ function Test() {
         setSeccion(data.seccion);
         setArticulo(data.articulo);
         setContenido(data.contenido);
+        setContenidoSeccion(data.contenidoseccion);
 
         const lines = data.respuestaIA.split('\n').filter(line => line.trim() !== '');
         setPregunta(lines[0]);
@@ -131,7 +133,7 @@ function Test() {
           <div className="hint show">
             {titulo && <p>{titulo}</p>}
             {capitulo && <p>Capítulo {capitulo}</p>}
-            {seccion && <p>Sección {seccion}</p>}
+            {seccion && <p>Sección {seccion}</p><p>{contenidoseccion}</p>}
             <p>{articulo}</p>
             <div dangerouslySetInnerHTML={{ __html: contenido }} />
           </div>

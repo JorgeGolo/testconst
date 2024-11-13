@@ -96,6 +96,7 @@ export default async function handler(req, res) {
         articulo: randomArticuloDoc.id,
         contenido,
         seccion,
+        contenidoseccion,
         capitulo,
         titulo: tituloFinal,
         respuestaIA,
