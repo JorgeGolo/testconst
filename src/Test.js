@@ -61,7 +61,8 @@ function Test() {
 
   const handleOptionSelect = (index) => {
     setSelectedIndex(index); // Guarda el índice seleccionado
-  
+    setShowHint(false);
+
     if (index === respuestaCorrecta) {
       setShowConfetti(true);
       
@@ -77,7 +78,7 @@ function Test() {
   };
 
   const moversePregunta = () => {
-    showHint = false;
+    setShowHint(false);
     setTimeout(() => {
       setShowConfetti(false);
       setMoveUp(true);
