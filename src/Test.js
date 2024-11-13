@@ -146,8 +146,8 @@ function Test() {
           </div>
         )}
 
-        {!nextQuestion && (
-            <button>Siguiente</button>
+        {!nextQuestion && !loading && (
+            <button onClick={() => obtenerConsultaAleatoria(index)}>Siguiente</button>
         )
         }
 
