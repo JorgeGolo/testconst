@@ -261,3 +261,7 @@ label {
   color: white
 
 }
+
+.configcontent ul {
+  list-style-type: none;
+}
