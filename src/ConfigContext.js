@@ -3,7 +3,7 @@ import React, { createContext, useState } from "react";
 export const ConfigContext = createContext();
 
 export const ConfigProvider = ({ children }) => {
-  const [getConfetti, setGetConfetti] = useState(false);
+  const [getConfetti, setGetConfetti] = useState(true);
 
   return (
     <ConfigContext.Provider value={{ getConfetti, setGetConfetti }}>
