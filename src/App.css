@@ -267,6 +267,11 @@ label {
 
 .opcion {
   transition: background-color 0.2s ease, transform 0.1s ease;
+  border: 1px solid #ccc;
+  border-radius: 5px; 
+  padding: 10px;
+  margin: 5px 0;
+  cursor: pointer;
 }
 
 .opcion:hover {
@@ -287,4 +292,13 @@ label {
 .opcion.incorrecto {
   border-color: red;
   background-color: #f8d7da;
+}
+
+.botonsiguiente {
+  width: 100%; 
+  border: 1px solid rgb(204, 204, 204); 
+  border-radius: 5px; 
+  padding: 10px; 
+  margin: 5px 0px; 
+  cursor: pointer;
 }

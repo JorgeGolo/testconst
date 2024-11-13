@@ -19,7 +19,7 @@ function Config() {
             onChange={setGetConfetti}
             checked={getConfetti}
             offColor="#888"
-            onColor="#0f0"
+            onColor="#007bff"
           />{" "} Confetti
         </li>
         <li>          
@@ -27,7 +27,7 @@ function Config() {
             onChange={setNextQuestion}
             checked={nextQuestion}
             offColor="#888"
-            onColor="#0f0"
+            onColor="#007bff"
           />{" "} Siguiente pregunta automática</li>
         <li>Pistas</li>
         <li>Contador de aciertos</li>

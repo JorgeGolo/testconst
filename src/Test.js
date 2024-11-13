@@ -136,13 +136,6 @@ function Test() {
                     key={index}
                     onClick={() => handleOptionSelect(index)}
                     className={`opcion ${selectedIndex === index && index === respuestaCorrecta ? 'correcto' : ''}`}
-                    style={{
-                      border: '1px solid #ccc',
-                      borderRadius: '5px',
-                      padding: '10px',
-                      margin: '5px 0',
-                      cursor: 'pointer',
-                    }}
                   >
                     {opcion}
                   </div>
@@ -169,7 +162,8 @@ function Test() {
           </div>
         )}
         {!nextQuestion && !loading && (
-          <button onClick={() => moversePregunta()}>Siguiente</button>
+          <button className="botonsiguiente"
+          onClick={() => moversePregunta()}>Siguiente</button>
         )}
         <div className="subnav">
           <Nav />
