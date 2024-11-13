@@ -7,7 +7,8 @@ import Confetti from 'react-confetti';
 import { ConfigContext } from "./ConfigContext";
 
 function Test() {
-  const { getConfetti } = useContext(ConfigContext); // Accede al estado global
+  const { getConfetti, nextQuestion } = useContext(ConfigContext); // Accede al estado global del contexto
+
 
   const { titulo } = useParams(); // Accede al parámetro 'titulo' de la URL
   const [capitulo, setCapitulo] = useState(null);
@@ -81,7 +82,9 @@ function Test() {
   };
 
   const renovarPregunta = () => {
-    obtenerConsultaAleatoria();
+    if (nextQuestion) {
+      obtenerConsultaAleatoria();
+    }
   };
 
   const handleHintClick = () => {
@@ -134,6 +137,10 @@ function Test() {
             </div>
           )
         )}
+
+        {!nextQuestion &&
+        <button>Siguiente</button>
+        }
 
         {showHint && (
           <div className="hint show">
