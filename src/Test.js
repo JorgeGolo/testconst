@@ -147,7 +147,7 @@ function Test() {
         )}
 
         {!nextQuestion && !loading && (
-            <button onClick={() => obtenerConsultaAleatoria(index)}>Siguiente</button>
+            <button onClick={() => obtenerConsultaAleatoria()}>Siguiente</button>
         )
         }
 
