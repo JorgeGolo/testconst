@@ -66,15 +66,7 @@ function Test() {
       setShowConfetti(true);
       
       if (nextQuestion) {
-        setTimeout(() => {
-          setShowConfetti(false);
-          setMoveUp(true);
-          setTimeout(() => {
-            obtenerConsultaAleatoria();
-            setMoveUp(false);
-            setSelectedIndex(null); // Resetea el índice seleccionado
-          }, 1500);
-        }, 1500);
+        moversePregunta();
       }
       setIsShaking(false);
     } else {
@@ -86,6 +78,7 @@ function Test() {
 
   const moversePregunta = () => {
     setTimeout(() => {
+      showHint = false;
       setShowConfetti(false);
       setMoveUp(true);
       setTimeout(() => {
