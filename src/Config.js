@@ -7,6 +7,8 @@ function Config() {
     const {
       getConfetti,
       setGetConfetti,
+      nextQuestion,
+      setNextQuestion,
     } = useContext(ConfigContext);
 
   return (
@@ -20,7 +22,13 @@ function Config() {
             onColor="#0f0"
           />{" "} Confetti
         </li>
-        <li>Siguiente pregunta automática</li>
+        <li>          
+            <Switch
+            onChange={setNextQuestion}
+            checked={nextQuestion}
+            offColor="#888"
+            onColor="#0f0"
+          />{" "} Siguiente pregunta automática</li>
         <li>Contador de aciertos</li>
       </ul>
       <div className="subnav">
