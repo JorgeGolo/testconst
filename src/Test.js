@@ -77,8 +77,8 @@ function Test() {
   };
 
   const moversePregunta = () => {
+    showHint = false;
     setTimeout(() => {
-      showHint = false;
       setShowConfetti(false);
       setMoveUp(true);
       setTimeout(() => {
