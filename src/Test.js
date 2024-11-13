@@ -82,7 +82,10 @@ function Test() {
   };
 
   const renovarPregunta = () => {
-    obtenerConsultaAleatoria();
+    if (!nextQuestion) {
+      obtenerConsultaAleatoria();
+    }
+    
   };
 
   const handleHintClick = () => {
@@ -101,7 +104,6 @@ function Test() {
         />
       )}
       <div className={`test ${moveUp ? 'move-up' : ''}`}>
-
         {loading ? (
           <div className="loading-container">
             <CircleLoader size={100} color={"#e2e2e2"} loading={loading} />
@@ -119,38 +121,48 @@ function Test() {
                   💡 Pista
                 </span>
               </p>
-              <form>
+              <div className="opciones-container">
                 {opciones.map((opcion, index) => (
-                  <div key={index}>
-                    <input
-                      type="radio"
-                      id={`opcion${index}`}
-                      name="respuesta"
-                      onClick={() => handleOptionSelect(index)}
-                    />
-                    <label htmlFor={`opcion${index}`}>{opcion}</label>
+                  <div
+                    key={index}
+                    className={`opcion ${index === respuestaCorrecta ? 'correct' : ''}`}
+                    onClick={() => handleOptionSelect(index)}
+                    style={{
+                      border: '1px solid #ccc',
+                      borderRadius: '5px',
+                      padding: '10px',
+                      margin: '5px 0',
+                      cursor: 'pointer',
+                      backgroundColor: index === respuestaCorrecta ? '#d4edda' : '#f8d7da',
+                    }}
+                  >
+                    {opcion}
                   </div>
                 ))}
-              </form>
+              </div>
             </div>
           )
         )}
-
         {showHint && (
           <div className="hint show">
             {titulo && <p>{titulo}</p>}
-            {capitulo && <p>Capítulo {capitulo}: <span dangerouslySetInnerHTML={{ __html: contenidocapitulo }}/></p>}
-            {seccion && <p>Sección {seccion}: <span dangerouslySetInnerHTML={{ __html: contenidoseccion }}/></p>}
+            {capitulo && (
+              <p>
+                Capítulo {capitulo}: <span dangerouslySetInnerHTML={{ __html: contenidocapitulo }} />
+              </p>
+            )}
+            {seccion && (
+              <p>
+                Sección {seccion}: <span dangerouslySetInnerHTML={{ __html: contenidoseccion }} />
+              </p>
+            )}
             <p>{articulo}</p>
             <div dangerouslySetInnerHTML={{ __html: contenido }} />
           </div>
         )}
-
         {!nextQuestion && !loading && (
-            <button onClick={() => obtenerConsultaAleatoria()}>Siguiente</button>
-        )
-        }
-
+          <button onClick={() => obtenerConsultaAleatoria()}>Siguiente</button>
+        )}
         <div className="subnav">
           <Nav />
         </div>

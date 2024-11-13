@@ -265,3 +265,21 @@ label {
 .configcontent ul {
   list-style-type: none;
 }
+
+.opcion {
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.opcion:hover {
+  background-color: #007bff;
+  color: white;
+  transform: scale(1.05);
+}
+
+.opcion.correct {
+  background-color: #d4edda;
+}
+
+.opcion.wrong {
+  background-color: #f8d7da;
+}
