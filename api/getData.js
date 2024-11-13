@@ -65,10 +65,10 @@ export default async function handler(req, res) {
           Sigue este formato:
           
           Texto de la pregunta
-          Texto de posible respuesta 
-          Texto de otra posible respuesta
-          Texto de otra posible respuesta
-          Texto de otra posible respuesta
+          Texto de respuesta 
+          Texto de respuesta
+          Texto de respuesta
+          Texto de respuesta
           1
           
           Es importante que no pongas números, letras, ni símbolos delante de las respuestas.
