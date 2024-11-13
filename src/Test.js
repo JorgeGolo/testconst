@@ -64,15 +64,18 @@ function Test() {
   
     if (index === respuestaCorrecta) {
       setShowConfetti(true);
-      setTimeout(() => {
-        setShowConfetti(false);
-        setMoveUp(true);
+      
+      if (nextQuestion) {
         setTimeout(() => {
-          renovarPregunta();
-          setMoveUp(false);
-          setSelectedIndex(null); // Resetea el índice seleccionado
+          setShowConfetti(false);
+          setMoveUp(true);
+          setTimeout(() => {
+            obtenerConsultaAleatoria();
+            setMoveUp(false);
+            setSelectedIndex(null); // Resetea el índice seleccionado
+          }, 1500);
         }, 1500);
-      }, 1500);
+      }
       setIsShaking(false);
     } else {
       setShowConfetti(false);
@@ -81,12 +84,18 @@ function Test() {
     }
   };
 
-  const renovarPregunta = () => {
-    if (nextQuestion) {
-      obtenerConsultaAleatoria();
-    }
-    
-  };
+  const moversePregunta = () => {
+    setTimeout(() => {
+      setShowConfetti(false);
+      setMoveUp(true);
+      setTimeout(() => {
+        obtenerConsultaAleatoria();
+        setMoveUp(false);
+        setSelectedIndex(null); // Resetea el índice seleccionado
+      }, 1500);
+    }, 1500);
+
+  }
 
   const handleHintClick = () => {
     setShowHint(!showHint);
@@ -160,7 +169,7 @@ function Test() {
           </div>
         )}
         {!nextQuestion && !loading && (
-          <button onClick={() => obtenerConsultaAleatoria()}>Siguiente</button>
+          <button onClick={() => moversePregunta()}>Siguiente</button>
         )}
         <div className="subnav">
           <Nav />
