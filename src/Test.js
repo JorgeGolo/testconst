@@ -9,6 +9,7 @@ function Test() {
   const [capitulo, setCapitulo] = useState(null);
   const [seccion, setSeccion] = useState(null);
   const [contenidoseccion, setContenidoSeccion] = useState(null);
+  const [contenidocapitulo, setContenidoCapitulo] = useState(null);
   const [articulo, setArticulo] = useState(null);
   const [contenido, setContenido] = useState(null);
   const [pregunta, setPregunta] = useState('');
@@ -36,6 +37,7 @@ function Test() {
         setArticulo(data.articulo);
         setContenido(data.contenido);
         setContenidoSeccion(data.contenidoseccion);
+        setContenidoCapitulo(data.contenidocapitulo);
 
         const lines = data.respuestaIA.split('\n').filter(line => line.trim() !== '');
         setPregunta(lines[0]);
@@ -132,8 +134,8 @@ function Test() {
         {showHint && (
           <div className="hint show">
             {titulo && <p>{titulo}</p>}
-            {capitulo && <p>Capítulo {capitulo}</p>}
-            {seccion && <p>Sección {seccion} - {contenidoseccion}</p>}
+            {capitulo && <p>Capítulo {capitulo}: <span dangerouslySetInnerHTML={{ __html: contenidocapitulo }}/></p>}
+            {seccion && <p>Sección {seccion}: <span dangerouslySetInnerHTML={{ __html: contenidoseccion }}/></p>}
             <p>{articulo}</p>
             <div dangerouslySetInnerHTML={{ __html: contenido }} />
           </div>
