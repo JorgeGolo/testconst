@@ -4,7 +4,10 @@ import Switch from "react-switch";
 import { ConfigContext } from "./ConfigContext.js";
 
 function Config() {
-    const [getConfetti, setGetConfetti] = useState(true);
+    const {
+      getConfetti,
+      setGetConfetti,
+    } = useContext(ConfigContext);
 
   return (
     <div className="configcontent">
