@@ -8,6 +8,7 @@ import { ConfigContext } from "./ConfigContext";
 
 function Test() {
   const { getConfetti } = useContext(ConfigContext); // Accede al estado global
+  const { nextQuestion } = useContext(ConfigContext); // Accede al estado global
 
   const { titulo } = useParams(); // Accede al parámetro 'titulo' de la URL
   const [capitulo, setCapitulo] = useState(null);
@@ -81,7 +82,9 @@ function Test() {
   };
 
   const renovarPregunta = () => {
-    obtenerConsultaAleatoria();
+    if (nextQuestion) {
+      obtenerConsultaAleatoria();
+    }
   };
 
   const handleHintClick = () => {
@@ -144,6 +147,10 @@ function Test() {
             <div dangerouslySetInnerHTML={{ __html: contenido }} />
           </div>
         )}
+
+        {!nextQuestion &&
+          <button>Siguiente</button>
+        }
 
         <div className="subnav">
           <Nav />

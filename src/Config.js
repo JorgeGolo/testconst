@@ -5,6 +5,7 @@ import { ConfigContext } from "./ConfigContext.js";
 
 function Config() {
     const [getConfetti, setGetConfetti] = useState(false);
+    const [nextQuestion, setNextQuestion] = useState(false);
 
   return (
     <div className="configcontent">
@@ -17,7 +18,13 @@ function Config() {
             onColor="#0f0"
           />{" "} Confetti
         </li>
-        <li>Siguiente pregunta automática</li>
+        <li>          
+            <Switch
+            onChange={setNextQuestion}
+            checked={nextQuestion}
+            offColor="#888"
+            onColor="#0f0"
+          />{" "} Siguiente pregunta automática</li>
         <li>Contador de aciertos</li>
       </ul>
       <div className="subnav">
