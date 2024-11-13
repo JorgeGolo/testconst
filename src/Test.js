@@ -168,10 +168,7 @@ function Test() {
             <div dangerouslySetInnerHTML={{ __html: contenido }} />
           </div>
         )}
-        {!nextQuestion && !loading && (
-          <button className="botonsiguiente"
-          onClick={() => moversePregunta()}>Siguiente</button>
-        )}
+
         <div className="subnav">
           <Nav />
         </div>
