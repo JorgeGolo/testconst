@@ -82,9 +82,7 @@ function Test() {
   };
 
   const renovarPregunta = () => {
-    if (nextQuestion) {
-      obtenerConsultaAleatoria();
-    }
+    obtenerConsultaAleatoria();
   };
 
   const handleHintClick = () => {

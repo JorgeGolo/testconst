@@ -14,16 +14,16 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ConfigProvider>
 
-<Router>
-    <Routes>
+    <Router>
+      <Routes>
 
-      <Route path="/" element={<App />} />
-      <Route path="/temas" element={<Temas />} />
-      <Route path="/test/:titulo" element={<Test />} />
-      <Route path="/config" element={<Config />} />
+          <Route path="/" element={<App />} />
+          <Route path="/temas" element={<Temas />} />
+          <Route path="/test/:titulo" element={<Test />} />
+          <Route path="/config" element={<Config />} />
 
-    </Routes>
-  </Router>
+      </Routes>
+    </Router>
   </ConfigProvider>
 
 );
