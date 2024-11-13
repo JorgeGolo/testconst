@@ -4,20 +4,14 @@ import Switch from "react-switch";
 
 function Config() {
     
-    const [checkedc, setCheckedc] = useState(false);
+      const [checked, setChecked] = useState(false);
 
 
 return (
     <div className='configcontent'>
     <ul>
       <li>
-        Confetti  <Switch 
-        onChange={setCheckedc} 
-        checked={checkedc} 
-        offColor="#888" 
-        onColor="#0f0" 
-      />
-      <p>{checked ? "On" : "Off"}</p>
+        Confetti
       </li>
       <li>
         Siguiente pregunta automática
