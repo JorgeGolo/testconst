@@ -1,11 +1,15 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import Nav from "./Nav";
 import Switch from "react-switch";
 import { ConfigContext } from "./ConfigContext.js";
 
 function Config() {
-    const [getConfetti, setGetConfetti] = useState(false);
-    const [nextQuestion, setNextQuestion] = useState(false);
+  const {
+    getConfetti,
+    setGetConfetti,
+    nextQuestion,
+    setNextQuestion,
+  } = useContext(ConfigContext);
 
   return (
     <div className="configcontent">
@@ -19,14 +23,15 @@ function Config() {
             onColor="#007bff"
           />
         </li>
-        <li>Siguiente pregunta automática {" "}
+        <li>
+          Siguiente pregunta automática {" "}
           <Switch
             onChange={setNextQuestion}
             checked={nextQuestion}
             offColor="#888"
             onColor="#007bff"
           />
-          </li>
+        </li>
         <li>Contador de aciertos</li>
       </ul>
       <div className="subnav">
