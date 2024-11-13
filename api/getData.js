@@ -61,7 +61,7 @@ export default async function handler(req, res) {
 
         const prompt = `
           Genera una pregunta sobre el siguiente contenido: ${concatenado}.
-          Debes incluir cuatro opciones de respuesta y solo una debe ser correcta.
+          Debes incluir cuatro opciones de respuesta y solo una debe ser correcta, las otras tres incorrectas.
           Sigue este formato:
           
           Texto de la pregunta
