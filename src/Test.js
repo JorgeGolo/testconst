@@ -4,8 +4,11 @@ import { useParams } from 'react-router-dom';
 import { CircleLoader } from 'react-spinners';
 import Nav from './Nav';
 import Confetti from 'react-confetti';
+import { ConfigContext } from "./ConfigContext";
 
 function Test() {
+  const { getConfetti } = useContext(ConfigContext); // Accede al estado global
+
   const { titulo } = useParams(); // Accede al parámetro 'titulo' de la URL
   const [capitulo, setCapitulo] = useState(null);
   const [seccion, setSeccion] = useState(null);
@@ -87,7 +90,7 @@ function Test() {
 
   return (
     <div>
-      {showConfetti && (
+      {showConfetti && getConfetti && (
         <Confetti
           gravity={1.5}
           numberOfPieces={500}

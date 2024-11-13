@@ -7,12 +7,16 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Temas from './Temas';
 import Test from './Test';
 import Config from './Config';
+import { ConfigProvider } from "./ConfigContext";
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Router>
+  <ConfigProvider>
+
+<Router>
     <Routes>
+
       <Route path="/" element={<App />} />
       <Route path="/temas" element={<Temas />} />
       <Route path="/test/:titulo" element={<Test />} />
@@ -20,6 +24,8 @@ root.render(
 
     </Routes>
   </Router>
+  </ConfigProvider>
+
 );
 
 // If you want to start measuring performance in your app, pass a function
