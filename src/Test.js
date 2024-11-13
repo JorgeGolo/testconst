@@ -25,6 +25,7 @@ function Test() {
   const [showHint, setShowHint] = useState(false);
   const [moveUp, setMoveUp] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
 
   useEffect(() => {
     obtenerConsultaAleatoria();
@@ -59,10 +60,8 @@ function Test() {
   };
 
   const handleOptionSelect = (index) => {
-    if (showHint) {
-      setShowHint(false);
-    }
-
+    setSelectedIndex(index); // Guarda el índice seleccionado
+  
     if (index === respuestaCorrecta) {
       setShowConfetti(true);
       setTimeout(() => {
@@ -71,6 +70,7 @@ function Test() {
         setTimeout(() => {
           renovarPregunta();
           setMoveUp(false);
+          setSelectedIndex(null); // Resetea el índice seleccionado
         }, 1500);
       }, 1500);
       setIsShaking(false);
@@ -125,8 +125,14 @@ function Test() {
                 {opciones.map((opcion, index) => (
                   <div
                     key={index}
-                    className={`opcion ${index === respuestaCorrecta ? 'correct' : ''}`}
                     onClick={() => handleOptionSelect(index)}
+                    className={`opcion ${
+                      selectedIndex === index
+                        ? index === respuestaCorrecta
+                          ? 'correcto'
+                          : 'incorrecto'
+                        : ''
+                    }`}
                     style={{
                       border: '1px solid #ccc',
                       borderRadius: '5px',
@@ -138,7 +144,7 @@ function Test() {
                     {opcion}
                   </div>
                 ))}
-              </div>
+            </div>
             </div>
           )
         )}

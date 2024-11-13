@@ -275,10 +275,16 @@ label {
   transform: scale(1.05);
 }
 
-.opcion.correct {
+.opcion.wrong {
+  background-color: #f8d7da;
+}
+
+.opcion.correcto {
+  border-color: green;
   background-color: #d4edda;
 }
 
-.opcion.wrong {
+.opcion.incorrecto {
+  border-color: red;
   background-color: #f8d7da;
 }
