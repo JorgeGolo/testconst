@@ -133,7 +133,7 @@ function Test() {
           <div className="hint show">
             {titulo && <p>{titulo}</p>}
             {capitulo && <p>Capítulo {capitulo}</p>}
-            {seccion && <p>Sección {seccion}</p><p>{contenidoseccion}</p>}
+            {seccion && <p>Sección {seccion} - {contenidoseccion}</p>}
             <p>{articulo}</p>
             <div dangerouslySetInnerHTML={{ __html: contenido }} />
           </div>
