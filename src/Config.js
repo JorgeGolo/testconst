@@ -29,6 +29,7 @@ function Config() {
             offColor="#888"
             onColor="#0f0"
           />{" "} Siguiente pregunta automática</li>
+        <li>Pistas</li>
         <li>Contador de aciertos</li>
       </ul>
       <div className="subnav">

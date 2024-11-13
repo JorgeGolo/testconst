@@ -126,13 +126,7 @@ function Test() {
                   <div
                     key={index}
                     onClick={() => handleOptionSelect(index)}
-                    className={`opcion ${
-                      selectedIndex === index
-                        ? index === respuestaCorrecta
-                          ? 'correcto'
-                          : 'incorrecto'
-                        : ''
-                    }`}
+                    className={`opcion ${selectedIndex === index && index === respuestaCorrecta ? 'correcto' : ''}`}
                     style={{
                       border: '1px solid #ccc',
                       borderRadius: '5px',
