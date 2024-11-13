@@ -133,7 +133,6 @@ function Test() {
                       padding: '10px',
                       margin: '5px 0',
                       cursor: 'pointer',
-                      backgroundColor: index === respuestaCorrecta ? '#d4edda' : '#f8d7da',
                     }}
                   >
                     {opcion}

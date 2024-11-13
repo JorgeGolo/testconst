@@ -179,7 +179,6 @@ label {
   position: absolute; /* Posiciona la pista de forma absoluta */
   top: 100%; /* La coloca justo debajo de la pregunta */
   left: 0;
-  width: 100%; /* Ocupa todo el ancho disponible */
   max-height: 0; /* Inicialmente no se muestra */
   overflow: hidden; /* Evita que el contenido se desborde */
   transition: max-height 0.5s ease-in-out; /* Animación suave */
