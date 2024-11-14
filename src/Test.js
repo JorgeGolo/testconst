@@ -122,7 +122,7 @@ function Test() {
         <div>
           <p style={{ color: 'red' }}>{error}</p>
           {error.includes('sobrecargado') && (
-            <button onClick={fetchPregunta}>Reintentar</button>
+            <button onClick={() => obtenerConsultaAleatoria()}>Reintentar</button>
           )}
         </div>
       )}
