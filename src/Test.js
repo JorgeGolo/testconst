@@ -121,7 +121,7 @@ function Test() {
       )}
       <div className={`test ${moveUp ? 'move-up' : ''}`}>
 
-        {reint && (
+        {reintentar && (
           <div>Reintentar</div>
 
         )}
