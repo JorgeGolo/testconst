@@ -60,10 +60,10 @@ function Test() {
       } else {
         console.error('Error al obtener los datos:', data.error);
       }
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      setError(error.message);
 
-      console.error('Error al obtener los datos:', err);
+      console.error('Error al obtener los datos:', error);
     } finally {
       setLoading(false);
     }
