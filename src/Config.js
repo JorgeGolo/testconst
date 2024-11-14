@@ -11,6 +11,8 @@ function Config() {
       setNextQuestion,
       showBulb,
       setShowBulb,
+      showCount,
+      setShowCount,
     } = useContext(ConfigContext);
 
   return (
@@ -25,21 +27,28 @@ function Config() {
           />{" "} Confetti
         </li>
         <li>          
-            <Switch
+          <Switch
             onChange={setNextQuestion}
             checked={nextQuestion}
             offColor="#888"
             onColor="#007bff"
           />{" "} Siguiente pregunta automática</li>
         <li>
-        <Switch
+          <Switch
             onChange={setShowBulb}
             checked={showBulb}
             offColor="#888"
             onColor="#007bff"
           />{" "} Pistas
         </li>
-        <li>Contador de aciertos</li>
+        <li>
+          <Switch
+            onChange={setShowCount}
+            checked={showCount}
+            offColor="#888"
+            onColor="#007bff"
+          />{" "} Contador de aciertos
+        </li>
       </ul>
       <div className="subnav">
         <Nav />

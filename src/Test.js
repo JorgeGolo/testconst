@@ -10,6 +10,7 @@ function Test() {
   const { getConfetti } = useContext(ConfigContext); // Accede al estado global
   const { nextQuestion } = useContext(ConfigContext); // Accede al estado global
   const { showBulb } = useContext(ConfigContext); // Accede al estado global
+  const { showCount } = useContext(ConfigContext); // Accede al estado global
 
   const { titulo } = useParams(); // Accede al parámetro 'titulo' de la URL
   const [capitulo, setCapitulo] = useState(null);
@@ -168,6 +169,13 @@ function Test() {
             <div dangerouslySetInnerHTML={{ __html: contenido }} />
           </div>
         )}
+
+        {showCount && (
+
+          <div>Contador</div>
+
+        )}
+
 
         <div className="subnav">
           <Nav />
