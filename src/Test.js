@@ -62,8 +62,8 @@ function Test() {
         console.error('Error 1 al obtener los datos:', data.error);
       }
     } catch (error) {
-      if(error==='El modelo está sobrecargado. Por favor, inténtalo nuevamente.')
-      {}
+      if(error==='El modelo está sobrecargado. Por favor, inténtalo nuevamente.');
+      {
       setReint(true);
     }
       console.error('Error 2 al obtener los datos:', error);
