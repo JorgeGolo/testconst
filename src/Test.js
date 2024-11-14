@@ -29,7 +29,7 @@ function Test() {
   const [moveUp, setMoveUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
-  const [reint, setReint] = useState(null);
+  const [reintentar, setReint] = useState(null);
 
 
   useEffect(() => {
@@ -59,11 +59,11 @@ function Test() {
         setOpciones(lines.slice(1, 5));
         setRespuestaCorrecta(parseInt(lines[5]) - 1);
       } else {
-        console.error('Error al obtener los datos:', data.error);
+        console.error('Error 1 al obtener los datos:', data.error);
       }
     } catch (error) {
       setReint(reintentar);
-      console.error('Error al obtener los datos:', error);
+      console.error('Error 2 al obtener los datos:', error);
     } finally {
       setLoading(false);
     }
