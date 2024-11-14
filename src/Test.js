@@ -29,9 +29,8 @@ function Test() {
   const [moveUp, setMoveUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
-  const [reintentar, setReint] = useState(null);
 
-
+  
   useEffect(() => {
     obtenerConsultaAleatoria();
   }, [titulo]); // Dependiendo de 'titulo', vuelve a cargar los datos
@@ -43,9 +42,6 @@ function Test() {
       const data = await response.json();
 
       if (response.ok) {
-        setReint(false);
-
-
         setCapitulo(data.capitulo);
         setSeccion(data.seccion);
         setArticulo(data.articulo);
@@ -60,13 +56,8 @@ function Test() {
         setRespuestaCorrecta(parseInt(lines[5]) - 1);
       } else {
         console.error('Error 1 al obtener los datos:', data.error);
-        if(data.error==='El modelo está sobrecargado. Por favor, inténtalo nuevamente.');
-        {
-        setReint(true);
-      }
       }
     } catch (error) {
-
       console.error('Error 2 al obtener los datos:', error);
     } finally {
       setLoading(false);
@@ -121,12 +112,6 @@ function Test() {
         />
       )}
       <div className={`test ${moveUp ? 'move-up' : ''}`}>
-
-        {reintentar && (
-          <div>Reintentar</div>
-
-        )}
-
         {loading ? (
           <div className="loading-container">
             <CircleLoader size={100} color={"#e2e2e2"} loading={loading} />
