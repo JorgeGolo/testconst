@@ -29,12 +29,16 @@ function Test() {
   const [moveUp, setMoveUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [error, setError] = useState(null);
+
 
   useEffect(() => {
     obtenerConsultaAleatoria();
   }, [titulo]); // Dependiendo de 'titulo', vuelve a cargar los datos
 
   const obtenerConsultaAleatoria = async () => {
+    setError(null);
+
     try {
       setLoading(true);
       const response = await fetch(`/api/getData?titulo=${encodeURIComponent(titulo)}`);
@@ -56,8 +60,10 @@ function Test() {
       } else {
         console.error('Error al obtener los datos:', data.error);
       }
-    } catch (error) {
-      console.error('Error al obtener los datos:', error);
+    } catch (err) {
+      setError(err.message);
+
+      console.error('Error al obtener los datos:', err);
     } finally {
       setLoading(false);
     }
@@ -111,12 +117,22 @@ function Test() {
         />
       )}
       <div className={`test ${moveUp ? 'move-up' : ''}`}>
+        
+      {error && (
+        <div>
+          <p style={{ color: 'red' }}>{error}</p>
+          {error.includes('sobrecargado') && (
+            <button onClick={fetchPregunta}>Reintentar</button>
+          )}
+        </div>
+      )}
+
         {loading ? (
           <div className="loading-container">
             <CircleLoader size={100} color={"#e2e2e2"} loading={loading} />
           </div>
         ) : (
-          pregunta && (
+          pregunta && !error && !loading && (
             <div className={`pregunta-container ${isShaking ? 'shake' : ''}`}>
               <p>
                 <strong>{pregunta}</strong>
@@ -155,7 +171,7 @@ function Test() {
           )
         )}
         {showHint && (
-          <div className="hint show">
+          <div className="hint show"> 
             {titulo && <p>{titulo}: <span dangerouslySetInnerHTML={{ __html: contenidotitulo }} /></p>}
             {capitulo && (
               <p>

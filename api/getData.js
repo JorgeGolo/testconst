@@ -89,7 +89,15 @@ export default async function handler(req, res) {
 
       } catch (error) {
         console.error('Error al generar la pregunta con Gemini API:', error);
-        respuestaIA = 'Error al generar la pregunta.';
+      
+        if (error.status === 503) {
+          return res.status(503).json({
+            error: 'El modelo está sobrecargado. Por favor, inténtalo nuevamente.',
+            reintentar: true, // Indicador para el front-end
+          });
+        }
+      
+        return res.status(500).json({ error: 'Error al generar la pregunta.' });
       }
 
       res.status(200).json({
