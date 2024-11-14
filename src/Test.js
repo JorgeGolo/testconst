@@ -60,12 +60,13 @@ function Test() {
         setRespuestaCorrecta(parseInt(lines[5]) - 1);
       } else {
         console.error('Error 1 al obtener los datos:', data.error);
+        if(data.error==='El modelo está sobrecargado. Por favor, inténtalo nuevamente.');
+        {
+        setReint(true);
+      }
       }
     } catch (error) {
-      if(error==='El modelo está sobrecargado. Por favor, inténtalo nuevamente.');
-      {
-      setReint(true);
-    }
+
       console.error('Error 2 al obtener los datos:', error);
     } finally {
       setLoading(false);
