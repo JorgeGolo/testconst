@@ -17,6 +17,7 @@ function Test() {
   const [seccion, setSeccion] = useState(null);
   const [contenidoseccion, setContenidoSeccion] = useState(null);
   const [contenidocapitulo, setContenidoCapitulo] = useState(null);
+  const [contenidotitulo, setContenidoTitulo] = useState(null);
   const [articulo, setArticulo] = useState(null);
   const [contenido, setContenido] = useState(null);
   const [pregunta, setPregunta] = useState('');
@@ -46,6 +47,7 @@ function Test() {
         setContenido(data.contenido);
         setContenidoSeccion(data.contenidoseccion);
         setContenidoCapitulo(data.contenidocapitulo);
+        setContenidoTitulo(data.contenidotitulo);
 
         const lines = data.respuestaIA.split('\n').filter(line => line.trim() !== '');
         setPregunta(lines[0]);
@@ -154,7 +156,7 @@ function Test() {
         )}
         {showHint && (
           <div className="hint show">
-            {titulo && <p>{titulo}</p>}
+            {titulo && <p>{titulo}: <span dangerouslySetInnerHTML={{ __html: contenidocapitulo }} /></p>}
             {capitulo && (
               <p>
                 Capítulo {capitulo}: <span dangerouslySetInnerHTML={{ __html: contenidocapitulo }} />
@@ -171,15 +173,13 @@ function Test() {
         )}
 
         {showCount && (
-
-          <div>Contador</div>
-
+          <div className='contadordiv'>Contador</div>
         )}
-
 
         <div className="subnav">
           <Nav />
         </div>
+
       </div>
     </div>
   );

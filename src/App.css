@@ -305,3 +305,10 @@ label {
   font-weight: bold;
   background-color: #e3e3e3;
 }
+
+.contadordiv {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+}

@@ -97,6 +97,7 @@ export default async function handler(req, res) {
         contenido,
         seccion,
         contenidoseccion,
+        contenidotitulo,
         contenidocapitulo,
         capitulo,
         titulo: tituloFinal,
