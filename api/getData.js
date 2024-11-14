@@ -52,8 +52,15 @@ export default async function handler(req, res) {
       const nombreart = data.nombre || '';
       const contenidotitulo = data.contenidotitulo || '';
 
-      const concatenado = `${tituloFinal} ${contenidotitulo} ${capitulo} ${contenidocapitulo} ${seccion} ${contenidoseccion} ${nombreart} ${contenido}`;
+     // Procesamos el contenido para interpretar listas
+     const contenidoProcesado = procesarContenidoHTML(contenido);
 
+     // Concatenamos todo el contenido procesado
+     const concatenado = `
+       ${tituloFinal} ${contenidotitulo} ${capitulo} ${contenidocapitulo} ${seccion} ${contenidoseccion} ${nombreart}
+       ${contenidoProcesado}
+     `.trim();
+     
       let respuestaIA;
       try {
         // Configuramos el modelo y el prompt para la API de Gemini
@@ -111,4 +118,32 @@ export default async function handler(req, res) {
   } else {
     res.status(405).json({ error: 'Método no permitido' });
   }
+}
+
+function procesarContenidoHTML(html) {
+  // Limpiamos el HTML, permitiendo solo etiquetas de listas
+  const sanitizedHtml = sanitizeHtml(html, {
+    allowedTags: ['ul', 'ol', 'li'], // Solo dejamos listas
+  });
+
+  // Parseamos el HTML limpio
+  const root = parse(sanitizedHtml);
+
+  // Función recursiva para procesar listas
+  function procesarNodo(nodo, nivel = 0) {
+    let resultado = '';
+    const sangria = '    '.repeat(nivel); // Sangría según el nivel de anidamiento
+
+    nodo.childNodes.forEach((child) => {
+      if (child.tagName === 'LI') {
+        resultado += `${sangria}- ${child.textContent.trim()}\n`;
+      } else if (child.tagName === 'UL' || child.tagName === 'OL') {
+        resultado += procesarNodo(child, nivel + 1); // Procesar sublistas
+      }
+    });
+
+    return resultado;
+  }
+
+  return procesarNodo(root);
 }
