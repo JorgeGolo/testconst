@@ -156,7 +156,7 @@ function Test() {
         )}
         {showHint && (
           <div className="hint show">
-            {titulo && <p>{titulo}: <span dangerouslySetInnerHTML={{ __html: contenidocapitulo }} /></p>}
+            {titulo && <p>{titulo}: <span dangerouslySetInnerHTML={{ __html: contenidotitulo }} /></p>}
             {capitulo && (
               <p>
                 Capítulo {capitulo}: <span dangerouslySetInnerHTML={{ __html: contenidocapitulo }} />
