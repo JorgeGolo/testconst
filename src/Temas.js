@@ -13,7 +13,7 @@ function Temas() {
   return (
     <div>
       <h3>Constitución Española  <button onClick={() => startTitleTest("constitucion")}>Test</button></h3>
-      <ul>
+      <ul className='ulstyle'> 
         <li>Preámbulo</li>
         <li>
           Título Preliminar -

@@ -261,8 +261,15 @@ label {
 
 }
 
-.configcontent ul {
+.configcontent ul, .ulstyle {
   list-style-type: none;
+}
+
+.ulstyle li {
+  border: 1px solid #ccc;
+  width: 80%;
+  height: 1.5em;
+  display: block;
 }
 
 .opcion {
