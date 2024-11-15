@@ -266,13 +266,14 @@ label {
 }
 
 .ulstyle li {
+  border: 1px solid #ccc;
   display: block;
   /* height: 1.5em; */
   width: 80%;
-  margin: 0.5em 0 0 0;
+  margin: 0.3em 0 0 0;
   padding: 0.3em;
   border-radius: 5px;
-  }
+}
 
 .opcion {
   transition: background-color 0.2s ease, transform 0.1s ease;
