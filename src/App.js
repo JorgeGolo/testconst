@@ -15,16 +15,14 @@ function App() {
     <div>
       <h3>Constitución Española  <button onClick={() => startTitleTest("constitucion")}>Test</button></h3>
       <ul className='ulstyle'> 
-        <li>Preámbulo</li>
-        <li>
-          Título Preliminar -
-          <button onClick={() => startTitleTest("Título Preliminar")}>Test</button>
+        <li onClick={() => startTitleTest("Título Preliminar")}>
+          Título Preliminar
         </li>
-        <li>
-          Título I - <button onClick={() => startTitleTest("Título I")}>Test</button>
+        <li onClick={() => startTitleTest("Título I")}>
+          Título I
         </li>
-        <li>
-          Título II - <button onClick={() => startTitleTest("Título II")}>Test</button>
+        <li onClick={() => startTitleTest("Título II")}>
+          Título II
         </li>
       </ul>
 
