@@ -67,16 +67,30 @@ export default async function handler(req, res) {
           messages: [
             {
               role: "user",
-              content: `Genera una pregunta sobre el siguiente contenido: ${concatenado}.
-              Incluye cuatro opciones de respuesta, donde solo una debe ser correcta. 
-              Sigue este formato:
-              
-              Pregunta
-              Respuesta1
-              Respuesta2
-              Respuesta3
-              Respuesta4
-              Número de la respuesta correcta`,
+              content: `
+                Genera una pregunta sobre el siguiente contenido: ${concatenado}.
+                Debes incluir cuatro opciones de respuesta y solo una debe ser correcta, las otras tres incorrectas.
+                Sigue este formato:
+                
+                Texto de la pregunta
+                Texto de respuesta 
+                Texto de respuesta
+                Texto de respuesta
+                Texto de respuesta
+                1
+                
+                Es importante que no pongas números, letras, ni símbolos delante de las respuestas.
+                La pregunta debe ir en una sola línea, y cada respuesta en una línea para cada una.
+                El último número es la respuesta correcta, marcada como números del 1 al 4.
+                Ejemplo de formato:
+
+                ¿En qué año se proclamó la Constitución?
+                1940
+                2000
+                1978
+                1950
+                3
+                `,
             },
           ],
           model: "llama3-groq-70b-8192-tool-use-preview",
