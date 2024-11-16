@@ -16,18 +16,12 @@ function Config() {
     setShowCount,
     selectedOption,
     setSelectedOption,
+    options, // Obtener opciones desde el contexto
   } = useContext(ConfigContext);
 
-  // Opciones para el select
-  const options = [
-    { value: "gemini-1.5-flash", label: "gemini-1.5-flash" },
-    { value: "opcion2", label: "Opción 2" },
-    { value: "opcion3", label: "Opción 3" },
-  ];
-
-  // Estado para el select
   const handleSelectChange = (selectedOption) => {
     console.log("Valor seleccionado:", selectedOption.value);
+    setSelectedOption(selectedOption); // Actualizar el contexto con el objeto seleccionado
   };
 
   return (
@@ -70,9 +64,9 @@ function Config() {
           Contador de aciertos
         </li>
         <li>
-        <Select
+          <Select
             options={options}
-            value={options.find((opt) => opt.value === selectedOption)} // Mostrar el valor actual
+            value={selectedOption} // Mostrar el valor actual
             onChange={handleSelectChange} // Cambiar valor al seleccionar
             styles={{
               control: (base) => ({

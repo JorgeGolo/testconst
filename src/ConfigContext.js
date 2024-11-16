@@ -7,8 +7,16 @@ export const ConfigProvider = ({ children }) => {
   const [nextQuestion, setNextQuestion] = useState(true);
   const [showBulb, setShowBulb] = useState(true);
   const [showCount, setShowCount] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("opcion1"); // Estado para el select
 
+  // Opciones globales
+  const options = [
+    { value: "gemini-1.5-flash", label: "gemini-1.5-flash", endpoint: "/api/getData" },
+    { value: "opcion2", label: "Opción 2", endpoint: "/api/getOption2Data" },
+    { value: "opcion3", label: "Opción 3", endpoint: "/api/getOption3Data" },
+  ];
+
+  // Seleccionar la opción inicial por defecto
+  const [selectedOption, setSelectedOption] = useState(options[0]);
 
   return (
     <ConfigContext.Provider
@@ -22,7 +30,8 @@ export const ConfigProvider = ({ children }) => {
         showCount,
         setShowCount,
         selectedOption,
-        setSelectedOption, // Agregar el setter del select
+        setSelectedOption,
+        options, // Pasar opciones para evitar redundancia
       }}
     >
       {children}

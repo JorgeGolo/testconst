@@ -88,14 +88,20 @@ export default async function handler(req, res) {
         respuestaIA = result.response.text();
 
       } catch (error) {
-        console.error('Error al generar la pregunta con Gemini API:', error);
+        console.error("Error al generar la pregunta con Gemini API:", error);
       
-
-        // Mannejo de 503 de Gemini
-        if (error.response && error.response.status === 503) {
-          respuestaIA = 'La IA de Gemini no está disponible temporalmente. Por favor, intenta más tarde.';
+        // Verificar si el error es una instancia específica y contiene un código de estado
+        if (error instanceof Error && error.status === 503) {
+          respuestaIA =
+            "La IA de Gemini no está disponible temporalmente debido a una sobrecarga. Por favor, intenta más tarde.";
+        } else if (
+          error.message &&
+          error.message.includes("GoogleGenerativeAIFetchError")
+        ) {
+          respuestaIA =
+            "La IA de Gemini no está disponible temporalmente. Por favor, intenta más tarde.";
         } else {
-          respuestaIA = 'Error al generar la pregunta. AI';
+          respuestaIA = "Error al generar la pregunta. AI";
         }
       }
 

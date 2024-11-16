@@ -11,6 +11,8 @@ function Test() {
   const { nextQuestion } = useContext(ConfigContext); // Accede al estado global
   const { showBulb } = useContext(ConfigContext); // Accede al estado global
   const { showCount } = useContext(ConfigContext); // Accede al estado global
+  const { selectedOption } = useContext(ConfigContext); // Accede al estado global
+
 
   const { titulo } = useParams(); // Accede al parámetro 'titulo' de la URL
   const [capitulo, setCapitulo] = useState(null);
@@ -38,7 +40,13 @@ function Test() {
   const obtenerConsultaAleatoria = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/getData?titulo=${encodeURIComponent(titulo)}`);
+      
+      // Usa el endpoint de la opción seleccionada
+      const endpoint = selectedOption.endpoint; 
+
+      const response = await fetch(`${endpoint}?titulo=${encodeURIComponent(titulo)}`);
+
+
       const data = await response.json();
 
       if (response.ok) {
