@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Nav from './Nav';
 import Confetti from 'react-confetti';
 import { CircleLoader } from 'react-spinners'; // Importa el spinner
+// import './App.css';
 
 function Temas() {
   const [titulo, setTitulo] = useState(null);

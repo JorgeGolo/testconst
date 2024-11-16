@@ -13,7 +13,7 @@ function App() {
 
   return (
     <div>
-      <h3>Constitución Española  <button onClick={() => startTitleTest("constitucion")}>Test</button></h3>
+      <h3 className='linktodo'>Constitución Española  <button onClick={() => startTitleTest("constitucion")}>Todo</button></h3>
       <ul className='ulstyle'> 
         <li onClick={() => startTitleTest("Título Preliminar")}>
           Título Preliminar

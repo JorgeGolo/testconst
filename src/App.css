@@ -265,7 +265,7 @@ label {
   list-style-type: none;
 }
 
-.ulstyle li {
+.ulstyle li, .linktodo {
   border: 1px solid #ccc;
   display: block;
   /* height: 1.5em; */
@@ -284,7 +284,7 @@ label {
   cursor: pointer;
 }
 
-.opcion:hover, .ulstyle li:hover {
+.opcion:hover, .ulstyle li:hover, .linktodo:hober {
   background-color: #007bff;
   color: white;
   transform: scale(1.05);
