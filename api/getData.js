@@ -89,7 +89,14 @@ export default async function handler(req, res) {
 
       } catch (error) {
         console.error('Error al generar la pregunta con Gemini API:', error);
-        respuestaIA = 'Error al generar la pregunta.';
+      
+
+        // Mannejo de 503 de Gemini
+        if (error.response && error.response.status === 503) {
+          respuestaIA = 'La IA de Gemini no está disponible temporalmente. Por favor, intenta más tarde.';
+        } else {
+          respuestaIA = 'Error al generar la pregunta. AI';
+        }
       }
 
       res.status(200).json({
