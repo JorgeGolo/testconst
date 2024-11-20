@@ -265,6 +265,10 @@ label {
   list-style-type: none;
 }
 
+.ulstyle {
+  padding: 0;
+}
+
 .ulstyle li, .linktodo {
   border: 1px solid #ccc;
   display: block;
