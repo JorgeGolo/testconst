@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Temas from './Temas';
 import Test from './Test';
+import TestNotion from './TestNotion';
+
 import Config from './Config';
 import { ConfigProvider } from "./ConfigContext";
 
@@ -21,6 +23,7 @@ root.render(
           <Route path="/temas" element={<Temas />} />
           <Route path="/test/:titulo" element={<Test />} />
           <Route path="/config" element={<Config />} />
+          <Route path="/notiontest/:titulo" element={<TestNotion />} />
 
       </Routes>
     </Router>

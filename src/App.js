@@ -11,11 +11,19 @@ function App() {
     navigate(`/test/${title}`);
   };
 
+  const startTitleNotionTest = (title) => {
+    navigate(`/notiontest/${title}`);
+  }
+
   return (
     <div>
       <div> 
       <h3 className='linktodo'>AWs Certified Partition</h3>
-
+        <ul>
+          <li onClick={() => startTitleNotionTest("Título")}>
+            Ir
+          </li>
+        </ul>
       </div> 
 
       <div>
