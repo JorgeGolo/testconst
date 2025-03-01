@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from 'react';
-
-const DATABASE_ID = process.env.REACT_APP_NOTION_DATABASE_ID;
-const API_KEY = process.env.REACT_APP_NOTION_API_KEY;
+import React, { useEffect, useState } from "react";
 
 const GetNotionData = () => {
     const [notionData, setNotionData] = useState([]);
@@ -9,10 +6,10 @@ const GetNotionData = () => {
     useEffect(() => {
         const fetchNotionData = async () => {
             try {
-                const response = await fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}/query`, {
+                const response = await fetch(`https://api.notion.com/v1/databases/${process.env.REACT_APP_NOTION_DATABASE_ID}/query`, {
                     method: "POST",
                     headers: {
-                        "Authorization": `Bearer ${API_KEY}`,
+                        "Authorization": `Bearer ${process.env.REACT_APP_NOTION_API_KEY}`,
                         "Content-Type": "application/json",
                         "Notion-Version": "2022-06-28",
                     },
@@ -35,7 +32,7 @@ const GetNotionData = () => {
     return (
         <ul>
             {notionData.map((item) => (
-                <li key={item.id}>{item.properties.Nombre.title[0]?.text.content}</li>
+                <li key={item.id}>{item.properties.Nombre?.title[0]?.text?.content || "Sin nombre"}</li>
             ))}
         </ul>
     );
