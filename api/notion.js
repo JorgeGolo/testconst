@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-    const { NOTION_API_KEY, NOTION_DATABASE_ID } = process.env;
+    const { REACT_APP_NOTION_API_KEY, REACT_APP_NOTION_DATABASE_ID } = process.env;
   
     try {
       const response = await fetch(`https://api.notion.com/v1/databases/${NOTION_DATABASE_ID}/query`, {
