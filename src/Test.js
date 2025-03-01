@@ -44,11 +44,16 @@ function Test() {
       // Usa el endpoint de la opción seleccionada
       const endpoint = selectedOption.endpoint; 
 
+      // llama  al endpoint
+      // endpoint viene de const { selectedOption } = useContext(ConfigContext); // Accede al estado global
+      // y puede tomar este valor 
+      //     { value: "gemini-1.5-flash", label: "gemini-1.5-flash", endpoint: "/api/getData" },
       const response = await fetch(`${endpoint}?titulo=${encodeURIComponent(titulo)}`);
 
-
+      // convierte info
       const data = await response.json();
 
+      // maneja respuesta
       if (response.ok) {
         setCapitulo(data.capitulo);
         setSeccion(data.seccion);

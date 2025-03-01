@@ -13,6 +13,12 @@ function App() {
 
   return (
     <div>
+      <div> 
+      <h3 className='linktodo'>AWs Certified Partition</h3>
+
+      </div> 
+
+      <div>
       <h3 className='linktodo'>Constitución Española  <button onClick={() => startTitleTest("constitucion")}>Todo</button></h3>
       <ul className='ulstyle'> 
         <li onClick={() => startTitleTest("Título Preliminar")}>
@@ -28,6 +34,7 @@ function App() {
 
       <div className="subnav">
         <Nav />
+      </div>
       </div>
     </div>
   );
