@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import './App.css';
-import getNotionData from "./getNotionData"; // Importa el componente
+import GetNotionData from "./GetNotionData"; // Importa el componente
 
 function App() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ function App() {
     <div>
       <div> 
       <h3 className='linktodo'>Entradas de Notion</h3>
-        <getNotionData /> {/* Muestra las entradas de la base de datos */}
+        <GetNotionData /> {/* Muestra las entradas de la base de datos */}
       </div>
 
       <div>
