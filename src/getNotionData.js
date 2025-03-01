@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 const DATABASE_ID = process.env.REACT_APP_NOTION_DATABASE_ID;
 const API_KEY = process.env.REACT_APP_NOTION_API_KEY;
