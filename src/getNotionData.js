@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-  const navigate = useNavigate();
 
 const GetNotionData = () => {
+    const navigate = useNavigate();
+
+
     const [notionData, setNotionData] = useState([]);
     const startTitleNotionTest = (title) => {
         navigate(`/notiontest/${title}`);
