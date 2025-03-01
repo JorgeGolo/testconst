@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import './App.css';
+import getNotionData from "./api/getNotionData"; // Importa el componente
 
 function App() {
   const navigate = useNavigate();
@@ -18,13 +19,9 @@ function App() {
   return (
     <div>
       <div> 
-      <h3 className='linktodo'>AWs Certified Partition</h3>
-        <ul>
-          <li onClick={() => startTitleNotionTest("Título")}>
-            Ir
-          </li>
-        </ul>
-      </div> 
+      <h3 className='linktodo'>Entradas de Notion</h3>
+        <getNotionData /> {/* Muestra las entradas de la base de datos */}
+      </div>
 
       <div>
       <h3 className='linktodo'>Constitución Española  <button onClick={() => startTitleTest("constitucion")}>Todo</button></h3>
