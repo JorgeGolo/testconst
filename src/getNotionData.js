@@ -7,7 +7,7 @@ const GetNotionData = () => {
     const [selectedName, setSelectedName] = useState("");
 
     const startTitleNotionTest = (title) => {
-        navigate(`/notiontest/${title}`);
+        navigate(`/notiontest/${title}`, { state: { name: selectedName } }); // Pasa el estado
     }
 
     useEffect(() => {
