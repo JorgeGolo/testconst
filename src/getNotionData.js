@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 const GetNotionData = () => {
     const navigate = useNavigate();
     const [notionData, setNotionData] = useState([]);
-    const [selectedName, setSelectedName] = useState("");
+    const [pageContents, setPageContents] = useState({}); // Nuevo estado para el contenido
 
     const startTitleNotionTest = (title) => {
-        navigate(`/notiontest/${title}`, { state: { name: selectedName } }); // Pasa el estado
+        navigate(`/notiontest/${title}`);
     }
 
     useEffect(() => {
@@ -25,6 +25,23 @@ const GetNotionData = () => {
         fetchNotionData();
     }, []);
 
+    useEffect(() => {
+        const fetchPageContent = async (pageId) => {
+            try {
+                const response = await fetch(`/api/notion/page/${pageId}`);
+                if (!response.ok) throw new Error("Error al obtener el contenido de la página");
+                const data = await response.json();
+                setPageContents(prev => ({ ...prev, [pageId]: data })); // Almacena el contenido
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        };
+
+        notionData.forEach(item => {
+            fetchPageContent(item.id);
+        });
+    }, [notionData]);
+
     return (
         <ul>
             {notionData
@@ -40,14 +57,16 @@ const GetNotionData = () => {
                 })
                 .map((item) => (
                     <li
-                        onClick={() => {
-                            const name = item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre";
-                            setSelectedName(name);
-                            startTitleNotionTest(name);
-                        }}
+                        onClick={() => startTitleNotionTest(item.properties['Nombre']?.title[0]?.text?.content)}
                         key={item.properties['Fecha inicio']?.date?.start || item.id}
                     >
-                        {selectedName ? selectedName : item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
+                        {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
+                        {/* Contenido de la página aquí */}
+                        {pageContents[item.id] && (
+                            <div>
+                                {JSON.stringify(pageContents[item.id])}
+                            </div>
+                        )}
                     </li>
                 ))}
         </ul>
