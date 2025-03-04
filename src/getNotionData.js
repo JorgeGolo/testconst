@@ -22,8 +22,6 @@ const GetNotionData = () => {
             }
         };
 
-        notionData.sort((a, b) => new Date(a.properties["Fecha de inicio"].date.start) - new Date(b.properties["Fecha de inicio"].date.start));
-
         fetchNotionData();
     }, []);
 
@@ -35,12 +33,14 @@ const GetNotionData = () => {
 
     return (
         <ul>
-            {notionData.map((item) => (
-                <li 
-                    onClick={() => startTitleNotionTest(item.properties.Nombre?.title[0]?.text?.content)}
-                    key={item.id}>{item.properties.Nombre?.title[0]?.text?.content || "Sin nombre"}
-                </li>
-            ))}
+        {notionData.map((item) => (
+            <li
+            onClick={() => startTitleNotionTest(item.properties['Nombre']?.title[0]?.text?.content)}
+            key={item.properties['Fecha de inicio']?.date?.start || item.id}
+            >
+            {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
+            </li>
+        ))}
         </ul>
     );
 };
