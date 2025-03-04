@@ -3,8 +3,6 @@ require('dotenv').config();
 export default async function handler(req, res) {
     const { REACT_APP_NOTION_API_KEY, REACT_APP_NOTION_DATABASE_ID } = process.env;
   
-    
-
     try {
       const response = await fetch(`https://api.notion.com/v1/databases/${REACT_APP_NOTION_DATABASE_ID}/query`, {
         method: "POST",
