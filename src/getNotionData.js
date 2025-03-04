@@ -7,7 +7,7 @@ const GetNotionData = () => {
     const [subtemaContents, setSubtemaContents] = useState({});
 
     const startTitleNotionTest = (title, pageId) => {
-        navigate(`/notiontest/${title}`, { state: { subtemaNames: subtemaContents[pageId] || [], pageId: pageId } });
+        navigate(`/notiontest/${title}`, { state: { subtemaNames: subtemaContents[pageId] || [], subtemaIds: subtemaIds } });
     }
 
     useEffect(() => {
@@ -62,7 +62,11 @@ const GetNotionData = () => {
                 })
                 .map((item) => (
                     <li
-                        onClick={() => startTitleNotionTest(item.properties['Nombre']?.title[0]?.text?.content, item.id)} // Pasa pageId
+                        onClick={() => startTitleNotionTest(
+                            item.properties['Nombre']?.title[0]?.text?.content,
+                            item.id,
+                            item.properties['AWS Subtemas']?.relation?.map(subtema => subtema.id)
+                        )}
                         key={item.properties['Fecha inicio']?.date?.start || item.id}
                     >
                         {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
