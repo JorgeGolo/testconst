@@ -36,7 +36,7 @@ const GetNotionData = () => {
         {notionData.map((item) => (
             <li
             onClick={() => startTitleNotionTest(item.properties['Nombre']?.title[0]?.text?.content)}
-            key={item.properties['Fecha de inicio']?.date?.start || item.id}
+            key={item.properties['Fecha inicio']?.date?.start || item.id}
             >
             {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
             </li>
