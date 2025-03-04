@@ -49,8 +49,8 @@ const GetNotionData = () => {
                 onClick={() => startTitleNotionTest(item.properties['Nombre']?.title[0]?.text?.content)}
                 key={item.properties['Fecha inicio']?.date?.start || item.id}
             >
-                {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
-
+                {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"} - 
+                {item.properties['AWS Subtemas']?.title[0]?.text?.content}
                 {/* contenido de la pagina aqui*/}
             </li>
             ))}
