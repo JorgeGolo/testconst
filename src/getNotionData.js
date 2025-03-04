@@ -22,6 +22,8 @@ const GetNotionData = () => {
             }
         };
 
+        notionData.sort((a, b) => new Date(a.properties["Fecha de inicio"].date.start) - new Date(b.properties["Fecha de inicio"].date.start));
+
         fetchNotionData();
     }, []);
 

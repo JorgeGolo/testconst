@@ -12,9 +12,6 @@ function App() {
     navigate(`/test/${title}`);
   };
 
-  const startTitleNotionTest = (title) => {
-    navigate(`/notiontest/${title}`);
-  }
 
   return (
     <div>
