@@ -41,7 +41,7 @@ export default async function handler(req, res) {
         const filteredResults = results.filter(result => result !== null);
 
         const pageNames = filteredResults.map(page => {
-            return page.properties.Nombre.title[0].plain_text;
+            return page.properties.Nombre.text[0].plain_text;
         });
 
         res.status(200).json(pageNames);
