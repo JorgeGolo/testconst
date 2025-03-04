@@ -39,6 +39,12 @@ const GetNotionData = () => {
         }
     };
 
+    const loadSubtemas = async (item) => {
+        if (item.properties['AWS Subtemas']?.relation?.length > 0) {
+            await fetchSubtemaContent(item.id, item.properties['AWS Subtemas']?.relation?.map(subtema => subtema.id));
+        }
+    };
+
     return (
         <ul>
             {notionData
@@ -58,17 +64,10 @@ const GetNotionData = () => {
                         key={item.properties['Fecha inicio']?.date?.start || item.id}
                     >
                         {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
-                        
-                        <ul>
-                        {item.properties['AWS Subtemas']?.relation?.length > 0 && (
-                            <li>
-                                {fetchSubtemaContent(item.id, item.properties['AWS Subtemas']?.relation?.map(subtema => subtema.id))}
-                                {subtemaContents[item.id] && subtemaContents[item.id].map(name => (
-                                    <div key={name}>{name}</div>
-                                ))}
-                            </li>
-                        )}
-                        </ul>
+                        {loadSubtemas(item)}
+                        {subtemaContents[item.id] && subtemaContents[item.id].map(name => (
+                            <div key={name}>{name}</div>
+                        ))}
                     </li>
                 ))}
         </ul>
