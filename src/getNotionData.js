@@ -39,11 +39,13 @@ const GetNotionData = () => {
         }
     };
 
-    const loadSubtemas = async (item) => {
-        if (item.properties['AWS Subtemas']?.relation?.length > 0) {
-            await fetchSubtemaContent(item.id, item.properties['AWS Subtemas']?.relation?.map(subtema => subtema.id));
-        }
-    };
+    useEffect(() => {
+        notionData.forEach(async (item) => {
+            if (item.properties['AWS Subtemas']?.relation?.length > 0) {
+                await fetchSubtemaContent(item.id, item.properties['AWS Subtemas']?.relation?.map(subtema => subtema.id));
+            }
+        });
+    }, [notionData]);
 
     return (
         <ul>
@@ -64,7 +66,6 @@ const GetNotionData = () => {
                         key={item.properties['Fecha inicio']?.date?.start || item.id}
                     >
                         {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
-                        {loadSubtemas(item)}
                         {subtemaContents[item.id] && subtemaContents[item.id].map(name => (
                             <div key={name}>{name}</div>
                         ))}
