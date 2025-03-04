@@ -1,83 +1,85 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
-import Groq from "groq-sdk";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
-const TestNotion = () => {
-    const { titulo } = useParams();
-    const location = useLocation();
-    const [pageContent, setPageContent] = useState(null);
-    const [subtemaNames, setSubtemaNames] = useState([]);
-    const [subtemaIds, setSubtemaIds] = useState([]);
-    const [error, setError] = useState(null); // Estado para manejar errores
+const GetNotionData = () => {
+    const navigate = useNavigate();
+    const [notionData, setNotionData] = useState([]);
+    const [subtemaContents, setSubtemaContents] = useState({});
+    const [subtemaIds, setsubtemaIds] = useState({});
 
-    const groq = new Groq({ apiKey: process.env.REACT_APP_GROQ_API_KEY, dangerouslyAllowBrowser: true });
+    const startTitleNotionTest = (title, pageId) => {
+        navigate(`/notiontest/${title}`, { state: { subtemaNames: subtemaContents[pageId] || [], subtemaIds: subtemaIds } });
+    }
 
     useEffect(() => {
-        const fetchPageContent = async () => {
+        const fetchNotionData = async () => {
             try {
-                const response = await fetch(`/api/getPageContentByName?pageName=${encodeURIComponent(titulo)}`);
-                if (!response.ok) {
-                    throw new Error("Error al obtener el contenido de la página");
-                }
+                const response = await fetch("/api/notion");
+                if (!response.ok) throw new Error("Error al obtener datos");
                 const data = await response.json();
-                setPageContent(data);
-
-                if (data && data.properties && data.properties['AWS Subtemas'] && data.properties['AWS Subtemas'].relation) {
-                    const ids = data.properties['AWS Subtemas'].relation.map(subtema => subtema.id);
-                    setSubtemaIds(ids);
-                }
-
-                if (location.state && location.state.subtemaNames) {
-                    const subtemas = location.state.subtemaNames;
-                    if (Array.isArray(subtemas)) {
-                        setSubtemaNames(subtemas);
-                    } else {
-                        console.error('subtemaNames no es un array:', subtemas);
-                        setError('Error al cargar subtemas.');
-                    }
-                }
-
-            } catch (err) {
-                console.error("Error:", err);
-                setError("Ocurrió un error al cargar la página."); // Establecer el mensaje de error
+                setNotionData(data.results);
+            } catch (error) {
+                console.error("Error:", error);
             }
         };
 
-        fetchPageContent();
-    }, [titulo, location.state]);
+        fetchNotionData();
+    }, []);
+
+    const fetchSubtemaContent = async (pageId, subtemaIds) => {
+        try {
+            const response = await fetch(`/api/notionpage?pageIds=${JSON.stringify(subtemaIds)}`);
+            if (!response.ok) throw new Error("Error al obtener el contenido del subtema");
+            const data = await response.json();
+            setSubtemaContents(prev => ({
+                ...prev,
+                [pageId]: data
+            }));
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
+    useEffect(() => {
+        notionData.forEach(async (item) => {
+            if (item.properties['AWS Subtemas']?.relation?.length > 0) {
+                await fetchSubtemaContent(item.id, item.properties['AWS Subtemas']?.relation?.map(subtema => subtema.id));
+            }
+        });
+    }, [notionData]);
 
     return (
-        <div>
-            {titulo}
-            {error && <p style={{ color: 'red' }}>{error}</p>} {/* Mostrar mensaje de error */}
-            {pageContent && (
-                <div>
-                    {JSON.stringify(pageContent)}
+        <ul>
+            {notionData
+                .slice()
+                .sort((a, b) => {
+                    const fechaA = a.properties['Fecha inicio']?.date?.start;
+                    const fechaB = b.properties['Fecha inicio']?.date?.start;
 
-                    {subtemaNames.length > 0 && (
-                        <div>
-                            <h3>Subtemas:</h3>
-                            <ul>
-                                {subtemaNames.map(name => (
-                                    <li key={name}>{name}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                    {subtemaIds.length > 0 && (
-                        <div>
-                            <h3>IDs de Subtemas:</h3>
-                            <ul>
-                                {subtemaIds.map(id => (
-                                    <li key={id}>{id}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                </div>
-            )}
-        </div>
+                    if (!fechaA) return 1;
+                    if (!fechaB) return -1;
+
+                    return new Date(fechaA) - new Date(fechaB);
+                })
+                .map((item) => (
+                    <li
+                        onClick={() => startTitleNotionTest(
+                            item.properties['Nombre']?.title[0]?.text?.content,
+                            item.id,
+                            item.properties['AWS Subtemas']?.relation?.map(subtema => subtema.id)
+                        )}
+                        key={item.properties['Fecha inicio']?.date?.start || item.id}
+                    >
+                        {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
+                        <ul>
+                            {subtemaContents[item.id] && subtemaContents[item.id].map(name => (
+                                <li key={name}>{name}</li>
+                            ))}
+                        </ul>
+                    </li>
+                ))}
+        </ul>
     );
 };
 
-export default TestNotion;
+export default GetNotionData;
