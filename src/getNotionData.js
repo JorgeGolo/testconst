@@ -6,8 +6,8 @@ const GetNotionData = () => {
     const [notionData, setNotionData] = useState([]);
     const [subtemaContents, setSubtemaContents] = useState({});
 
-    const startTitleNotionTest = (title) => {
-        navigate(`/notiontest/${title}`, { state: { subtemaContents } });
+    const startTitleNotionTest = (title, pageId) => {
+        navigate(`/notiontest/${title}`, { state: { subtemaNames: subtemaContents[pageId] || [], pageId: pageId } });
     }
 
     useEffect(() => {
@@ -62,14 +62,14 @@ const GetNotionData = () => {
                 })
                 .map((item) => (
                     <li
-                        onClick={() => startTitleNotionTest(item.properties['Nombre']?.title[0]?.text?.content,subtemaContents[item.id])}
+                        onClick={() => startTitleNotionTest(item.properties['Nombre']?.title[0]?.text?.content, item.id)} // Pasa pageId
                         key={item.properties['Fecha inicio']?.date?.start || item.id}
                     >
                         {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
                         <ul>
-                        {subtemaContents[item.id] && subtemaContents[item.id].map(name => (
-                            <li key={name}>{name}</li>
-                        ))}
+                            {subtemaContents[item.id] && subtemaContents[item.id].map(name => (
+                                <li key={name}>{name}</li>
+                            ))}
                         </ul>
                     </li>
                 ))}
