@@ -35,8 +35,8 @@ export default async function handler(req, res) {
         const filteredResults = results.filter(result => result !== null);
 
         const pageNames = filteredResults.map(page => {
-            if (page && page.properties && page.properties.title && page.properties.title.title && page.properties.title.title[0] && page.properties.title.title[0].plain_text) {
-                return page.properties.title.title[0].plain_text;
+            if (page && page.object === "page") {
+                return page.url.substring(page.url.lastIndexOf('/') + 1).replace(/-/g, ' ');
             } else {
                 console.error("Estructura de página inesperada:", page);
                 return "Nombre no encontrado";
