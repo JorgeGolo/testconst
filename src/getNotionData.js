@@ -6,8 +6,8 @@ const GetNotionData = () => {
     const [notionData, setNotionData] = useState([]);
     const [subtemaContents, setSubtemaContents] = useState({});
 
-    const startTitleNotionTest = (title, pageId) => {
-        navigate(`/notiontest/${title}`, { state: { subtemaNames: subtemaContents[pageId] || [], subtemaIds: subtemaIds } });
+    const startTitleNotionTest = (title, pageId) => { // Recibe pageId
+        navigate(`/notiontest/${title}`, { state: { subtemaNames: subtemaContents[pageId] || [] } }); // Pasa el array de nombres
     }
 
     useEffect(() => {
