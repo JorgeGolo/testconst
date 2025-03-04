@@ -25,7 +25,19 @@ const GetNotionData = () => {
         fetchNotionData();
     }, []);
 
-
+    const fetchSubtemaContent = async (pageId, subtemaIds) => {
+        try {
+            const response = await fetch(`/api/notionpage?pageIds=${JSON.stringify(subtemaIds)}`);
+            if (!response.ok) throw new Error("Error al obtener el contenido del subtema");
+            const data = await response.json();
+            setSubtemaContents(prev => ({
+                ...prev,
+                [pageId]: data
+            }));
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
 
     return (
         <ul>
@@ -48,12 +60,14 @@ const GetNotionData = () => {
                         {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
                         
                         <ul>
-                            {item.properties['AWS Subtemas']?.relation?.map(subtema => (
-                                <li key={subtema.id}>
-                                    {/* Aquí puedes obtener y mostrar los datos de la página relacionada */}
-                                    {subtema.id}
-                                </li>
-                            ))}
+                        {item.properties['AWS Subtemas']?.relation?.length > 0 && (
+                            <li>
+                                {fetchSubtemaContent(item.id, item.properties['AWS Subtemas']?.relation?.map(subtema => subtema.id))}
+                                {subtemaContents[item.id] && subtemaContents[item.id].map(name => (
+                                    <div key={name}>{name}</div>
+                                ))}
+                            </li>
+                        )}
                         </ul>
                     </li>
                 ))}
