@@ -62,11 +62,7 @@ const GetNotionData = () => {
                 })
                 .map((item) => (
                     <li
-                        onClick={() => startTitleNotionTest(
-                            item.properties['Nombre']?.title[0]?.text?.content,
-                            item.id,
-                            item.properties['AWS Subtemas']?.relation?.map(subtema => subtema.id)
-                        )}
+                        onClick={() => startTitleNotionTest(item.properties['Nombre']?.title[0]?.text?.content, item.id)} // Pasa pageId
                         key={item.properties['Fecha inicio']?.date?.start || item.id}
                     >
                         {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
