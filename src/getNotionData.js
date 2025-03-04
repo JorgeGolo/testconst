@@ -33,14 +33,25 @@ const GetNotionData = () => {
 
     return (
         <ul>
-        {notionData.map((item) => (
+        {notionData
+            .slice() // Crea una copia del array para no modificar el original
+            .sort((a, b) => {
+            const fechaA = a.properties['Fecha inicio']?.date?.start;
+            const fechaB = b.properties['Fecha inicio']?.date?.start;
+
+            if (!fechaA) return 1; // Si fechaA no existe, coloca b antes
+            if (!fechaB) return -1; // Si fechaB no existe, coloca a antes
+
+            return new Date(fechaA) - new Date(fechaB); // Compara las fechas
+            })
+            .map((item) => (
             <li
-            onClick={() => startTitleNotionTest(item.properties['Nombre']?.title[0]?.text?.content)}
-            key={item.properties['Fecha inicio']?.date?.start || item.id}
+                onClick={() => startTitleNotionTest(item.properties['Nombre']?.title[0]?.text?.content)}
+                key={item.properties['Fecha inicio']?.date?.start || item.id}
             >
-            {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
+                {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
             </li>
-        ))}
+            ))}
         </ul>
     );
 };
