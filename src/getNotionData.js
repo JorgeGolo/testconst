@@ -61,20 +61,9 @@ const GetNotionData = () => {
                         key={item.properties['Fecha inicio']?.date?.start || item.id}
                     >
                         {item.properties['Nombre']?.title[0]?.text?.content || "Sin nombre"}
-                        {item.properties['AWS Subtemas']?.relation?.map(subtema => {
-                            fetchSubtemaContent(item.id, subtema.id);
-                            return (
-                                <div id={subtema.id} key={subtema.id}>
-                                    {subtemaContents[item.id] && subtemaContents[item.id][subtema.id] && (
-                                        <div>
-                                            {subtemaContents[item.id][subtema.id].map(name => (
-                                                <div key={name}>{name}</div> // Muestra cada nombre
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            );
-                        })}
+                        
+                        {item.properties['AWS Subtemas']?.relation.content}
+
                     </li>
                 ))}
         </ul>
