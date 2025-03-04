@@ -27,14 +27,14 @@ const GetNotionData = () => {
 
     const fetchSubtemaContent = async (pageId, subtemaId) => {
         try {
-            const response = await fetch(`/api/notion/page/${subtemaId}`);
+            const response = await fetch(`/api/notionpage?pageIds=[${subtemaId}]`); //creamos un array de un solo elemento
             if (!response.ok) throw new Error("Error al obtener el contenido del subtema");
             const data = await response.json();
             setSubtemaContents(prev => ({
                 ...prev,
                 [pageId]: {
                     ...prev[pageId],
-                    [subtemaId]: data
+                    [subtemaId]: data // Almacena el array de nombres
                 }
             }));
         } catch (error) {
@@ -67,7 +67,9 @@ const GetNotionData = () => {
                                 <div key={subtema.id}>
                                     {subtemaContents[item.id] && subtemaContents[item.id][subtema.id] && (
                                         <div>
-                                            {JSON.stringify(subtemaContents[item.id][subtema.id])}
+                                            {subtemaContents[item.id][subtema.id].map(name => (
+                                                <div key={name}>{name}</div> // Muestra cada nombre
+                                            ))}
                                         </div>
                                     )}
                                 </div>
