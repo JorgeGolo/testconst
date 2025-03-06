@@ -10,6 +10,15 @@ const TestNotion = () => {
     const [subtemaIds, setSubtemaIds] = useState([]);
     const [error, setError] = useState(null); // Estado para manejar errores
 
+    // Función para procesar el nombre y obtener solo la segunda parte
+    const processName = (name) => {
+        const lastDashIndex = name.lastIndexOf('-');
+        if (lastDashIndex !== -1) {
+            return name.substring(lastDashIndex + 1).trim();
+        }
+        return name; // Si no hay guión, devolver el nombre completo
+    };
+
     const groq = new Groq({ apiKey: process.env.REACT_APP_GROQ_API_KEY, dangerouslyAllowBrowser: true });
 
     useEffect(() => {
@@ -59,7 +68,7 @@ const TestNotion = () => {
                             <h3>Subtemas:</h3>
                             <ul>
                                 {subtemaNames.map(name => (
-                                    <li key={name}>{name}</li>
+                                    <li key={name}>{processName(name)}</li> {/* Procesamos name aquí */}
                                 ))}
                             </ul>
                         </div>
