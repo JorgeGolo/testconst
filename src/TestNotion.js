@@ -66,15 +66,20 @@ const TestNotion = () => {
                     {JSON.stringify(pageContent)}
 
                     {subtemaNames.length > 0 && (
-                        <div>
-                            <h3>Subtemas:</h3>
-                            <ul>
-                            {subtemaNames.map(function(name) {
-                                return <li key={name}>{processName(name)}</li>;
-                            })}
-                            </ul>
-                        </div>
-                    )}
+                    <div>
+                        <h3>Subtema aleatorio:</h3>
+                        <ul>
+                            {(() => {
+                                // Seleccionar un índice aleatorio
+                                const randomIndex = Math.floor(Math.random() * subtemaNames.length);
+                                // Obtener el nombre aleatorio
+                                const randomName = subtemaNames[randomIndex];
+                                // Mostrar solo ese elemento
+                                return <li key={randomName}>{processName(randomName)}</li>;
+                            })()}
+                        </ul>
+                    </div>
+                )}
                 </div>
             )}
         </div>
