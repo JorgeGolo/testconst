@@ -67,9 +67,9 @@ const TestNotion = () => {
                         <div>
                             <h3>Subtemas:</h3>
                             <ul>
-                                {subtemaNames.map(name => (
-                                    <li key={name}>{processName(name)}</li> {/* Procesamos name aquí */}
-                                ))}
+                            {subtemaNames.map(function(name) {
+                                return <li key={name}>{processName(name)}</li>;
+                            })}
                             </ul>
                         </div>
                     )}
