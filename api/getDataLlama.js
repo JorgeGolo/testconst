@@ -93,7 +93,7 @@ export default async function handler(req, res) {
         `,
             },
           ],
-          model: "llama3-groq-70b-8192-tool-use-preview",
+          model: "llama3-8b-8192",
         });
 
         respuestaIA = completion.choices[0].message.content;
