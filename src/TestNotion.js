@@ -64,16 +64,6 @@ const TestNotion = () => {
                             </ul>
                         </div>
                     )}
-                    {subtemaIds.length > 0 && (
-                        <div>
-                            <h3>IDs de Subtemas:</h3>
-                            <ul>
-                                {subtemaIds.map(id => (
-                                    <li key={id}>{id}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
                 </div>
             )}
         </div>
