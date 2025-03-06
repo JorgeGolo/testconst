@@ -20,6 +20,13 @@ const TestNotion = () => {
         }
         return name; // Si no hay espacios, devuelve el nombre completo
     };
+    
+    // Función para seleccionar un elemento aleatorio de un array
+    const getRandomElement = (array) => {
+        if (!array || array.length === 0) return null;
+        const randomIndex = Math.floor(Math.random() * array.length);
+        return array[randomIndex];
+    };
 
     const groq = new Groq({ apiKey: process.env.REACT_APP_GROQ_API_KEY, dangerouslyAllowBrowser: true });
 
@@ -57,6 +64,9 @@ const TestNotion = () => {
         fetchPageContent();
     }, [titulo, location.state]);
 
+    // Obtener un subtema aleatorio
+    const randomSubtema = getRandomElement(subtemaNames);
+
     return (
         <div>
             {titulo}
@@ -69,17 +79,12 @@ const TestNotion = () => {
                     <div>
                         <h3>Subtema aleatorio:</h3>
                         <ul>
-                            {(() => {
-                                // Seleccionar un índice aleatorio
-                                const randomIndex = Math.floor(Math.random() * subtemaNames.length);
-                                // Obtener el nombre aleatorio
-                                const randomName = subtemaNames[randomIndex];
-                                // Mostrar solo ese elemento
-                                return <li key={randomName}>{processName(randomName)}</li>;
-                            })()}
+                            {randomSubtema && (
+                                <li key={randomSubtema}>{processName(randomSubtema)}</li>
+                            )}
                         </ul>
                     </div>
-                )}
+                    )}
                 </div>
             )}
         </div>
