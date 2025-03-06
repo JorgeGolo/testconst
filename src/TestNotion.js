@@ -12,11 +12,13 @@ const TestNotion = () => {
 
     // Función para procesar el nombre y obtener solo la segunda parte
     const processName = (name) => {
-        const lastDashIndex = name.lastIndexOf('-');
-        if (lastDashIndex !== -1) {
-            return name.substring(lastDashIndex + 1).trim();
+        // Buscar la última palabra que parezca un ID alfanumérico
+        const words = name.split(' ');
+        // Tomar la última palabra si existe
+        if (words.length > 0) {
+            return words[words.length - 1];
         }
-        return name; // Si no hay guión, devolver el nombre completo
+        return name; // Si no hay espacios, devuelve el nombre completo
     };
 
     const groq = new Groq({ apiKey: process.env.REACT_APP_GROQ_API_KEY, dangerouslyAllowBrowser: true });
