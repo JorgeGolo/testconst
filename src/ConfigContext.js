@@ -11,7 +11,7 @@ export const ConfigProvider = ({ children }) => {
   // Opciones globales
   const options = [
     { value: "gemini-1.5-flash", label: "gemini-1.5-flash", endpoint: "/api/getData" },
-    { value: "llama3-groq-70b-8192-tool-use-preview", label: "Llama 3", endpoint: "/api/getDataLlama" },
+    { value: "llama3-8b-8192", label: "Llama 3", endpoint: "/api/getDataLlama" },
   ];
 
   // Seleccionar la opción inicial por defecto
