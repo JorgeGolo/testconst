@@ -37,12 +37,7 @@ export default async function handler(req, res) {
         const pageNames = filteredResults.map(page => {
             if (page && page.object === "page") {
                 const urlPart = page.url.substring(page.url.lastIndexOf('/') + 1);
-                const lastDashIndex = urlPart.lastIndexOf('-');
-                if (lastDashIndex !== -1) {
-                    return urlPart.substring(0, lastDashIndex).replace(/-/g, ' ');
-                } else {
-                    return urlPart.replace(/-/g, ' '); // Si no hay guiones, devuelve la parte completa
-                }
+                return urlPart.replace(/-/g, ' '); // Reemplaza todos los guiones por espacios sin eliminar partes
             } else {
                 console.error("Estructura de página inesperada:", page);
                 return "Nombre no encontrado";
