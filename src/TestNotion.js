@@ -5,9 +5,7 @@ import Groq from "groq-sdk";
 const TestNotion = () => {
     const { titulo } = useParams();
     const location = useLocation();
-    const [pageContent, setPageContent] = useState(null);
     const [subtemaNames, setSubtemaNames] = useState([]);
-    const [subtemaIds, setSubtemaIds] = useState([]);
     const [error, setError] = useState(null); // Estado para manejar errores
 
     // Función para procesar el nombre y obtener solo la segunda parte
@@ -66,31 +64,16 @@ const TestNotion = () => {
 
     // Obtener un subtema aleatorio
     const randomSubtema = getRandomElement(subtemaNames);
+    
     const listoparaia = processName(getRandomElement(subtemaNames));
 
     return (
         <div>
             {titulo}
             {error && <p style={{ color: 'red' }}>{error}</p>} {/* Mostrar mensaje de error */}
-            {pageContent && (
-                <div>
-                    {JSON.stringify(pageContent)}
 
-                    {subtemaNames.length > 0 && (
-                    <div>
-                        <h3>Subtema aleatorio:</h3>
-                        <ul>
-                            {randomSubtema && (
-                                <li key={randomSubtema}>{processName(randomSubtema)}</li>
-                            )}
-                        </ul>
-
-                    </div>
-                    )}
-                </div>
-            )}
             
-            {randomSubtema && (
+            {subtemaNames && (
                 <h1>{listoparaia}</h1>
             )}
         
