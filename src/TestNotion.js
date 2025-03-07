@@ -97,6 +97,7 @@ const TestNotion = () => {
             {titulo}
             {error && <p style={{ color: 'red' }}>{error}</p>} {/* Mostrar mensaje de error */}
 
+
             <ul>
                 {listoparaia && (
                     <li>{listoparaia}</li>
@@ -106,7 +107,7 @@ const TestNotion = () => {
             <div>
                 {randomPageContent && (
 
-                    <div>{processContent(randomPageContent)}</div>
+                    <div>{JSON.stringify(randomPageContent)}</div>
 
                 )}
             </div>
