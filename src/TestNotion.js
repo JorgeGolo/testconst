@@ -9,6 +9,7 @@ const TestNotion = () => {
     const [subtemaNames, setSubtemaNames] = useState([]);
     const [subtemaIds, setSubtemaIds] = useState([]);
     const [error, setError] = useState(null); // Estado para manejar errores
+    const [randomPageContent, setRandomPageContent] = useState(null);
 
     // Función para procesar el nombre y obtener solo la segunda parte
     const processName = (name) => {
@@ -67,6 +68,27 @@ const TestNotion = () => {
     // Obtener un subtema aleatorio
     const randomSubtema = getRandomElement(subtemaNames);
     const listoparaia = randomSubtema ? processName(randomSubtema) : "";
+
+    useEffect(() => {
+        const fetchRandomPageContent = async () => {
+            try {
+                const response = await fetch(`/api/getPageContentById?pageId=${encodeURIComponent(listoparaia)}`);
+                if (!response.ok) {
+                    throw new Error("Error al obtener el contenido de la página");
+                }
+                const data = await response.json();
+                setRandomPageContent(data);
+
+            } catch (err) {
+                console.error("Error:", err);
+                setError("Ocurrió un error al cargar la página."); // Establecer el mensaje de error
+            }
+        };
+        fetchRandomPageContent();
+
+    }, [listoparaia]);
+
+
 
     return (
         <div>
