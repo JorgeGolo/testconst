@@ -121,7 +121,7 @@ const TestNotion = () => {
             <div>
                 {randomPageContent && (
 
-                    <div>{JSON.stringify(randomPageContentpageContent)}</div>
+                    <div>{JSON.stringify(randomPageContent)}</div>
 
                 )}
             </div>
