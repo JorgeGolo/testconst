@@ -89,6 +89,12 @@ const TestNotion = () => {
                     )}
                 </div>
             )}
+
+            <ul>
+                {listoparaia && (
+                    <li>{listoparaia}</li>
+                )}
+            </ul>
         </div>
     );
 };
