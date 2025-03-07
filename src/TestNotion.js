@@ -66,19 +66,29 @@ const TestNotion = () => {
 
     // Obtener un subtema aleatorio
     const randomSubtema = getRandomElement(subtemaNames);
-    
-    const listoparaia = processName(getRandomElement(subtemaNames));
+//    const listoparaia = processName(getRandomElement(subtemaNames));
 
     return (
         <div>
             {titulo}
             {error && <p style={{ color: 'red' }}>{error}</p>} {/* Mostrar mensaje de error */}
+            {pageContent && (
+                <div>
+                    {JSON.stringify(pageContent)}
 
-            
-            {subtemaNames && (
-                <h1>{listoparaia}</h1>
+                    {subtemaNames.length > 0 && (
+                    <div>
+                        <h3>Subtema aleatorio:</h3>
+                        <ul>
+                            {randomSubtema && (
+                                <li key={randomSubtema}>{processName(randomSubtema)}</li>
+                            )}
+                        </ul>
+
+                    </div>
+                    )}
+                </div>
             )}
-        
         </div>
     );
 };
