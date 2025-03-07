@@ -65,7 +65,7 @@ const TestNotion = () => {
     }, [titulo, location.state]);
 
     // Obtener un subtema aleatorio
-    //const randomSubtema = getRandomElement(subtemaNames);
+    const randomSubtema = getRandomElement(subtemaNames);
     const listoparaia = randomSubtema ? processName(randomSubtema) : "";
 
     return (
