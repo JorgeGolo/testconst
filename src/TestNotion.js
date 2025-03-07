@@ -8,11 +8,12 @@ const TestNotion = () => {
   const [pageContent, setPageContent] = useState(null);
   const [subtemaNames, setSubtemaNames] = useState([]);
   const [subtemaIds, setSubtemaIds] = useState([]);
-  const [error, setError] = useState(null); // Estado para manejar errores
+  const [error, setError] = useState(null);
   const [randomPageContent, setRandomPageContent] = useState(null);
-  const [selectedSubtema, setSelectedSubtema] = useState(""); // Se asignará solo una vez
+  const [selectedSubtema, setSelectedSubtema] = useState(""); // Subtema elegido (fijo hasta recargar)
+  const [groqResponse, setGroqResponse] = useState("");
 
-  // Función para procesar el nombre y obtener solo la segunda parte
+  // Función para procesar el nombre y obtener solo la última parte
   const processName = (name) => {
     if (!name) return "";
     const words = name.split(' ');
@@ -26,11 +27,7 @@ const TestNotion = () => {
     return array[randomIndex];
   };
 
-  const groq = new Groq({ 
-    apiKey: process.env.REACT_APP_GROQ_API_KEY, 
-    dangerouslyAllowBrowser: true 
-  });
-
+  // Cargar el contenido de la página (por nombre) y los subtemas
   useEffect(() => {
     const fetchPageContent = async () => {
       try {
@@ -42,9 +39,9 @@ const TestNotion = () => {
         setPageContent(data);
 
         if (
-          data && 
-          data.properties && 
-          data.properties['AWS Subtemas'] && 
+          data &&
+          data.properties &&
+          data.properties['AWS Subtemas'] &&
           data.properties['AWS Subtemas'].relation
         ) {
           const ids = data.properties['AWS Subtemas'].relation.map(subtema => subtema.id);
@@ -60,7 +57,6 @@ const TestNotion = () => {
             setError('Error al cargar subtemas.');
           }
         }
-
       } catch (err) {
         console.error("Error:", err);
         setError("Ocurrió un error al cargar la página.");
@@ -70,13 +66,32 @@ const TestNotion = () => {
     fetchPageContent();
   }, [titulo, location.state]);
 
-  // Seleccionar un subtema aleatorio solo una vez cuando se disponga de los subtemas
+  // Seleccionar un subtema aleatorio solo una vez, cuando se dispongan los subtemas
   useEffect(() => {
     if (!selectedSubtema && subtemaNames.length > 0) {
       const random = getRandomElement(subtemaNames);
       setSelectedSubtema(random ? processName(random) : "");
     }
   }, [subtemaNames, selectedSubtema]);
+
+  // Cargar el contenido de la página aleatoria basado en el subtema seleccionado
+  useEffect(() => {
+    if (!selectedSubtema) return;
+    const fetchRandomPageContent = async () => {
+      try {
+        const response = await fetch(`/api/getPageContentById?pageId=${encodeURIComponent(selectedSubtema)}`);
+        if (!response.ok) {
+          throw new Error("Error al obtener el contenido de la página");
+        }
+        const data = await response.json();
+        setRandomPageContent(data);
+      } catch (err) {
+        console.error("Error:", err);
+        setError("Ocurrió un error al cargar la página.");
+      }
+    };
+    fetchRandomPageContent();
+  }, [selectedSubtema]);
 
   // Función para extraer todo el texto plano de los bloques
   const extractPlainText = (blocks) => {
@@ -97,31 +112,33 @@ const TestNotion = () => {
       ? extractPlainText(randomPageContent.results)
       : "";
 
-  // Cargar contenido de página aleatoria solo una vez, cuando selectedSubtema ya esté definido
+  // Llamar a la API de GROQ justo después de obtener el texto plano,
+  // ya sea al cargar la página o tras pulsar "Siguiente"
   useEffect(() => {
-    if (!selectedSubtema) return;
-    const fetchRandomPageContent = async () => {
+    const fetchGroqResponse = async () => {
+      if (!allPlainText) return;
       try {
-        const response = await fetch(`/api/getPageContentById?pageId=${encodeURIComponent(selectedSubtema)}`);
-        if (!response.ok) {
-          throw new Error("Error al obtener el contenido de la página");
+        const groqRes = await fetch(`/api/groq`);
+        if (!groqRes.ok) {
+          throw new Error("Error en la llamada a GROQ API");
         }
-        const data = await response.json();
-        setRandomPageContent(data);
+        const groqData = await groqRes.json();
+        setGroqResponse(groqData.respuestaIA);
       } catch (err) {
-        console.error("Error:", err);
-        setError("Ocurrió un error al cargar la página.");
+        console.error("Error al llamar a GROQ API:", err);
       }
     };
-    fetchRandomPageContent();
-  }, [selectedSubtema]);
+    fetchGroqResponse();
+  }, [allPlainText]);
 
-// Función para recargar el contenido aleatorio con un nuevo subtema
-const handleNext = () => {
+  // Función para recargar el contenido y llamar a la API de GROQ
+  const handleNext = () => {
     if (subtemaNames.length > 0) {
       const random = getRandomElement(subtemaNames);
-      setSelectedSubtema(random ? processName(random) : "");
-      setRandomPageContent(null); // Opcional: reiniciar el contenido antes de la recarga
+      const newSelected = random ? processName(random) : "";
+      setSelectedSubtema(newSelected);
+      setRandomPageContent(null); // Reiniciar el contenido para la nueva búsqueda
+      // La llamada a GROQ se efectuará automáticamente al actualizarse "allPlainText"
     }
   };
 
@@ -139,13 +156,20 @@ const handleNext = () => {
           <div>
             <h3>Contenido de la página:</h3>
             <p>{allPlainText}</p>
-
-            <hr/>
-            <button onClick={handleNext}>Siguiente</button>
-
           </div>
         )}
       </div>
+
+      <div>
+        {groqResponse && (
+          <div>
+            <h3>Respuesta de GROQ API:</h3>
+            <p>{groqResponse}</p>
+          </div>
+        )}
+      </div>
+
+      <button onClick={handleNext}>Siguiente</button>
     </div>
   );
 };
