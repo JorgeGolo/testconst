@@ -10,6 +10,7 @@ const TestNotion = () => {
   const [subtemaIds, setSubtemaIds] = useState([]);
   const [error, setError] = useState(null); // Estado para manejar errores
   const [randomPageContent, setRandomPageContent] = useState(null);
+  const [selectedSubtema, setSelectedSubtema] = useState(""); // Se asignará solo una vez
 
   // Función para procesar el nombre y obtener solo la segunda parte
   const processName = (name) => {
@@ -25,9 +26,9 @@ const TestNotion = () => {
     return array[randomIndex];
   };
 
-  const groq = new Groq({
-    apiKey: process.env.REACT_APP_GROQ_API_KEY,
-    dangerouslyAllowBrowser: true
+  const groq = new Groq({ 
+    apiKey: process.env.REACT_APP_GROQ_API_KEY, 
+    dangerouslyAllowBrowser: true 
   });
 
   useEffect(() => {
@@ -40,7 +41,12 @@ const TestNotion = () => {
         const data = await response.json();
         setPageContent(data);
 
-        if (data && data.properties && data.properties['AWS Subtemas'] && data.properties['AWS Subtemas'].relation) {
+        if (
+          data && 
+          data.properties && 
+          data.properties['AWS Subtemas'] && 
+          data.properties['AWS Subtemas'].relation
+        ) {
           const ids = data.properties['AWS Subtemas'].relation.map(subtema => subtema.id);
           setSubtemaIds(ids);
         }
@@ -64,12 +70,16 @@ const TestNotion = () => {
     fetchPageContent();
   }, [titulo, location.state]);
 
-  // Obtener un subtema aleatorio y procesar su nombre
-  const randomSubtema = getRandomElement(subtemaNames);
-  const listoparaia = randomSubtema ? processName(randomSubtema) : "";
+  // Seleccionar un subtema aleatorio solo una vez cuando se disponga de los subtemas
+  useEffect(() => {
+    if (!selectedSubtema && subtemaNames.length > 0) {
+      const random = getRandomElement(subtemaNames);
+      setSelectedSubtema(random ? processName(random) : "");
+    }
+  }, [subtemaNames, selectedSubtema]);
 
   // Función para extraer todo el texto plano de los bloques
-  function extractPlainText(blocks) {
+  const extractPlainText = (blocks) => {
     let plainText = "";
     blocks.forEach(block => {
       const type = block.type;
@@ -80,19 +90,19 @@ const TestNotion = () => {
       }
     });
     return plainText.trim();
-  }
+  };
 
-  // Calcular todo el texto plano si randomPageContent está disponible
   const allPlainText =
     randomPageContent && randomPageContent.results
       ? extractPlainText(randomPageContent.results)
       : "";
 
+  // Cargar contenido de página aleatoria solo una vez, cuando selectedSubtema ya esté definido
   useEffect(() => {
+    if (!selectedSubtema) return;
     const fetchRandomPageContent = async () => {
-      if (!listoparaia) return; // Evitar ejecutar el hechizo si no hay valor
       try {
-        const response = await fetch(`/api/getPageContentById?pageId=${encodeURIComponent(listoparaia)}`);
+        const response = await fetch(`/api/getPageContentById?pageId=${encodeURIComponent(selectedSubtema)}`);
         if (!response.ok) {
           throw new Error("Error al obtener el contenido de la página");
         }
@@ -104,7 +114,7 @@ const TestNotion = () => {
       }
     };
     fetchRandomPageContent();
-  }, [listoparaia]);
+  }, [selectedSubtema]);
 
   return (
     <div>
@@ -112,7 +122,7 @@ const TestNotion = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <ul>
-        {listoparaia && <li>{listoparaia}</li>}
+        {selectedSubtema && <li>{selectedSubtema}</li>}
       </ul>
 
       <div>
