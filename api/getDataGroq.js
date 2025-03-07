@@ -3,12 +3,11 @@ import Groq from "groq-sdk";
 
 //para opciones de coniguracion
 import { ConfigContext } from "./ConfigContext";
-import { useContext } from "react";
 
 // Configuración de la API de GROQ
 const groq = new Groq({ apiKey: process.env.REACT_APP_GROQ_API_KEY });
 
-const selectedOption = useContext(ConfigContext)
+const selectedOption = "llama3-8b-8192";
 
 export default async function handler(req, res) {
     try {
