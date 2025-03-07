@@ -88,29 +88,14 @@ const TestNotion = () => {
 
     }, [listoparaia]);
 
-
+    const processContent = (content) => {
+        {JSON.stringify(content)};
+    }
 
     return (
         <div>
             {titulo}
             {error && <p style={{ color: 'red' }}>{error}</p>} {/* Mostrar mensaje de error */}
-            {pageContent && (
-                <div>
-                    {JSON.stringify(pageContent)}
-
-                    {subtemaNames.length > 0 && (
-                    <div>
-                        <h3>Subtema aleatorio:</h3>
-                        <ul>
-                            {listoparaia && (
-                                <li>{listoparaia}</li>
-                            )}
-                        </ul>
-
-                    </div>
-                    )}
-                </div>
-            )}
 
             <ul>
                 {listoparaia && (
@@ -121,7 +106,7 @@ const TestNotion = () => {
             <div>
                 {randomPageContent && (
 
-                    <div>{JSON.stringify(randomPageContent)}</div>
+                    <div>{processContent(randomPageContent)}</div>
 
                 )}
             </div>
