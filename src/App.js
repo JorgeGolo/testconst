@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 import './App.css';
-import GetNotionData from "./getNotionData"; // Importa el componente
+import GetNotionData from "./GetNotionData"; // Importa el componente
 
 function App() {
   const navigate = useNavigate();
