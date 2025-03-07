@@ -1,9 +1,6 @@
 //para la API de groq
 import Groq from "groq-sdk";
 
-//para opciones de coniguracion
-import { ConfigContext } from "./ConfigContext";
-
 // Configuración de la API de GROQ
 const groq = new Groq({ apiKey: process.env.REACT_APP_GROQ_API_KEY });
 
