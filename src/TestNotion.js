@@ -5,7 +5,9 @@ import Groq from "groq-sdk";
 const TestNotion = () => {
     const { titulo } = useParams();
     const location = useLocation();
+    const [pageContent, setPageContent] = useState(null);
     const [subtemaNames, setSubtemaNames] = useState([]);
+    const [subtemaIds, setSubtemaIds] = useState([]);
     const [error, setError] = useState(null); // Estado para manejar errores
 
     // Función para procesar el nombre y obtener solo la segunda parte
