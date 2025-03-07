@@ -69,6 +69,19 @@ const TestNotion = () => {
     const randomSubtema = getRandomElement(subtemaNames);
     const listoparaia = randomSubtema ? processName(randomSubtema) : "";
 
+    function extractPlainText(blocks) {
+        let plainText = "";
+        blocks.forEach(block => {
+          const type = block.type;
+          if (block[type] && Array.isArray(block[type].rich_text)) {
+            block[type].rich_text.forEach(textItem => {
+              plainText += textItem.plain_text + " ";
+            });
+          }
+        });
+        return plainText.trim();
+      }
+
     useEffect(() => {
         const fetchRandomPageContent = async () => {
             try {
@@ -88,10 +101,6 @@ const TestNotion = () => {
 
     }, [listoparaia]);
 
-    const processContent = (content) => {
-        {JSON.stringify(content)};
-    }
-
     return (
         <div>
             {titulo}
@@ -107,7 +116,7 @@ const TestNotion = () => {
             <div>
                 {randomPageContent && (
 
-                    <div>{JSON.stringify(randomPageContent)}</div>
+                    <div>extractPlainText({JSON.stringify(randomPageContent)})</div>
 
                 )}
             </div>
