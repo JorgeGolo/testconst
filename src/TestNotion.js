@@ -116,6 +116,15 @@ const TestNotion = () => {
     fetchRandomPageContent();
   }, [selectedSubtema]);
 
+// Función para recargar el contenido aleatorio con un nuevo subtema
+const handleNext = () => {
+    if (subtemaNames.length > 0) {
+      const random = getRandomElement(subtemaNames);
+      setSelectedSubtema(random ? processName(random) : "");
+      setRandomPageContent(null); // Opcional: reiniciar el contenido antes de la recarga
+    }
+  };
+
   return (
     <div>
       <h1>{titulo}</h1>
@@ -130,6 +139,10 @@ const TestNotion = () => {
           <div>
             <h3>Contenido de la página:</h3>
             <p>{allPlainText}</p>
+
+            <hr/>
+            <button onClick={handleNext}>Siguiente</button>
+
           </div>
         )}
       </div>
