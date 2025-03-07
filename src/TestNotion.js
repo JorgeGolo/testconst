@@ -118,7 +118,7 @@ const TestNotion = () => {
     const fetchGroqResponse = async () => {
       if (!allPlainText) return;
       try {
-        const groqRes = await fetch(`/api/groq`);
+        const groqRes = await fetch(`/api/getDataGroq`);
         if (!groqRes.ok) {
           throw new Error("Error en la llamada a GROQ API");
         }
